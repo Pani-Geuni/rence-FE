@@ -1,0 +1,234 @@
+<!-- ------------ -->
+<!-- @author 김예은 -->
+<!--------------- -->
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div class="space-detail-wrap" th:fragment="content">
+    <section class="page-title-section">
+        <span class="page-title">과거에 예약한 공간 정보를 보여드려요</span>
+    </section>
+
+    <section class="body-semi-wrap">
+        <div class="deatil-info-section">
+            <section class="reserve-info-section">
+                <span class="section-title">예약 정보</span>
+                <div class="reserve-info-wrap">
+                    <section>
+                        <img th:src="@{https://rence.s3.ap-northeast-2.amazonaws.com/space/}+${res.info_obj.backoffice_image}" alt="result-img" class="reserve-info-img" />
+                    </section>
+                    <section class="reserve-info-txt">
+                        <span class="info-company-name">[[${res.info_obj.company_name}]]</span>
+                        <ul class="info-li-wrap">
+                            <li class="info-li">
+                                <label class="info-label">공간 타입</label>
+                                <span class="info-text">[[${res.info_obj.room_type}]]</span>
+                            </li>
+                            <li class="info-li">
+                                <label class="info-label">예약 날짜</label>
+                                <span class="info-text">[[${res.info_obj.reserve_sdate}]] ~ [[${res.info_obj.reserve_edate}]]</span>
+                            </li>
+                            <li class="info-li">
+                                <label class="info-label">공간 이름</label>
+                                <span class="info-text">[[${res.info_obj.room_name}]]</span>
+                            </li>
+                            <li class="info-li">
+                                <label class="info-label">공간 가격</label>
+                                <span class="info-text">[[${res.info_obj.room_price}]]원/시간</span>
+                            </li>
+                        </ul>
+                    </section>
+                </div>
+            </section>
+            <section class="user-host-info-section">
+                <section class="uh-info-section">
+                    <span class="person-type-title">예약자 정보</span>
+                    <div class="uh-info-wrap">
+                        <ul>
+                            <li class="host-info-li">
+                                <label class="uh-label">예약자</label>
+                                <span class="uh-text">[[${res.user_obj.user_name}]]</span>
+                            </li>
+                            <li class="host-info-li">
+                                <label class="uh-label">연락처</label>
+                                <span class="uh-text">[[${res.user_obj.user_tel}]]</span>
+                            </li>
+                            <li class="host-info-li">
+                                <label class="uh-label">이메일</label>
+                                <span class="uh-text">[[${res.user_obj.user_email}]]</span>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+                <section class="uh-info-section">
+                    <span class="person-type-title">호스트 정보</span>
+                    <div class="uh-info-wrap">
+                        <ul>
+                            <li class="host-info-li">
+                                <label class="uh-label">사업자명</label>
+                                <span class="uh-text">[[${res.info_obj.backoffice_name}]]</span>
+                            </li>
+                            <li class="host-info-li">
+                                <label  class="uh-label">위치</label>
+                                <span class="uh-text">[[${res.info_obj.full_address}]]</span>
+                            </li>
+                            <li class="host-info-li">
+                                <label  class="uh-label">연락처</label>
+                                <span class="uh-text">[[${res.info_obj.backoffice_tel}]] [[${res.info_obj.backoffice_email}]]</span>
+                            </li>
+                        </ul>
+                    </div>
+                </section>
+            </section>
+            <section  class="careful-info-section">
+                <span class="section-title">예약시 주의 사항</span>
+
+                <ul class="section-list-wrap">
+                    <li class="section-list">1. 결제 방법 - 선결제 선택 시 보증금 없이 총 사용 금액이 결제됩니다.</li>
+                    <li class="section-list">2. 결제 방법 - 당일 결제 선택 시 보증금(총 예약 금액의 20%)만 결제되며, 나머지 금액은 예약 당일 해당 공간에서 이루어집니다.</li>
+                    <li class="section-list">3. 공간 내 기물 파손 시 배상해야 해며, 배상 시 비용은 새제품 가격으로 책정됩니다.</li>
+                    <li class="section-list">4. 공간 내 화기 사용은 금하며, 건물 전체가 금연 건물입니다.</li>
+                    <li class="section-list">5. 공간 내 간단한 음료와 간식만 드실 수 있으며, 드신 후 쓰레기는 분리 배출 부탁드립니다.</li>
+                    <li class="section-list">6. 이용중 지나친 소음이 발생하지 않도록 주의 부탁드립니다.</li>
+                    <li class="section-list">7. 선결제 시, 총 결제 금액의 5%가 마일리지로 적립됩니다.</li>
+                </ul>
+            </section>
+            <section class="refund-info-section">
+                <span class="section-title">환불 규정 안내</span>
+                <ul class="refund-list-wrap">
+                    <li class="refund-list">
+                        <label class="refund-label">예약 후 1시간 이내 취소</label>
+                        <span>
+                            총 금액의 100% 환불
+                        </span>
+                    </li>
+                    <li class="refund-list">
+                        <label class="after-refund-label">예약 후 1시간 이후 취소</label>
+                        <span>
+                            총 금액의 80% 환불 (보증금을 제외한 나머지 가격 환불)
+                        </span>
+                    </li>
+                </ul>
+            </section>
+            <section class="payment-section">
+                <span class="section-title">결제 금액 안내</span>
+                <div class="payment-info-wrap">
+                    <section class="payment-company-section">
+                        <ul class="payment-info-li-wrap">
+                            <li class="info-li">
+                                <label class="info-label">공간 타입</label>
+                                <span class="info-text">[[${res.info_obj.room_type}]]</span>
+                            </li>
+                            <li class="info-li">
+                                <label class="info-label">예약 날짜</label>
+                                <span class="info-text">[[${res.info_obj.reserve_sdate}]] ~ [[${res.info_obj.reserve_edate}]]</span>
+                            </li>
+                            <li class="info-li">
+                                <label class="info-label">공간 이름</label>
+                                <span class="info-text">[[${res.info_obj.room_name}]]</span>
+                            </li>
+                            <li class="info-li">
+                                <label class="info-label">공간 가격</label>
+                                <span class="info-text">[[${res.info_obj.room_price}]]원/시간</span>
+                            </li>
+                        </ul>
+                    </section>
+                    <section class="pay-mileage-section">
+                        <ul class="payment-info-li-wrap">
+                            <li class="info-li">
+                                <label class="pay-info-label">상품 가격</label>
+                                <span class="pay-info-text" id="actual_payment" th:attr="payment_total=${res.mvo.payment_total}">[[${res.mvo.payment_total}]]원</span>
+                            </li>
+                            <li class="info-li">
+                                <label class="pay-info-label">마일리지 적립 금액</label>
+                                <span class="pay-info-text">[[${res.mvo.mileage_change}]]원</span>
+                            </li>
+                            <li class="info-li">
+                                <label class="pay-info-label">결제 가격</label>
+                                <span class="pay-info-text" id="actual_payment" th:attr="actual_payment=${res.mvo.actual_payment}">[[${res.mvo.actual_payment}]]원</span>
+                            </li>
+                            <li class="info-li">
+                                <label class="pay-info-label">마일리지 사용 금액</label>
+                                <span class="pay-info-text">[[${res.mvo.use_mileage}]]원</span>
+                            </li>
+                        </ul>
+                    </section>
+                </div>
+            </section>
+        </div>
+        
+        <!-- START BTN-SECTION  -->
+        <section class="btn-pay-section">
+        	<th:block th:if="${res.pvo.cancel_state=='C'}">
+        		<div id="pay-canceled-btn" class="pay-canceled-btn" th:attr="idx=${res.info_obj.reserve_no}">
+                	<span>취소된 예약</span>
+            	</div>
+        	</th:block>
+        	<th:block th:if="${res.pvo.cancel_state!='C'}">
+                <th:block th:if="${res.is_write_review} == false">
+	                 <div id="write-review-btn" class="write-review-btn">
+	                    <span>후기 작성</span>
+	                </div>
+                </th:block>
+            </th:block>
+        </section>
+        <!-- END BTN-SECTION  -->
+        
+        <th:block th:if="${res.is_write_review} == false">
+	        <!-- 후기쓰기 팝업창 -->
+	        <div id="review-popup" class="review-popup-wrap blind">
+	            <span class="review-popup-title">후기 남기기</span>
+	
+	            <section class="review-popup-type-select-wrap">
+	                <span class="review-popup-small-title">이용한 공간명</span>
+	
+	                <!-- select 열 때 open-select추가 -->
+	                <div class="review-popup-select-val-wrap">
+	                    <span class="review-popup-select-value">
+	                        [[${res.info_obj.company_name}]]-[[${res.info_obj.room_name}]]
+	                    </span>
+	                </div>
+	            </section>
+	            <section class="textarea-section">
+	                <textarea id="review-write" class="review-write"></textarea>
+	                <div class="txt-length-wrap">
+	                    <span class="review-length">0</span>
+	                    <span class="review-total-length">/ 500</span>
+	                </div>
+	            </section>
+	            <section class="popup-star-section">
+	                <span class="popup-star-title">별점</span>
+	                <ul class="popup-star-wrap">
+	                    <li id="star_1" class="popup-star-li">
+	                        <img src="/static/IMG/common/y-star.svg" alt="후기 리뷰 별점 이미지" class="y-star r-star blind"/>
+	                        <img src="/static/IMG/common/star.svg" alt="후기 리뷰 별점 이미지" class="g-star r-star "/>
+	                    </li>
+	                    <li id="star_2" class="popup-star-li">
+	                        <img src="/static/IMG/common/y-star.svg" alt="후기 리뷰 별점 이미지" class="y-star r-star blind"/>
+	                        <img src="/static/IMG/common/star.svg" alt="후기 리뷰 별점 이미지" class="g-star r-star "/>
+	                    </li>
+	                    <li id="star_3" class="popup-star-li">
+	                        <img src="/static/IMG/common/y-star.svg" alt="후기 리뷰 별점 이미지" class="y-star r-star blind"/>
+	                        <img src="/static/IMG/common/star.svg" alt="후기 리뷰 별점 이미지" class="g-star r-star"/>
+	                    </li>
+	                    <li id="star_4" class="popup-star-li">
+	                        <img src="/static/IMG/common/y-star.svg" alt="후기 리뷰 별점 이미지" class="y-star r-star blind"/>
+	                        <img src="/static/IMG/common/star.svg" alt="후기 리뷰 별점 이미지" class="g-star r-star"/>
+	                    </li>
+	                    <li id="star_5" class="popup-star-li">
+	                        <img src="/static/IMG/common/y-star.svg" alt="후기 리뷰 별점 이미지" class="y-star r-star blind"/>
+	                        <img src="/static/IMG/common/star.svg" alt="후기 리뷰 별점 이미지" class="g-star r-star"/>
+	                    </li>
+	                </ul>
+	            </section>
+	            <section class="review-popup-btn-section">
+	                <span id="review-create-btn" class="popup-create-btn" th:attr="room_no=${res.info_obj.room_no}, backoffice_no=${res.info_obj.backoffice_no}">등록</span>
+	                <span id="review-close-btn" class="popup-close-btn">취소</span>
+	            </section>
+	        </div>
+        </th:block>
+    </section>
+</div>
+</body>
+</html>

@@ -1,0 +1,237 @@
+<!-- eslint-disable no-plusplus -->
+<!-- eslint-disable array-callback-return -->
+<!-- eslint-disable space-before-blocks -->
+<!-- eslint-disable -->
+<template>
+  <section class ="headerWrap">
+        <div class = "logo-section">
+					<router-link to="/">
+						<img src="../../../assets/IMG/common/RENCE.svg" alt="로고 이미지" class="logo-mku">
+					</router-link>
+        </div>
+        <div class = "searchBar-section">
+          <div class="searchBar-wrap">
+                <div id="type" class = "sb_1 type" @click="toggle_type_select">
+                    <span>타입</span>
+                 </div>
+                 <div id="location" class = "sb_1" @click="location_type_select">
+                     <span id="location_val">장소</span>
+                 </div>
+                 <div class = "sb_2">
+                     <input type="text"
+										  placeholder="검색어를 입력하세요."
+										 	@:keydown.enter="before_search" @:keyup.enter="before_search"
+											id="input_searchBar"/>
+                 </div>
+                 <div class = "searchBar-btnWrap">
+                    <img src="../../../assets/IMG/header/Search_Button.svg" alt="searchBar-btn"
+                     @click="before_search" class="searchBar-btn"/>
+                 </div>
+
+                <!-- CUSTOM SELECT -->
+                 <section>
+	                 <!-- START TYPE SELECT -->
+	                 <div id = "custom-type-select" class="type-select-wrap blind">
+	                     <ul class="type-select">
+	                        <li id = "type-list-desk" class="type-select-list" val="desk" @click="type_set($event.target)">데스크</li>
+	                        <li id = "type-list-metting-room" class="type-select-list"
+														val="meeting_room" @click="type_set($event.target)">회의실</li>
+	                        <li id = "type-list-office" class="type-select-list" val="office" @click="type_set($event.target)">오피스</li>
+	                     </ul>
+	                 </div>
+	                 <!-- END TYPE SELECT -->
+
+	                 <!-- START Location SELECT -->
+	                 <div id = "custom-location-select" class="location-select-wrap blind">
+	                     <ul id = "location-city" class="location-select">
+	                         <li class="location-select-list" v-for="c in city" @click="load_town({c})">{{ c }}</li>
+	                     </ul>
+	                     <ul id = "location-town" class="location-select blind">
+	                         <li class="location-select-list" v-for="t in town" @click="set_location({t})">{{ t }}</li>
+	                     </ul>
+	                 </div>
+	                 <!-- END TYPE SELECT -->
+	             </section>
+	         </div>
+	     </div>
+	     <div class="userMenu-section ">
+	         <!-- 로그인 전 유저 메뉴 -->
+	         <section id="before_login" class="">
+	             <div id = "before_userMenu" class ="userMenu" @click="user_menu_select('before_login')">
+	                 <img src="../../../assets/IMG/header/user_menu.svg" alt="user_menu_img"
+                     class="user_menu_img"/>
+	                 <img src="../../../assets/IMG/header/bx_user-circle.png" alt="user_profile_img"
+                     class="user_profile_img"/>
+	             </div>
+
+	             <!-- CUSTOM SELECT -->
+	             <div class = "custom-select-user blind">
+	                 <ul class="user-select-wrap">
+	                     <li id = "go-login" class="user-select-list">로그인</li>
+	                     <li id = "go-join" class="user-select-list">회원가입</li>
+	                     <li id = "go-backOffice" class="user-select-list">공간등록신청</li>
+	                 </ul>
+	             </div>
+	         </section>
+	     </div>
+	</section>
+
+	<!-- <section class ="headerWrap">
+	     <div class = "logo-section">
+	         <img src="../../../assets/IMG/common/RENCE.svg" class="logo-mku">
+	     </div>
+	     <div class = "searchBar-section">
+	         <div class="searchBar-wrap">
+	             <div id="type" class = "sb_1 type">
+	                 <span>타입</span>
+	             </div>
+	             <div id="location" class = "sb_1">
+	                 <span id="location_val">장소</span>
+	             </div>
+	             <div class = "sb_2">
+	                 <input type="text" placeholder="검색어를 입력하세요." id="input_searchBar"/>
+	             </div>
+	             <div class = "searchBar-btnWrap">
+	                <img src="../../../assets/IMG/header/Search_Button.svg" alt="searchBar-btn"
+                     class="searchBar-btn"/>
+	             </div> -->
+
+	             <!-- CUSTOM SELECT -->
+	             <!-- <section> -->
+	                 <!-- START TYPE SELECT -->
+	                 <!-- <div id = "custom-type-select" class="type-select-wrap blind">
+	                     <ul class="type-select">
+	                        <li id = "type-list-desk" class="type-select-list" val="desk">데스크</li>
+	                        <li id = "type-list-metting-room" class="type-select-list"
+                            val="meeting_room">회의실</li>
+	                        <li id = "type-list-office" class="type-select-list" val="office">오피스</li>
+	                     </ul>
+	                 </div> -->
+	                 <!-- END TYPE SELECT -->
+
+	                 <!-- START Location SELECT -->
+	                 <!-- <div id = "custom-location-select" class="location-select-wrap blind">
+	                     <ul id = "location-city" class="location-select">
+	                         <li class="location-select-list sample blind">데스크</li>
+	                     </ul>
+	                     <ul id = "location-town" class="location-select blind">
+	                         <li class="location-select-list sample blind">데스크</li>
+	                     </ul>
+	                 </div> -->
+	                 <!-- END TYPE SELECT -->
+	             <!-- </section>
+	         </div>
+	     </div>
+	     <div class="userMenu-section "> -->
+	         <!-- 로그인 후 유저 메뉴 -->
+	         <!-- <section id="after_login"  class="">
+	             <div id = "after_userMenu" class ="userMenu">
+	                <img src="../../../assets/IMG/header/user_menu.svg" alt="user_menu_img"
+                     class="user_menu_img"/>
+	                 <img alt="user_profile_img" class="user_profile_img"/>
+	             </div> -->
+
+	             <!-- CUSTOM SELECT -->
+	             <!-- <div class = "custom-select-user blind">
+	                 <ul class="user-select-wrap">
+	                     <li id = "go-myPage" class="user-select-list">마이페이지</li>
+	                     <li id = "go-backOffice" class="user-select-list">공간등록신청</li>
+	                     <li id = "go-logOut" class="user-select-list">로그아웃</li>
+	                 </ul>
+	             </div>
+	         </section>
+	     </div> -->
+	<!-- </section> -->
+</template>
+
+<style>
+  @import '../../../assets/CSS/office/header.css';
+</style>
+
+<script>
+import axios from 'axios';
+import $ from 'jquery';
+import cityArr from '../../../assets/json/city.json';
+
+export default {
+  name: 'HeaderView',
+  data() {
+    return {
+      // eslint-disable-next-line array-callback-return
+      city: cityArr.map((v) => {
+        if (v.city != null) return v.city;
+      }).slice(),
+      cityObject: '',
+      town: '',
+    };
+  },
+  methods: {
+    // 서치바에서 타입 클릭 시 셀렉트 SHOW/HIDE
+    toggle_type_select() {
+      $('#custom-type-select').toggleClass('blind');
+    },
+    type_set(param) {
+      console.log($(param).text());
+      let type_txt = '';
+
+      // eslint-disable-next-line default-case
+      switch ($(param).text()) {
+        case '데스크':
+          type_txt = 'desk';
+          break;
+        case '회의실':
+          type_txt = 'meeting-room';
+          break;
+        case '오피스':
+          type_txt = 'office';
+          break;
+      }
+      $('#type>span').text($(param).text());
+      $('#type').attr('val', type_txt);
+      $('#custom-type-select').addClass('blind');
+    },
+    // 서치바에서 타입 클릭 시 셀렉트 SHOW/HIDE
+    location_type_select() {
+      if ($('#custom-location-select').hasClass('blind')) {
+        $('#custom-location-select').removeClass('blind');
+      } else {
+        $('#custom-location-select').addClass('blind');
+        $('#location-town').addClass('blind');
+      }
+    },
+    // 도시에 맞는 타운 세팅
+    load_town(param) {
+      $('#location-town').removeClass('blind');
+      this.town = cityArr.filter((v) => {
+        if (v.city === param.c) {
+          return true;
+        }
+      })[0].arr.slice();
+    },
+    // 타운 클릭 시 검색바에 값세팅
+    set_location(param) {
+      $('#location_val').text(param.t);
+      $('#location-town').addClass('blind');
+      $('#custom-location-select').addClass('blind');
+    },
+    // 검색 로직 실행 전에 필수 값 입력여부확인
+    before_search() {
+      if ($('#type>span').attr('val') !== undefined) {
+        const type = $('#type>span').attr('val');
+        let location = $('#location_val').text();
+
+        if ($('#location_val').prop('idx') === undefined) {
+          location = '';
+        }
+
+        // window.location.href = `/common/search_list?type=${type}&location=${location}
+        // &searchWord=${$('#input_searchBar').val().trim()}&condition=date&page=1`;
+      } else {
+        $('.popup-background:eq(1)').removeClass('blind');
+        $('#common-alert-popup').removeClass('blind');
+        $('.common-alert-txt').text('타입을 선택해주세요.');
+      }
+    },
+  },
+};
+</script>

@@ -1,0 +1,81 @@
+<!-- ------------ -->
+<!-- @author 김예은 -->
+<!--------------- -->
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div class="review-list-wrap" th:fragment="content">
+    <section class="page-title-section">
+        <span class="page-title">작성한 후기들을 바로 확인해 보세요</span>
+    </section>
+
+    <section class="question-history-section">
+	    <div>
+	        <section class="question-history-title-section">
+	            <div class="list-title-txt-wrap">
+	                <span class="list-title-txt list-company-name">이용 장소</span>
+	                <span class="list-title-txt list-content">후기 내용</span>
+	                <span class="list-title-txt list-point">별점</span>
+	                <span class="list-title-txt list-date">작성일</span>
+	            </div>
+	        </section>
+	        <section class="question-history-wrap">
+	            <ul>
+	            	<th:block th:each="obj : ${res.list}">
+		                <li class="question-list">
+	                         <div class="question-content-wrap">
+	                             <span class="list-title-txt list-company-name">[[${obj.company_name}]]</span>
+	                             <span class="list-title-txt list-content">[[${obj.review_content}]]</span>
+	                             <span class="list-title-txt list-point">[[${obj.review_point}]]</span>
+	                             <span class="list-title-txt list-date">[[${obj.review_date}]]</span>
+	                         </div>
+	                         <div class="detail-question-wrap blind">
+	                             <div class="question-line">
+	                                 <div class="q-line">
+	                                     <label class="q_label">
+	                                         이용 장소&nbsp;&nbsp;|&nbsp;&nbsp;
+	                                         [[${obj.company_name}]]&nbsp;[[(${obj.room_name})]]
+	                                     </label>
+	                                     <div class="question-btn-wrap">
+	                                         <span class="question-btn" th:attr="idx=${obj.review_no}">삭제</span>
+	                                     </div>
+	                                 </div>
+	                                 <span>[[${obj.review_content}]]</span>
+	                             </div>
+	                         </div>
+	                     </li>
+	            	</th:block>
+	            </ul>
+	        </section>
+	    </div>
+	    
+       <th:block th:if="${res.maxPage} > 0"> 
+			<section class="paging-section">
+				<section class="paging-section">
+	            	<div class="paging-wrap">
+		                <span th:if="${res.maxPage} <= 5" class="paging-box before-page-btn hide"> &lt;&lt; </span>
+		                <span th:unless="${res.maxPage} <= 5" class="paging-box before-page-btn"> &lt;&lt; </span>
+		                
+		                <th:block th:with="ceil=${#numbers.formatInteger(T(java.lang.Math).ceil((res.nowPage)/5.0),1)}" >
+			                <th:block th:with="start=(5 * (${ceil} - 1) + 1)" >
+				                <div class="paging-num-wrap paging-wrap">
+				                <th:block th:each="num : ${#numbers.sequence(start, res.maxPage)}">
+				                    <span th:if = "${num} == ${res.nowPage}" th:attr="idx=${num}" class="paging-box paging-num choice">[[${num}]]</span>
+				                    <span th:if = "${num} != ${res.nowPage}" th:attr="idx=${num}" class="paging-box paging-num un-choice">[[${num}]]</span>
+				                </th:block>
+				                </div>
+			                </th:block>
+		                </th:block>
+		                
+		                <span th:if="${res.totalPageCnt} > 5 and ${res.maxPage} < ${res.totalPageCnt}" class="paging-box next-page-btn">>></span>
+		                <span th:unless="${res.totalPageCnt} > 5 and ${res.maxPage} < ${res.totalPageCnt}" class="paging-box next-page-btn hide">>></span>
+		                <input type="hidden" id="totalPageCnt" th:value="${res.totalPageCnt}">
+		            </div>
+	            </section>
+	        </section>
+		</th:block>
+    </section>
+</div>
+</body>
+</html>

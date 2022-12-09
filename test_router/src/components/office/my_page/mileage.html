@@ -1,0 +1,94 @@
+<!-- ------------ -->
+<!-- @author 김예은 -->
+<!--------------- -->
+
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<body>
+<div class="mileage-list-wrap" th:fragment="content">
+    <div class="reserve-list">
+        <section class="page-title-section">
+            <span class="page-title">지금까지 쌓인 마일리지를 확인하세요</span>
+        </section>
+
+        <section class="mileage-section">
+            <section class="mileage-section">
+                <section class="mileage">
+                    <span class="mileage-label">현재 마일리지</span>
+                    <span id="now-mileage" class="mileage-won">[[${mileage_total}]] 원</span>
+                </section>
+            </section>
+        </section>
+
+        <section class="mileage-list-section">
+            <section class="mileage-list-menu">
+				<span id = "all" th:if="${searchKey} == 'all'" class="menus choice">전체</span>
+				<span id = "all" th:if="${searchKey} != 'all'" class="menus un-choice">전체</span>
+			
+				<span id = "plus" th:if="${searchKey} == 'plus'" class="menus choice">적립</span>
+				<span id = "plus" th:if="${searchKey} != 'plus'" class="menus un-choice">적립</span>
+			
+				<span id = "minus" th:if="${searchKey} == 'minus'" class="menus choice">사용</span>
+				<span id = "minus" th:if="${searchKey} != 'minus'" class="menus un-choice">사용</span>
+            </section>
+
+            <section class="mileage-history-section">
+                <section class="mileage-history-title-section">
+                    <div class="list-title-txt-wrap">
+                        <span class="list-title-txt list-status">상태</span>
+                        <span class="list-title-txt list-mileage">마일리지</span>
+                        <span class="list-title-txt list-content">내용</span>
+                        <span class="list-title-txt list-date">적용일</span>
+                    </div>
+                </section>
+                           
+                <section class="mileage-history-wrap">
+                	<ul>
+						<!-- START th:each -->
+						<th:block th:each="obj : ${res.list}">
+                            <li class="mileage-list">
+                                <span th:if="${obj.state} == 'F'" class="list-status ">사용</span>
+                                <span th:if="${obj.state} == 'T'" class="list-status plus-price-label">적립</span>
+                                
+                                <span th:if="${obj.state} == 'T'" class="list-mileage plus-price">+[[${obj.mileage}]]</span>
+                                <span th:if="${obj.state} == 'F'" class="list-mileage minus-price">-[[${obj.mileage}]]</span>
+
+                                <span class="list-content">[[${obj.room}]]</span>
+                                <span class="list-date">[[${obj.date}]]</span>
+                            </li>
+                       	</th:block>
+						<!-- END th:each -->
+                    </ul>
+               </section>
+           </section>
+            
+           <th:block th:if="${res.maxPage} > 0"> 
+				<section class="paging-section">
+					<section class="paging-section">
+		            	<div class="paging-wrap">
+			                <span th:if="${res.maxPage} <= 5" class="paging-box before-page-btn hide"> &lt;&lt; </span>
+			                <span th:unless="${res.maxPage} <= 5" class="paging-box before-page-btn"> &lt;&lt; </span>
+			                
+			                <th:block th:with="ceil=${#numbers.formatInteger(T(java.lang.Math).ceil((res.nowPage)/5.0),1)}" >
+				                <th:block th:with="start=(5 * (${ceil} - 1) + 1)" >
+					                <div class="paging-num-wrap paging-wrap">
+					                <th:block th:each="num : ${#numbers.sequence(start, res.maxPage)}">
+					                    <span th:if = "${num} == ${res.nowPage}" th:attr="idx=${num}" class="paging-box paging-num choice">[[${num}]]</span>
+					                    <span th:if = "${num} != ${res.nowPage}" th:attr="idx=${num}" class="paging-box paging-num un-choice">[[${num}]]</span>
+					                </th:block>
+					                </div>
+				                </th:block>
+			                </th:block>
+			                
+			                <span th:if="${res.totalPageCnt} > 5 and ${res.maxPage} < ${res.totalPageCnt}" class="paging-box next-page-btn">>></span>
+			                <span th:unless="${res.totalPageCnt} > 5 and ${res.maxPage} < ${res.totalPageCnt}" class="paging-box next-page-btn hide">>></span>
+			                <input type="hidden" id="totalPageCnt" th:value="${res.totalPageCnt}">
+			            </div>
+		            </section>
+		        </section>
+			</th:block>
+        </section>
+    </div>
+</div>
+</body>
+</html>
