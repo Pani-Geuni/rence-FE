@@ -2,12 +2,7 @@
  * @author 김예은
  */
  $(function(){
-    // 다른 공간 보기 버튼 - 메인 페이지로 이동
-    $("#go-main-btn").click(function(){
-        location.href="/";
-    });
-
-    //정렬 셀렉트 클릭 시 커스텀 셀렉트 SHOW
+     //정렬 셀렉트 클릭 시 커스텀 셀렉트 SHOW
     $(".sort").click(function(){
         $(".sort-select-box-wrap").toggleClass("blind");
     });

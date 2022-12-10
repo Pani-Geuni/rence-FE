@@ -2,18 +2,7 @@
  * @author 김예은
  */
  $(function(){
-    /*****************************/ 
-    /******* 버튼 클릭 이벤트 *********/ 
-    /*****************************/
-     
-    // 공용 알러트 창 닫기버튼
-    $("#common-alert-btn").click(function(){
-        if($(".common-alert-txt").text() == "회원탈퇴되었습니다."){
-            location.href = "/";
-        }
-        $(".popup-background:eq(1)").addClass("blind");
-        $("#common-alert-popup").addClass("blind");
-    });
+
     //회원 탈퇴 버튼 클릭
     $(".user-delete-btn").click(function(){
         $(".popup-background:eq(0)").removeClass("blind");
@@ -311,6 +300,7 @@
                     $(".popup-background:eq(1)").removeClass("blind");
                     $("#common-alert-popup").removeClass("blind");
                     $(".common-alert-txt").text("회원탈퇴되었습니다.");
+                    $("#common-alert-btn").attr("is_reload", true);
                 }else{
                     $(".popup-background:eq(1)").removeClass("blind");
                     $("#common-alert-popup").removeClass("blind");
