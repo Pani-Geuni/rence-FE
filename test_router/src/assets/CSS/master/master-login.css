@@ -14,6 +14,7 @@
 
   background-color: rgba(0, 0, 0, 0.5);
 }
+
 .popup-background * {
   font-family: 'MICEGothic';
 }
@@ -42,12 +43,11 @@
   padding: 20px;
 }
 
-.logo-section {
+.logo-section.master-login {
+  display: flex;
+  justify-content: center;
+  width: 100%;
   margin: 32px;
-}
-
-.logo-mku{
-    /* width: 200px; */
 }
 
 .inputSection {
@@ -78,6 +78,6 @@
   height: 40px;
 
   border: none;
-  
+
   cursor: pointer;
 }

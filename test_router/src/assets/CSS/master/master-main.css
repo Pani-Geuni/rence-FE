@@ -43,11 +43,11 @@
 }
 
 .ct-body-row.master {
-	cursor: pointer;
+  cursor: pointer;
 }
 
 .apply-info-section {
-	display: flex;
+  display: flex;
 }
 
 .btn-group button {
@@ -58,12 +58,13 @@
   font-size: 12px;
 
   color: #ffffff;
-  
+
   cursor: pointer;
 }
 
 #btn-grant-host {
   background-color: #b2a4ff;
+  margin-right: 4px;
 }
 
 #btn-refuse-host,

@@ -3,6 +3,8 @@ import LayoutBase from '../views/LayoutBase.vue';
 import HomeView from '../components/office/HomeView.vue';
 import ListView from '../components/office/ListView.vue';
 
+import masterRoutes from './masterRoutes';
+
 const routes = [
   {
     path: '/',
@@ -20,6 +22,7 @@ const routes = [
       },
     ],
   },
+  ...masterRoutes,
 ];
 
 const router = createRouter({
