@@ -1,7 +1,7 @@
 <template>
   <section class="headerWrap">
-    <div class="logo-section">
-      <img src="@/assets/IMG/common/Rence-Master.svg" alt="Master Logo" class="logo-mku">
+    <div class="logo-section master">
+      <img src="@/assets/IMG/common/Rence-Master.svg" alt="Master Logo" class="logo-mku master">
     </div>
 
     <ul class="header-nav-list">

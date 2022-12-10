@@ -26,7 +26,7 @@ export default [
       },
       {
         path: 'backoffice_end_detail',
-        name: 'BackofficeApplyDetail',
+        name: 'BackofficeEndDetail',
         component: ApplyDetail,
       },
     ],

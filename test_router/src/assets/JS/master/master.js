@@ -27,7 +27,7 @@ $(() => {
 	}
 
 	// location.href 작업
-	$('.logo-mku').on('click', () => {
+	$('.logo-mku.master').on('click', () => {
 		location.href = '/master/main';
 	});
 
