@@ -18,14 +18,14 @@
 
         <div class="ct-body">
           <div v-for="vo in vos" :key="vo" class="ct-body-row master" th:attr="idx=${vo.backoffice_no}">
-            <div id="backoffice_no" class="ct-body-cell apply blind">{{ vo.backoffice_no }}</div>
-            <div id="apply_date" class="ct-body-cell apply">{{ vo.apply_date }}</div>
-            <div id="backoffice_name" class="ct-body-cell apply">{{ vo.backoffice_name }}</div>
-            <div id="owner_name" class="ct-body-cell apply">{{ vo.owner_name }}</div>
-            <div id="backoffice_id" class="ct-body-cell apply">{{ vo.backoffice_id }}</div>
-            <div id="company_name" class="ct-body-cell apply">{{ vo.company_name }}</div>
-            <div id="backoffice_tel" class="ct-body-cell apply">{{ vo.backoffice_tel }}</div>
-            <div id="backoffice_email" class="ct-body-cell apply">{{ vo.backoffice_email }}</div>
+            <div id="backoffice_no" class="ct-body-cell delete blind">{{ vo.backoffice_no }}</div>
+            <div id="apply_date" class="ct-body-cell delete">{{ vo.apply_date }}</div>
+            <div id="backoffice_name" class="ct-body-cell delete">{{ vo.backoffice_name }}</div>
+            <div id="owner_name" class="ct-body-cell delete">{{ vo.owner_name }}</div>
+            <div id="backoffice_id" class="ct-body-cell delete">{{ vo.backoffice_id }}</div>
+            <div id="company_name" class="ct-body-cell delete">{{ vo.company_name }}</div>
+            <div id="backoffice_tel" class="ct-body-cell delete">{{ vo.backoffice_tel }}</div>
+            <div id="backoffice_email" class="ct-body-cell delete">{{ vo.backoffice_email }}</div>
             <div class="ct-body-cell">
               <div class="btn-group">
                 <button id="btn-delete-host">삭제</button>
