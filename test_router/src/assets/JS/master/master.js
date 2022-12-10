@@ -1,5 +1,4 @@
 /* eslint-disable linebreak-style */
-/* eslint-disable no-undef */
 /* eslint-disable camelcase */
 /* eslint-disable indent */
 /* eslint-disable no-tabs */
@@ -8,6 +7,8 @@
 /**
 * @author : 전판근
 */
+import $ from 'jquery';
+
 $(() => {
 	// master header nav 변경
 	switch ($(location).attr('pathname')) {
