@@ -20,7 +20,7 @@
 </style>
 
 <script>
-console.log('master');
+console.log('http://localhost:8081/master/login');
 
 export default {
   name: 'HeaderView',
