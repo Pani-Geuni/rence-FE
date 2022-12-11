@@ -135,11 +135,12 @@
 </template>
 
 <style scoped>
-@import '@/assets/CSS/master/master-detail.css';
+@import '@/assets/CSS/master/master-detail.scss';
 </style>
 
 <script>
 // import axios from 'axios';
+import '@/assets/JS/master/master';
 
 export default {
   name: 'ApplyDetail',
@@ -168,3 +169,5 @@ export default {
 };
 
 </script>
+
+<!-- TODO : KAKAO MAP -->

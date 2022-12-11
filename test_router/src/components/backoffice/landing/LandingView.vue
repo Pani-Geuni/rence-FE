@@ -18,8 +18,8 @@
   </section>
 </template>
 
-<style scoped>
-@import '@/assets/CSS/backoffice/host-landing.css';
+<style lang="scss" scoped>
+@import '@/assets/CSS/backoffice/host-landing.scss';
 </style>
 
 <script>

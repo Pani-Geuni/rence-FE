@@ -20,7 +20,7 @@
 </template>
 
 <style lang="scss" scoped>
- @import '@/assets/CSS/master/master-header.scss';
+@import '@/assets/CSS/master/master-header.scss';
 </style>
 
 <script>
@@ -56,19 +56,25 @@ export default {
   },
   methods: {
     goMasterMain() {
-      window.location.href = '/master/main';
+      this.$router.replace('/master/main');
+      this.ApplyIsActive = true;
+      this.DeleteIsActive = false;
     },
 
     goApplyList() {
-      window.location.href = '/master/main';
+      this.$router.replace('/master/main');
+      this.ApplyIsActive = true;
+      this.DeleteIsActive = false;
     },
 
     goDeleteList() {
-      window.location.href = '/master/backoffice_end';
+      this.$router.replace('/master/backoffice_end');
+      this.DeleteIsActive = true;
+      this.ApplyIsActive = false;
     },
 
     goLogout() {
-      window.location.href = '/master/logoutOK';
+      this.$router.replace('/master/logoutOK');
     },
   },
 };

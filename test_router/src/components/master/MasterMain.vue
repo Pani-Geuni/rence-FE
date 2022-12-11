@@ -1,3 +1,5 @@
+<!-- eslint-disable vuejs-accessibility/click-events-have-key-events -->
+<!-- eslint-disable camelcase -->
 <!-- eslint-disable max-len -->
 <template>
 
@@ -17,19 +19,19 @@
         <!-- END ct-header -->
 
         <div class="ct-body">
-          <div v-for="vo in vos" :key="vo" class="ct-body-row master" th:attr="idx=${vo.backoffice_no}">
-            <div id="backoffice_no" class="ct-body-cell apply blind">{{ vo.backoffice_no }}</div>
-            <div id="apply_date" class="ct-body-cell apply">{{ vo.apply_date }}</div>
-            <div id="backoffice_name" class="ct-body-cell apply">{{ vo.backoffice_name }}</div>
-            <div id="owner_name" class="ct-body-cell apply">{{ vo.owner_name }}</div>
-            <div id="backoffice_id" class="ct-body-cell apply">{{ vo.backoffice_id }}</div>
-            <div id="company_name" class="ct-body-cell apply">{{ vo.company_name }}</div>
-            <div id="backoffice_tel" class="ct-body-cell apply">{{ vo.backoffice_tel }}</div>
-            <div id="backoffice_email" class="ct-body-cell apply">{{ vo.backoffice_email }}</div>
+          <div v-for="vo in vos" :key="vo" class="ct-body-row master" :idx="vo.backoffice_no">
+            <div id="backoffice_no" class="ct-body-cell apply blind" @click="goDetailInfo">{{ vo.backoffice_no }}</div>
+            <div id="apply_date" class="ct-body-cell apply" @click="goDetailInfo">{{ vo.apply_date }}</div>
+            <div id="backoffice_name" class="ct-body-cell apply" @click="goDetailInfo">{{ vo.backoffice_name }}</div>
+            <div id="owner_name" class="ct-body-cell apply" @click="goDetailInfo">{{ vo.owner_name }}</div>
+            <div id="backoffice_id" class="ct-body-cell apply" @click="goDetailInfo">{{ vo.backoffice_id }}</div>
+            <div id="company_name" class="ct-body-cell apply" @click="goDetailInfo">{{ vo.company_name }}</div>
+            <div id="backoffice_tel" class="ct-body-cell apply" @click="goDetailInfo">{{ vo.backoffice_tel }}</div>
+            <div id="backoffice_email" class="ct-body-cell apply" @click="goDetailInfo">{{ vo.backoffice_email }}</div>
             <div class="ct-body-cell">
-              <div class="btn-group">
-                <button id="btn-grant-host">수락</button>
-                <button id="btn-refuse-host">거절</button>
+              <div class="btn-group" :idx="vo.backoffice_no">
+                <button @click="clickGrantPopup" id="btn-grant-host">수락</button>
+                <button @click="clickRefusePopup" id="btn-refuse-host">거절</button>
               </div>
               <!-- END btn-group -->
             </div>
@@ -45,10 +47,11 @@
 </template>
 
 <style scoped>
-
+@import '@/assets/CSS/master/master-main.scss';
 </style>
 
 <script>
+import $ from 'jquery';
 import axios from 'axios';
 
 export default {
@@ -83,6 +86,34 @@ export default {
   },
 
   methods: {
+    goDetailInfo(e) {
+      // eslint-disable-next-line camelcase
+      const backoffice_no = e.target.parentElement.getAttribute('idx');
+
+      console.log(backoffice_no);
+
+      // eslint-disable-next-line camelcase
+      const url = `/master/backoffice_apply_detail?backoffice_no=${backoffice_no}&page=apply`;
+      this.$router.push(url);
+    },
+
+    clickGrantPopup(e) {
+      console.log(e.target.parentElement.getAttribute('idx'));
+      // const backoffice_no = e.target.parentElement.getAttribute('idx');
+      $('.popup-background:eq(0)').removeClass('blind');
+      $('#grant-popup').removeClass('blind');
+      $('#grant-popup').children('.confirm-btn-section').children('#grant-btn').attr('backoffice_no', e.target.parentElement.getAttribute('idx'));
+    },
+
+    clickRefusePopup(e) {
+      console.log(e.target.parentElement.getAttribute('idx'));
+
+      $('.popup-background:eq(0)').removeClass('blind');
+      $('#refuse-popup').removeClass('blind');
+      $('#refuse-popup').children('.confirm-btn-section').children('#refuse-btn').attr('backoffice_no', e.target.parentElement.getAttribute('idx'));
+    },
+
+    // 신청 목록 가져오기
     getSelectAllApplyList() {
       const url = 'localhost:8800/master/main';
 
