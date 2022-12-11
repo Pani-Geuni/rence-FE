@@ -15,8 +15,8 @@
 
 </template>
 
-<style>
-@import '@/assets/CSS/master/master-header.css';
+<style lang="scss" scoped>
+@import '@/assets/CSS/master/master-header.scss';
 </style>
 
 <script>

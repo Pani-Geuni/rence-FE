@@ -44,9 +44,9 @@
 
 </template>
 
-<styles>
+<style scoped>
 
-</styles>
+</style>
 
 <script>
 import axios from 'axios';
