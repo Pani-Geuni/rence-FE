@@ -81,15 +81,15 @@
 </template>
 
 <style scoped>
-@import '@/assets/CSS/common/common.css';
+@import '@/assets/CSS/common/common.scss';
 @import '@/assets/CSS/common/custom-table.css';
 
 @import '@/assets/CSS/master/master-main.css';
 </style>
 
 <script>
-import '@/assets/JS/master/master';
-
+// import '@/assets/JS/master/master';
+import $ from 'jquery';
 import HeaderView from /* webpackChunkName: "HeaderView" */ '@/components/master/common/HeaderView.vue';
 // import FooterView from '@/components/office/common/FooterView.vue';
 

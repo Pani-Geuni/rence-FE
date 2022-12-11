@@ -97,7 +97,7 @@
 </template>
 
 <style scoped>
-@import '@/assets/CSS/common/common.css';
+@import '@/assets/CSS/common/common.scss';
 @import '@/assets/CSS/backoffice/host-header.scss';
 </style>
 
