@@ -52,9 +52,23 @@
 #btn-grant-host {
   background-color: #b2a4ff;
   margin-right: 4px;
+
+  border: none;
+  border-radius: 8px;
+  padding: 4px 8px;
+  font-size: 12px;
+  color: #ffffff;
+  cursor: pointer;
 }
 
 #btn-refuse-host,
 #btn-delete-host {
   background-color: #ff5c71;
+
+  border: none;
+  border-radius: 8px;
+  padding: 4px 8px;
+  font-size: 12px;
+  color: #ffffff;
+  cursor: pointer;
 }

@@ -1,3 +1,4 @@
+<!-- eslint-disable vuejs-accessibility/click-events-have-key-events -->
 <!-- eslint-disable max-len -->
 <!-- eslint-disable vuejs-accessibility/form-control-has-label -->
 <template>
@@ -14,7 +15,7 @@
       </div>
       <!-- END inputSection -->
 
-      <button id="btn-master-login" class="btn-master-login">로그인</button>
+      <button @click="clickLogin" id="btn-master-login" class="btn-master-login">로그인</button>
     </div>
     <!-- END loginWrap -->
   </div>
@@ -27,16 +28,63 @@
         <span class="common-alert-txt"></span>
       </section>
       <section id="common-alert-btn" class="alert-btn-section">
-        <span>확인</span>
+        <span @click="failLogin">확인</span>
       </section>
     </div>
   </div>
 </template>
 
 <style scoped>
-@import '@/assets/CSS/master/master-login.css';
+@import '@/assets/CSS/master/master-login.scss';
 </style>
 
 <script>
+import $ from 'jquery';
+import axios from 'axios';
+
+export default {
+  name: 'MasterLogin',
+
+  methods: {
+    // 로그인 실패 팝업 닫기
+    failLogin() {
+      $('#common-alert-popup').addClass('blind');
+      $('.popup-background').addClass('blind');
+    },
+
+    clickLogin() {
+      /** 로그인 시도 * */
+      // 로그인 성공
+      if ($('#master-id').val().trim().length > 0 && $('#master-pw').val().trim().length > 0) {
+        axios.post('/master/loginOK', {
+          username: $('#master-id').val().trim(),
+          password: $('#master-pw').val().trim(),
+        }).then((res) => {
+          if (res.data.result === 1) {
+            // INPUT 초기화
+            $('#master-id').val('');
+            $('#master-pw').val('');
+
+            window.location.href = '/master/main';
+          } else {
+            $('.popup-background').removeClass('blind');
+            $('#common-alert-popup').removeClass('blind');
+            $('.common-alert-txt').text('로그인에 실패하였습니다.');
+          }
+        });
+      } else {
+        // 로그인 실패
+        // 로그인 실패
+        if ($('#master-id').val().trim().length === 0) {
+          $('#master-id').addClass('null-input-border');
+        }
+
+        if ($('#master-pw').val().trim().length === 0) {
+          $('#master-pw').addClass('null-input-border');
+        }
+      }
+    },
+  },
+};
 
 </script>

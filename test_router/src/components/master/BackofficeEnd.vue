@@ -1,3 +1,4 @@
+<!-- eslint-disable vuejs-accessibility/click-events-have-key-events -->
 <!-- eslint-disable max-len -->
 <template>
 
@@ -17,18 +18,18 @@
         <!-- END ct-header -->
 
         <div class="ct-body">
-          <div v-for="vo in vos" :key="vo" class="ct-body-row master" th:attr="idx=${vo.backoffice_no}">
-            <div id="backoffice_no" class="ct-body-cell delete blind">{{ vo.backoffice_no }}</div>
-            <div id="apply_date" class="ct-body-cell delete">{{ vo.apply_date }}</div>
-            <div id="backoffice_name" class="ct-body-cell delete">{{ vo.backoffice_name }}</div>
-            <div id="owner_name" class="ct-body-cell delete">{{ vo.owner_name }}</div>
-            <div id="backoffice_id" class="ct-body-cell delete">{{ vo.backoffice_id }}</div>
-            <div id="company_name" class="ct-body-cell delete">{{ vo.company_name }}</div>
-            <div id="backoffice_tel" class="ct-body-cell delete">{{ vo.backoffice_tel }}</div>
-            <div id="backoffice_email" class="ct-body-cell delete">{{ vo.backoffice_email }}</div>
+          <div v-for="vo in vos" :key="vo" class="ct-body-row master" :idx="vo.backoffice_no">
+            <div id="backoffice_no" class="ct-body-cell delete blind" @click="goDetailInfo">{{ vo.backoffice_no }}</div>
+            <div id="apply_date" class="ct-body-cell delete" @click="goDetailInfo">{{ vo.apply_date }}</div>
+            <div id="backoffice_name" class="ct-body-cell delete" @click="goDetailInfo">{{ vo.backoffice_name }}</div>
+            <div id="owner_name" class="ct-body-cell delete" @click="goDetailInfo">{{ vo.owner_name }}</div>
+            <div id="backoffice_id" class="ct-body-cell delete" @click="goDetailInfo">{{ vo.backoffice_id }}</div>
+            <div id="company_name" class="ct-body-cell delete" @click="goDetailInfo">{{ vo.company_name }}</div>
+            <div id="backoffice_tel" class="ct-body-cell delete" @click="goDetailInfo">{{ vo.backoffice_tel }}</div>
+            <div id="backoffice_email" class="ct-body-cell delete" @click="goDetailInfo">{{ vo.backoffice_email }}</div>
             <div class="ct-body-cell">
-              <div class="btn-group">
-                <button id="btn-delete-host">삭제</button>
+              <div class="btn-group" :idx="vo.backoffice_no">
+                <button @click="clickDeletePopup" id="btn-delete-host">삭제</button>
               </div>
               <!-- END btn-group -->
             </div>
@@ -48,6 +49,7 @@
 </style>
 
 <script>
+import $ from 'jquery';
 import axios from 'axios';
 
 export default {
@@ -70,6 +72,23 @@ export default {
   },
 
   methods: {
+    goDetailInfo(e) {
+      // eslint-disable-next-line camelcase
+      const backoffice_no = e.target.parentElement.getAttribute('idx');
+
+      console.log(backoffice_no);
+      // eslint-disable-next-line camelcase
+      window.location.href = `/master/backoffice_apply_detail?backoffice_no=${backoffice_no}&page=apply`;
+    },
+
+    clickDeletePopup(e) {
+      console.log(e.target.parentElement.getAttribute('idx'));
+      // const backoffice_no = e.target.parentElement.getAttribute('idx');
+      $('.popup-background:eq(0)').removeClass('blind');
+      $('#delete-popup').removeClass('blind');
+      $('#delete-popup').children('.confirm-btn-section').children('#delete-btn').attr('backoffice_no', e.target.parentElement.getAttribute('idx'));
+    },
+
     getSelectAllApplyList() {
       const url = 'localhost:8800/master/backoffice_end';
 
