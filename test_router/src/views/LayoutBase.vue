@@ -9,8 +9,8 @@
 		<PopupView />
 </template>
 
-<style>
-  @import '../assets/CSS/common/common.css';
+<style lang="scss" scoped>
+  @import '@/assets/CSS/common/common.scss';
 </style>
 
 <script>

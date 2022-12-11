@@ -160,8 +160,8 @@
   </div>
 </template>
 
-<style>
-  @import '@/assets/CSS/office/login.css';
+<style lang="scss" scoped>
+  @import '@/assets/CSS/office/login.scss';
 </style>
 
 <script>
@@ -481,7 +481,7 @@ export default {
         }
       }
       // 생년월일 형식인지 확인
-			 else if ($(param).attr('id') === 'join-birth') {
+      else if ($(param).attr('id') === 'join-birth') {
         const birthReg = /^[0-9]{8}$/;
         if (!birthReg.test($(param).val().trim())) {
           $('.warning-text:eq(6)').removeClass('blind');

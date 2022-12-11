@@ -91,8 +91,8 @@
 	</section>
 </template>
 
-<style>
-  @import '../../../assets/CSS/office/header.css';
+<style lang="scss" scoped>
+  @import '../../../assets/CSS/office/header.scss';
 </style>
 
 <script>
@@ -108,6 +108,8 @@ export default {
       }).slice(),
       cityObject: '',
       town: '',
+      type: '',
+      location: '',
     };
   },
   methods: {
@@ -132,7 +134,7 @@ export default {
           break;
       }
       $('#type>span').text($(param).text());
-      $('#type').attr('val', type_txt);
+      $('#type>span').attr('val', type_txt);
       $('#custom-type-select').addClass('blind');
     },
     // 서치바에서 타입 클릭 시 셀렉트 SHOW/HIDE
@@ -156,21 +158,21 @@ export default {
     // 타운 클릭 시 검색바에 값세팅
     set_location(param) {
       $('#location_val').text(param.t);
+      $('#location_val').prop('idx', param.t);
       $('#location-town').addClass('blind');
       $('#custom-location-select').addClass('blind');
     },
     // 검색 로직 실행 전에 필수 값 입력여부확인
     before_search() {
       if ($('#type>span').attr('val') !== undefined) {
-        const type = $('#type>span').attr('val');
-        let location = $('#location_val').text();
+        this.type = $('#type>span').attr('val');
+        this.location = $('#location_val').text();
 
         if ($('#location_val').prop('idx') === undefined) {
-          location = '';
+          this.location = '';
         }
-        /** * 수정 flag ** */
-        // window.location.href = `/common/search_list?type=${type}&location=${location}
-        // &searchWord=${$('#input_searchBar').val().trim()}&condition=date&page=1`;
+
+        window.location.href = `http://localhost:8081/list/search_list?type=${this.type}&location=${this.location}&searchWord=${$('#input_searchBar').val().trim()}&condition=date&page=1`;
       } else {
         $('.popup-background:eq(1)').removeClass('blind');
         $('#common-alert-popup').removeClass('blind');

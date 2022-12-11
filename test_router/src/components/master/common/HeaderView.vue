@@ -20,7 +20,7 @@
 </template>
 
 <style lang="scss" scoped>
-@import '@/assets/CSS/master/master-header.scss';
+ @import '@/assets/CSS/master/master-header.scss';
 </style>
 
 <script>
