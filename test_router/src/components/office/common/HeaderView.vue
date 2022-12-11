@@ -6,98 +6,98 @@
 <!-- eslint-disable -->
 <template>
   <section class ="headerWrap">
-        <div class = "logo-section">
-					<router-link to="/">
-						<img src="../../../assets/IMG/common/RENCE.svg" alt="로고 이미지" class="logo-mku">
-					</router-link>
+    <div class = "logo-section">
+      <router-link to="/">
+        <img src="../../../assets/IMG/common/RENCE.svg" alt="로고 이미지" class="logo-mku">
+      </router-link>
+    </div>
+    <div class = "searchBar-section">
+      <div class="searchBar-wrap">
+            <div id="type" class = "sb_1 type" @click="toggle_type_select">
+                <span>타입</span>
+              </div>
+              <div id="location" class = "sb_1" @click="location_type_select">
+                  <span id="location_val">장소</span>
+              </div>
+              <div class = "sb_2">
+                  <input type="text" placeholder="검색어를 입력하세요."
+                  @:keydown.enter="before_search" @:keyup.enter="before_search" id="input_searchBar"/>
+              </div>
+              <div class = "searchBar-btnWrap">
+                <img src="../../../assets/IMG/header/Search_Button.svg" alt="searchBar-btn"
+                  @click="before_search" class="searchBar-btn"/>
+              </div>
+
+            <!-- CUSTOM SELECT -->
+              <section>
+                <!-- START TYPE SELECT -->
+                <div id = "custom-type-select" class="type-select-wrap blind">
+                    <ul class="type-select">
+                      <li id = "type-list-desk" class="type-select-list" val="desk" @click="type_set($event.target)">데스크</li>
+                      <li id = "type-list-metting-room" class="type-select-list"
+                        val="meeting_room" @click="type_set($event.target)">회의실</li>
+                      <li id = "type-list-office" class="type-select-list" val="office" @click="type_set($event.target)">오피스</li>
+                    </ul>
+                </div>
+                <!-- END TYPE SELECT -->
+
+                <!-- START Location SELECT -->
+                <div id = "custom-location-select" class="location-select-wrap blind">
+                    <ul id = "location-city" class="location-select">
+                        <li class="location-select-list" v-for="c in city" @click="load_town({c})">{{ c }}</li>
+                    </ul>
+                    <ul id = "location-town" class="location-select blind">
+                        <li class="location-select-list" v-for="t in town" @click="set_location({t})">{{ t }}</li>
+                    </ul>
+                </div>
+                <!-- END TYPE SELECT -->
+            </section>
         </div>
-        <div class = "searchBar-section">
-          <div class="searchBar-wrap">
-                <div id="type" class = "sb_1 type" @click="toggle_type_select">
-                    <span>타입</span>
-                 </div>
-                 <div id="location" class = "sb_1" @click="location_type_select">
-                     <span id="location_val">장소</span>
-                 </div>
-                 <div class = "sb_2">
-                     <input type="text" placeholder="검색어를 입력하세요."
-										 	@:keydown.enter="before_search" @:keyup.enter="before_search" id="input_searchBar"/>
-                 </div>
-                 <div class = "searchBar-btnWrap">
-                    <img src="../../../assets/IMG/header/Search_Button.svg" alt="searchBar-btn"
-                     @click="before_search" class="searchBar-btn"/>
-                 </div>
+    </div>
+    <div class="userMenu-section ">
+        <!-- 로그인 전 유저 메뉴 -->
+        <section id="before_login" class="blind">
+            <div id = "before_userMenu" class ="userMenu" @click="user_menu_select('before_login')">
+                <img src="@/assets/IMG/header/user_menu.svg" alt="user_menu_img" class="user_menu_img"/>
+                <img src="@/assets/IMG/header/bx_user-circle.png" alt="user_profile_img" class="user_profile_img"/>
+            </div>
 
-                <!-- CUSTOM SELECT -->
-                 <section>
-	                 <!-- START TYPE SELECT -->
-	                 <div id = "custom-type-select" class="type-select-wrap blind">
-	                     <ul class="type-select">
-	                        <li id = "type-list-desk" class="type-select-list" val="desk" @click="type_set($event.target)">데스크</li>
-	                        <li id = "type-list-metting-room" class="type-select-list"
-														val="meeting_room" @click="type_set($event.target)">회의실</li>
-	                        <li id = "type-list-office" class="type-select-list" val="office" @click="type_set($event.target)">오피스</li>
-	                     </ul>
-	                 </div>
-	                 <!-- END TYPE SELECT -->
+            <!-- CUSTOM SELECT -->
+            <div class = "custom-select-user blind">
+                <ul class="user-select-wrap">
+                    <li class="user-select-list" @click="before_login_menu('go-login')">로그인</li>
+                    <li class="user-select-list" @click="before_login_menu('go-join')">회원가입</li>
+                    <li class="user-select-list" @click="before_login_menu('go-backOffice')">공간등록신청</li>
+                </ul>
+            </div>
+        </section>
 
-	                 <!-- START Location SELECT -->
-	                 <div id = "custom-location-select" class="location-select-wrap blind">
-	                     <ul id = "location-city" class="location-select">
-	                         <li class="location-select-list" v-for="c in city" @click="load_town({c})">{{ c }}</li>
-	                     </ul>
-	                     <ul id = "location-town" class="location-select blind">
-	                         <li class="location-select-list" v-for="t in town" @click="set_location({t})">{{ t }}</li>
-	                     </ul>
-	                 </div>
-	                 <!-- END TYPE SELECT -->
-	             </section>
-	         </div>
-	     </div>
-	     <div class="userMenu-section ">
-	         <!-- 로그인 전 유저 메뉴 -->
-	         <section id="before_login" class="">
-	             <div id = "before_userMenu" class ="userMenu" @click="user_menu_select('before_login')">
-	                 <img src="../../../assets/IMG/header/user_menu.svg" alt="user_menu_img" class="user_menu_img"/>
-	                 <img src="../../../assets/IMG/header/bx_user-circle.png" alt="user_profile_img" class="user_profile_img"/>
-	             </div>
+        <section id="after_login" class="" @click="user_menu_select('after_login')">
+            <div id = "after_userMenu" class ="userMenu">
+              <img src="@/assets/IMG/header/user_menu.svg" alt="user_menu_img" class="user_menu_img"/>
+              <img alt="user_profile_img" class="user_profile_img"/>
+            </div>
 
-	             <!-- CUSTOM SELECT -->
-	             <div class = "custom-select-user blind">
-	                 <ul class="user-select-wrap">
-	                     <li class="user-select-list" @click="before_login_menu('go-login')">로그인</li>
-	                     <li class="user-select-list" @click="before_login_menu('go-join')">회원가입</li>
-	                     <li class="user-select-list" @click="before_login_menu('go-backOffice')">공간등록신청</li>
-	                 </ul>
-	             </div>
-	         </section>
-
-					 <section id="after_login" class="blind" @click="user_menu_select('after_login')">
-	             <div id = "after_userMenu" class ="userMenu">
-	                <img src="../../../assets/IMG/header/user_menu.svg" alt="user_menu_img" class="user_menu_img"/>
-	                <img alt="user_profile_img" class="user_profile_img"/>
-	             </div>
-
-	            <!-- CUSTOM SELECT -->
-	            <div class = "custom-select-user blind">
-	                 <ul class="user-select-wrap">
-	                    <li id = "go-myPage" class="user-select-list" @click="after_login_menu('go-myPage')">마이페이지</li>
-	                    <li id = "go-backOffice" class="user-select-list" @click="after_login_menu('go-backOffice')">공간등록신청</li>
-	                    <li id = "go-logOut" class="user-select-list" @click="after_login_menu('go-logOut')">로그아웃</li>
-	                 </ul>
-	             </div>
-	         </section>
-	     </div>
+          <!-- CUSTOM SELECT -->
+          <div class = "custom-select-user blind">
+                <ul class="user-select-wrap">
+                  <li id = "go-myPage" class="user-select-list" @click="after_login_menu('go-myPage')">마이페이지</li>
+                  <li id = "go-backOffice" class="user-select-list" @click="after_login_menu('go-backOffice')">공간등록신청</li>
+                  <li id = "go-logOut" class="user-select-list" @click="after_login_menu('go-logOut')">로그아웃</li>
+                </ul>
+            </div>
+        </section>
+    </div>
 	</section>
 </template>
 
 <style lang="scss" scoped>
-  @import '../../../assets/CSS/office/header.scss';
+  @import '@/assets/CSS/office/header.scss';
 </style>
 
 <script>
 import $ from 'jquery';
-import cityArr from '../../../assets/json/city.json';
+import cityArr from '@/assets/json/city.json';
 
 export default {
   name: 'HeaderView',
@@ -189,31 +189,29 @@ export default {
     },
     // 로그인 전 유저 메뉴 클릭에 따른 이벤트
     before_login_menu(menu) {
+      $('#before_login>.custom-select-user').addClass('blind');
+      $('.popup-background:eq(0)').removeClass('blind');
+
       if (menu === 'go-login') {
         $('#login-section').removeClass('blind');
       } else if (menu === 'go-join') {
         $('#join-section').removeClass('blind');
       } else if (menu === 'go-backOffice') {
-        /** * 수정 flag ** */
-        window.location.href = 'http://localhost:8081/';
+        window.location.href = 'http://localhost:8081/backoffice/landing';
       }
-
-      $('#before_login>.custom-select-user').addClass('blind');
-      $('.popup-background:eq(0)').removeClass('blind');
     },
     // 로그인 후 유저 메뉴 클릭에 따른 이벤트
     after_login_menu(menu) {
+      console.log(menu);
       if (menu === 'go-myPage') {
-        $('#login-section').removeClass('blind');
+        window.location.href = 'http://localhost:8081/my_page';
       } else if (menu === 'go-logOut') {
+        $('.popup-background:eq(0)').removeClass('blind');
+        $('#after_login>.custom-select-user').addClass('blind');
         $('#logout-popup').removeClass('blind');
       } else if (menu === 'go-backOffice') {
-        /** * 수정 flag ** */
-        window.location.href = 'http://localhost:8081/';
+        window.location.href = 'http://localhost:8081/backoffice/landing';
       }
-
-      $('.popup-background:eq(0)').removeClass('blind');
-      $('#after_login>.custom-select-user').addClass('blind');
     },
   }, // END methods()
 };
