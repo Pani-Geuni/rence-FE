@@ -4,6 +4,7 @@ import HomeView from '../components/office/HomeView.vue';
 import ListView from '../components/office/ListView.vue';
 
 import masterRoutes from './masterRoutes';
+import backofficeRoutes from './backofficeRoutes';
 
 const routes = [
   {
@@ -22,6 +23,7 @@ const routes = [
       },
     ],
   },
+  ...backofficeRoutes,
   ...masterRoutes,
 ];
 
