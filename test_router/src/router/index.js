@@ -1,4 +1,5 @@
 import { createRouter, createWebHistory } from 'vue-router';
+import MyPageView from '@/components/office/my_page/MyPageView.vue';
 import LayoutBase from '../views/LayoutBase.vue';
 import HomeView from '../components/office/HomeView.vue';
 import ListView from '../components/office/ListView.vue';
@@ -20,6 +21,11 @@ const routes = [
         path: 'list/:call', // 전달할 변수명 지정 :/변수명
         name: 'ListView',
         component: ListView,
+      },
+      {
+        path: 'my_page',
+        name: 'MyPageView',
+        component: MyPageView,
       },
     ],
   },

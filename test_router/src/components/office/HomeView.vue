@@ -69,8 +69,8 @@
 </div>
 </template>
 
-<style>
-  @import '../../assets/CSS/office/home.scss';
+<style lang="scss" scoped>
+  @import '@/assets/CSS/office/home.scss';
 </style>
 
 <script>
