@@ -70,7 +70,7 @@
 </template>
 
 <style>
-  @import '../../assets/CSS/office/home.css';
+  @import '../../assets/CSS/office/home.scss';
 </style>
 
 <script>
