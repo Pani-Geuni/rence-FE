@@ -23,7 +23,7 @@
 </style>
 
 <script>
-import '@/assets/JS/backoffice/host_insert';
+// import '@/assets/JS/backoffice/host_insert';
 // import '@/assets/JS/backoffice/custom_timepicker';
 
 export default {

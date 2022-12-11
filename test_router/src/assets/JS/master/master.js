@@ -10,35 +10,6 @@
 import $ from 'jquery';
 
 $(() => {
-	// master header nav 변경
-	switch ($(location).attr('pathname')) {
-		case '/master/main':
-		case '/master/backoffice_apply_detail':
-			$('#nav-item-agree').addClass('active');
-			break;
-
-		case '/master/backoffice_end':
-		case '/master/backoffice_end_detail':
-			$('#nav-item-delete').addClass('active');
-			break;
-
-		default:
-			break;
-	}
-
-	// location.href 작업
-	$('.logo-mku.master').on('click', () => {
-		location.href = '/master/main';
-	});
-
-	$('#nav-item-agree').on('click', () => {
-		location.href = '/master/main';
-	});
-
-	$('#nav-item-delete').on('click', () => {
-		location.href = '/master/backoffice_end';
-	});
-
 	// 로그인 실패 팝업 닫기
 	$('#common-alert-btn').on('click', () => {
 		$('#common-alert-popup').addClass('blind');
@@ -89,11 +60,6 @@ $(() => {
 				$('#master-pw').addClass('null-input-border');
 			}
 		}
-	});
-
-	// Master 로그아웃
-	$('#btn-logout').on('click', () => {
-		location.href = '/master/logoutOK';
 	});
 
 	// 신청 리스트 상세 보기
