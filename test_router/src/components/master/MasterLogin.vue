@@ -33,7 +33,7 @@
   </div>
 </template>
 
-<style>
+<style scoped>
 @import '@/assets/CSS/master/master-login.css';
 </style>
 

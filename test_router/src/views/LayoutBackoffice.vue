@@ -96,9 +96,9 @@
   </div>
 </template>
 
-<style>
+<style scoped>
 @import '@/assets/CSS/common/common.css';
-@import '@/assets/CSS/backoffice/host-header.css';
+@import '@/assets/CSS/backoffice/host-header.scss';
 </style>
 
 <script>

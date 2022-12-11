@@ -1,5 +1,6 @@
 import LayoutBackoffice from '@/views/LayoutBackoffice.vue';
 import LandingView from '@/components/backoffice/landing/LandingView.vue';
+import InsertView from '@/components/backoffice/landing/InsertView.vue';
 
 export default [
   {
@@ -10,6 +11,11 @@ export default [
         path: 'landing',
         name: 'LandingView',
         component: LandingView,
+      },
+      {
+        path: 'insert',
+        name: 'InsertView',
+        component: InsertView,
       },
     ],
   },

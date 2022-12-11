@@ -18,11 +18,13 @@
   </section>
 </template>
 
-<style>
+<style scoped>
 @import '@/assets/CSS/backoffice/host-landing.css';
 </style>
 
 <script>
+import '@/assets/JS/backoffice/host_insert';
+// import '@/assets/JS/backoffice/custom_timepicker';
 
 export default {
   name: 'LandingView',

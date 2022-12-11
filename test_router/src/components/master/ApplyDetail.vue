@@ -1,3 +1,4 @@
+<!-- eslint-disable max-len -->
 <!-- eslint-disable vuejs-accessibility/label-has-for -->
 <template>
   <div>
@@ -10,8 +11,7 @@
           <span class="space-detail-company-name">
             {{ vo.company_name }}
           </span>
-          <span v-for="backoffice_type in backoffice_type"
-            :key="backoffice_type" class="space-detail-type">
+          <span v-for="backoffice_type in backoffice_type" :key="backoffice_type" class="space-detail-type">
             {{ backoffice_type }}
           </span>
         </section>
@@ -20,10 +20,9 @@
 
         <section class="space-detail-info-section">
           <div class="space-tags">
-              <span v-for="tag in backoffice_tag" :key="tag"
-              class="space-info-text tag-txt">
-                {{ tag }}
-                </span>
+            <span v-for="tag in backoffice_tag" :key="tag" class="space-info-text tag-txt">
+              {{ tag }}
+            </span>
           </div>
         </section>
 
@@ -135,7 +134,7 @@
   </div>
 </template>
 
-<style>
+<style scoped>
 @import '@/assets/CSS/master/master-detail.css';
 </style>
 

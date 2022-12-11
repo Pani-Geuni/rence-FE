@@ -43,9 +43,9 @@
 
 </template>
 
-<styles>
-
-</styles>
+<style scoped>
+@import '@/assets/CSS/common/custom-table.css';
+</style>
 
 <script>
 import axios from 'axios';

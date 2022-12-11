@@ -50,9 +50,9 @@
   </section> -->
 </template>
 
-<style>
-@import '@/assets/CSS/backoffice/host-header.css';
-@import '@/assets/CSS/backoffice/host-login.css';
+<style lang="scss" scoped>
+@import '@/assets/CSS/backoffice/host-header.scss';
+@import '@/assets/CSS/backoffice/host-login.scss';
 </style>
 
 <script>
