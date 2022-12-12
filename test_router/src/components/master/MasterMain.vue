@@ -30,7 +30,7 @@
             <div id="backoffice_tel" class="ct-body-cell apply" @click="goDetailInfo">{{ vo.backoffice_tel }}</div>
             <div id="backoffice_email" class="ct-body-cell apply" @click="goDetailInfo">{{ vo.backoffice_email }}</div>
             <div class="ct-body-cell">
-              <div class="btn-group" :idx="vo.backoffice_no">
+              <div class="btn-group" :idx="vo.backoffice_no" :backoffice_email="vo.backoffice_email">
                 <button @click="clickGrantPopup" id="btn-grant-host">수락</button>
                 <button @click="clickRefusePopup" id="btn-refuse-host">거절</button>
               </div>
@@ -61,28 +61,6 @@ export default {
   data() {
     return {
       vos: [],
-      // vos: [
-      //   {
-      //     backoffice_no: 'B1001',
-      //     apply_date: '2022-12-10',
-      //     backoffice_name: '테스트',
-      //     owner_name: '테스터',
-      //     backoffice_id: '1234567890',
-      //     company_name: '테스트 이름',
-      //     backoffice_tel: '010-1234-1234',
-      //     backoffice_email: 'test@test.com',
-      //   },
-      //   {
-      //     backoffice_no: 'B1002',
-      //     apply_date: '2022-12-10',
-      //     backoffice_name: '테스트2',
-      //     owner_name: '테스터2',
-      //     backoffice_id: '123456789022',
-      //     company_name: '테스트 이름2',
-      //     backoffice_tel: '010-1234-5678',
-      //     backoffice_email: 'test@test.com22',
-      //   },
-      // ],
     };
   },
 
@@ -95,23 +73,33 @@ export default {
 
       // eslint-disable-next-line camelcase
       const url = `/master/backoffice_apply_detail?backoffice_no=${backoffice_no}&page=apply`;
-      this.$router.push(url);
+      // this.$router.push(url);
+      window.location.href = url;
     },
 
     clickGrantPopup(e) {
       console.log(e.target.parentElement.getAttribute('idx'));
+      console.log(e.target.parentElement.getAttribute('backoffice_email'));
       // const backoffice_no = e.target.parentElement.getAttribute('idx');
       $('.popup-background:eq(0)').removeClass('blind');
       $('#grant-popup').removeClass('blind');
-      $('#grant-popup').children('.confirm-btn-section').children('#grant-btn').attr('backoffice_no', e.target.parentElement.getAttribute('idx'));
+
+      const grantBtn = $('#grant-popup').children('.confirm-btn-section').children('#grant-btn');
+
+      grantBtn.attr('backoffice_no', e.target.parentElement.getAttribute('idx'));
+      grantBtn.attr('backoffice_email', e.target.parentElement.getAttribute('backoffice_email'));
     },
 
     clickRefusePopup(e) {
       console.log(e.target.parentElement.getAttribute('idx'));
+      console.log(e.target.parentElement.getAttribute('backoffice_email'));
 
       $('.popup-background:eq(0)').removeClass('blind');
       $('#refuse-popup').removeClass('blind');
-      $('#refuse-popup').children('.confirm-btn-section').children('#refuse-btn').attr('backoffice_no', e.target.parentElement.getAttribute('idx'));
+
+      const refuseBtn = $('#refuse-popup').children('.confirm-btn-section').children('#refuse-btn');
+      refuseBtn.attr('backoffice_no', e.target.parentElement.getAttribute('idx'));
+      refuseBtn.attr('backoffice_email', e.target.parentElement.getAttribute('backoffice_email'));
     },
 
     // 신청 목록 가져오기

@@ -118,12 +118,12 @@
         <!-- END host-info-section -->
 
         <section class="button-group-section">
-          <div v-if="page == 'apply'">
-            <input type="button" id="btn-grant-host" class="btn-item accept" value="승인" />
-            <input type="button" id="btn-refuse-host" class="btn-item refuse" value="거절" />
+          <div v-if="page == 'apply'" :idx="vo.backoffice_no" :backoffice_email="vo.backoffice_email">
+            <input @click="clickGrantPopup" type="button" id="btn-grant-host" class="btn-item accept" value="승인" />
+            <input @click="clickRefusePopup" type="button" id="btn-refuse-host" class="btn-item refuse" value="거절" />
           </div>
-          <div v-if="page == 'delete'">
-            <input type="button" id="btn-delete-host" class="btn-item delete" value="삭제" />
+          <div v-if="page == 'delete'" :idx="vo.backoffice_no" :backoffice_email="vo.backoffice_email">
+            <input @click="clickDeletePopup" type="button" id="btn-delete-host" class="btn-item delete" value="삭제" />
           </div>
         </section>
       </div>
@@ -150,7 +150,7 @@ export default {
     return {
       map: null,
       backoffice_no: this.$route.query.backoffice_no,
-      page: 'apply',
+      page: this.$route.query.page,
       backoffice_type: [],
       backoffice_tag: [],
       backoffice_option: [],
@@ -226,6 +226,43 @@ export default {
         this.backoffice_image = res.data.backoffice_image;
         this.vo = res.data.vo;
       });
+    },
+
+    clickGrantPopup(e) {
+      console.log(e.target.parentElement.getAttribute('idx'));
+      console.log(e.target.parentElement.getAttribute('backoffice_email'));
+      // const backoffice_no = e.target.parentElement.getAttribute('idx');
+      $('.popup-background:eq(0)').removeClass('blind');
+      $('#grant-popup').removeClass('blind');
+
+      const grantBtn = $('#grant-popup').children('.confirm-btn-section').children('#grant-btn');
+
+      grantBtn.attr('backoffice_no', e.target.parentElement.getAttribute('idx'));
+      grantBtn.attr('backoffice_email', e.target.parentElement.getAttribute('backoffice_email'));
+    },
+
+    clickRefusePopup(e) {
+      console.log(e.target.parentElement.getAttribute('idx'));
+      console.log(e.target.parentElement.getAttribute('backoffice_email'));
+
+      $('.popup-background:eq(0)').removeClass('blind');
+      $('#refuse-popup').removeClass('blind');
+
+      const refuseBtn = $('#refuse-popup').children('.confirm-btn-section').children('#refuse-btn');
+      refuseBtn.attr('backoffice_no', e.target.parentElement.getAttribute('idx'));
+      refuseBtn.attr('backoffice_email', e.target.parentElement.getAttribute('backoffice_email'));
+    },
+
+    clickDeletePopup(e) {
+      console.log(e.target.parentElement.getAttribute('idx'));
+      console.log(e.target.parentElement.getAttribute('backoffice_email'));
+
+      $('.popup-background:eq(0)').removeClass('blind');
+      $('#delete-popup').removeClass('blind');
+
+      const deleteBtn = $('#delete-popup').children('.confirm-btn-section').children('#delete-btn');
+      deleteBtn.attr('backoffice_no', e.target.parentElement.getAttribute('idx'));
+      deleteBtn.attr('backoffice_email', e.target.parentElement.getAttribute('backoffice_email'));
     },
   },
 

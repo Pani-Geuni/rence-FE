@@ -28,7 +28,7 @@
             <div id="backoffice_tel" class="ct-body-cell delete" @click="goDetailInfo">{{ vo.backoffice_tel }}</div>
             <div id="backoffice_email" class="ct-body-cell delete" @click="goDetailInfo">{{ vo.backoffice_email }}</div>
             <div class="ct-body-cell">
-              <div class="btn-group" :idx="vo.backoffice_no">
+              <div class="btn-group" :idx="vo.backoffice_no" :backoffice_email="vo.backoffice_email">
                 <button @click="clickDeletePopup" id="btn-delete-host">삭제</button>
               </div>
               <!-- END btn-group -->
@@ -53,22 +53,10 @@ import $ from 'jquery';
 import axios from 'axios';
 
 export default {
-  name: 'MainView',
+  name: 'BackofficeEndView',
   data() {
     return {
       vos: [],
-      // vos: [
-      //   {
-      //     backoffice_no: 'B1001',
-      //     apply_date: '2022-12-10',
-      //     backoffice_name: '테스트',
-      //     owner_name: '테스터',
-      //     backoffice_id: '1234567890',
-      //     company_name: '테스트 이름',
-      //     backoffice_tel: '010-1234-1234',
-      //     backoffice_email: 'test@test.com',
-      //   },
-      // ],
     };
   },
 
@@ -79,27 +67,35 @@ export default {
 
       console.log(backoffice_no);
       // eslint-disable-next-line camelcase
-      window.location.href = `/master/backoffice_apply_detail?backoffice_no=${backoffice_no}&page=apply`;
+      window.location.href = `/master/backoffice_apply_detail?backoffice_no=${backoffice_no}&page=delete`;
     },
 
     clickDeletePopup(e) {
       console.log(e.target.parentElement.getAttribute('idx'));
-      // const backoffice_no = e.target.parentElement.getAttribute('idx');
+      console.log(e.target.parentElement.getAttribute('backoffice_email'));
+
       $('.popup-background:eq(0)').removeClass('blind');
       $('#delete-popup').removeClass('blind');
-      $('#delete-popup').children('.confirm-btn-section').children('#delete-btn').attr('backoffice_no', e.target.parentElement.getAttribute('idx'));
-    },
 
+      const deleteBtn = $('#delete-popup').children('.confirm-btn-section').children('#delete-btn');
+      deleteBtn.attr('backoffice_no', e.target.parentElement.getAttribute('idx'));
+      deleteBtn.attr('backoffice_email', e.target.parentElement.getAttribute('backoffice_email'));
+    },
     getSelectAllApplyList() {
       const url = 'http://localhost:8800/master/backoffice_end';
 
       axios.get(url).then((res) => {
-        console.log(res.data.vos);
-        this.vos = res.data.vos;
+        console.log(res.data.bvos);
+        this.vos = res.data.bvos;
       });
     },
   },
 
+  mounted() {
+    this.$nextTick(() => {
+      this.getSelectAllApplyList();
+    });
+  },
 };
 
 </script>

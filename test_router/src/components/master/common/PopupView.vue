@@ -73,7 +73,14 @@
         <span>확인</span>
       </section>
     </div>
+
+    <!-- START SPINNER SECTION -->
+    <div id="spinner-section" class="blind">
+      <img src="@/assets/IMG/common/spinner.gif" alt="spinner" class="spinner-img">
+    </div>
+    <!-- END SPINNER SECTION -->
   </div>
+
 </template>
 
 <style scoped>
@@ -90,13 +97,23 @@ export default {
   methods: {
     // 신청 수락
     grantOK(e) {
-      console.log('grantOK :', e.target.getAttribute('backoffice_no'));
+      $('.popup-background:eq(1)').removeClass('blind');
+      $('#spinner-section').removeClass('blind');
 
-      axios.post('/master/grant', {
-        backoffice_no: e.target.getAttribute('backoffice_no'),
-      }).then((res) => {
+      const params = new URLSearchParams();
+      params.append('backoffice_no', e.target.getAttribute('backoffice_no'));
+      params.append('backoffice_email', e.target.getAttribute('backoffice_email'));
+
+      axios.post('http://localhost:8800/master/grant', params).then((res) => {
+        $('.popup-background:eq(1)').addClass('blind');
+        $('#spinner-section').addClass('blind');
+
         if (res.data.result === '1') {
+          $('#grant-popup').addClass('blind');
+          $('.popup-background:eq(0)').addClass('blind');
           this.$router.replace('/master/main');
+        } else {
+          console.log('수락 에러');
         }
       });
     },
@@ -107,16 +124,25 @@ export default {
 
     // 신청 요청 거절
     refuseOK(e) {
-      console.log('refuseOK :', e.target.getAttribute('backoffice_no'));
+      $('.popup-background:eq(1)').removeClass('blind');
+      $('#spinner-section').removeClass('blind');
 
-      axios.post('/master/refuse', {
-        backoffice_no: e.target.getAttribute('backoffice_no'),
-      }).then((res) => {
+      const params = new URLSearchParams();
+      params.append('backoffice_no', e.target.getAttribute('backoffice_no'));
+      params.append('backoffice_email', e.target.getAttribute('backoffice_email'));
+
+      axios.post('http://localhost:8800/master/refuse', params).then((res) => {
+        $('.popup-background:eq(1)').addClass('blind');
+        $('#spinner-section').addClass('blind');
+
         if (res.data.result === '1') {
+          $('#refuse-popup').addClass('blind');
+          $('.popup-background:eq(0)').addClass('blind');
           this.$router.replace('/master/main');
         }
       });
     },
+
     closeRefuseBtn() {
       $('#refuse-popup').addClass('blind');
       $('.popup-background:eq(0)').addClass('blind');
@@ -124,12 +150,23 @@ export default {
 
     // 탈퇴 요청 수락
     revokeOK(e) {
-      console.log('deleteOK :', e.target.getAttribute('backoffice_no'));
+      $('.popup-background:eq(1)').removeClass('blind');
+      $('#spinner-section').removeClass('blind');
 
-      axios.post('/master/revoke', {
-        backoffice_no: e.target.getAttribute('backoffice_no'),
-      }).then((res) => {
+      const params = new URLSearchParams();
+      params.append('backoffice_no', e.target.getAttribute('backoffice_no'));
+      params.append('backoffice_email', e.target.getAttribute('backoffice_email'));
+
+      console.log('deleteOK no :', e.target.getAttribute('backoffice_no'));
+      console.log('deleteOK email :', e.target.getAttribute('backoffice_email'));
+
+      axios.post('http://localhost:8800/master/revoke', params).then((res) => {
+        $('.popup-background:eq(1)').addClass('blind');
+        $('#spinner-section').addClass('blind');
+
         if (res.data.result === '1') {
+          $('#delete-popup').addClass('blind');
+          $('.popup-background:eq(0)').addClass('blind');
           this.$router.replace('/master/backoffice_end');
         }
       });
