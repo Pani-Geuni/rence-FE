@@ -56,11 +56,16 @@ export default {
       /** 로그인 시도 * */
       // 로그인 성공
       if ($('#master-id').val().trim().length > 0 && $('#master-pw').val().trim().length > 0) {
-        axios.post('/master/loginOK', {
-          username: $('#master-id').val().trim(),
-          password: $('#master-pw').val().trim(),
-        }).then((res) => {
-          if (res.data.result === 1) {
+        const params = new URLSearchParams();
+        console.log('username :', $('#master-id').val().trim());
+        console.log('password :', $('#master-pw').val().trim());
+
+        params.append('username', $('#master-id').val().trim());
+        params.append('password', $('#master-pw').val().trim());
+        axios.post('http://localhost:8800/master/loginOK', params).then((res) => {
+          console.log('res.data :', res.data);
+
+          if (res.data.result === '1') {
             // INPUT 초기화
             $('#master-id').val('');
             $('#master-pw').val('');
