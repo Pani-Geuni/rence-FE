@@ -46,14 +46,22 @@
   justify-content: center;
   align-items: center;
   width: 100%;
+}
 
-  input {
-    box-sizing: border-box;
-    width: 400px;
-    height: 40px;
-    padding: 8px;
-    margin-bottom: 20px;
-  }
+#master-id {
+  box-sizing: border-box;
+  width: 400px;
+  height: 40px;
+  padding: 8px;
+  margin-bottom: 20px;
+}
+
+#master-pw {
+  box-sizing: border-box;
+  width: 400px;
+  height: 40px;
+  padding: 8px;
+  margin-bottom: 20px;
 }
 
 #btn-master-login {
