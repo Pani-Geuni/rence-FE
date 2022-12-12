@@ -24,6 +24,7 @@
 </style>
 
 <script>
+import axios from 'axios';
 
 console.log('http://localhost:8081/master/login');
 
@@ -74,7 +75,15 @@ export default {
     },
 
     goLogout() {
-      this.$router.replace('/master/logoutOK');
+      axios.post('http://localhost:8800/master/logoutOK')
+        .then((res) => {
+          console.log(res.data);
+          if (res.data.result === '1') {
+            window.location.href = '/master/login';
+          }
+        }).catch((e) => {
+          console.log(e);
+        });
     },
   },
 };
