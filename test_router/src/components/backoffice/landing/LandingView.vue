@@ -11,7 +11,7 @@
       <h1 id="title-apply-hosting" class="title-apply-hosting">
         공간 공유 플랫폼, <br />Rence에서 시작하세요
       </h1>
-      <button id="btn-apply-hosting" class="btn-apply-hosting">
+      <button @click="goApplyHosting" id="btn-apply-hosting" class="btn-apply-hosting">
         <p>호스트 신청하기</p>
       </button>
     </div>
@@ -28,5 +28,13 @@
 
 export default {
   name: 'LandingView',
+
+  methods: {
+    /** 호스트 신청 페이지 */
+    goApplyHosting() {
+      this.$router.push('/backoffice/insert');
+    },
+  },
 };
+
 </script>

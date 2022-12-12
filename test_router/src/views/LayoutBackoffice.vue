@@ -99,6 +99,7 @@
 <style scoped>
 @import '@/assets/CSS/common/common.scss';
 @import '@/assets/CSS/backoffice/host-header.scss';
+@import '@/assets/CSS/backoffice/host-login.scss';
 </style>
 
 <script>
