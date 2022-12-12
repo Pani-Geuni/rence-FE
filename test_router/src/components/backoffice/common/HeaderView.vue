@@ -25,7 +25,7 @@
       </section>
 
       <!-- 로그인 후 유저 메뉴 -->
-      <section id="after_login" class="" @click="user_menu_select('after_login')">
+      <section id="after_login" class="blind" @click="user_menu_select('after_login')">
         <div id="after_hostMenu" class="hostMenu">
           <img src="@/assets/IMG/header/user_menu.svg" alt="host_menu_img" class="host_menu_img" />
           <img src="https://rence.s3.ap-northeast-2.amazonaws.com/user/img_host_001.jpg" alt="host_profile_img"
