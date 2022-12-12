@@ -56,18 +56,19 @@ export default {
   name: 'MainView',
   data() {
     return {
-      vos: [
-        {
-          backoffice_no: 'B1001',
-          apply_date: '2022-12-10',
-          backoffice_name: '테스트',
-          owner_name: '테스터',
-          backoffice_id: '1234567890',
-          company_name: '테스트 이름',
-          backoffice_tel: '010-1234-1234',
-          backoffice_email: 'test@test.com',
-        },
-      ],
+      vos: [],
+      // vos: [
+      //   {
+      //     backoffice_no: 'B1001',
+      //     apply_date: '2022-12-10',
+      //     backoffice_name: '테스트',
+      //     owner_name: '테스터',
+      //     backoffice_id: '1234567890',
+      //     company_name: '테스트 이름',
+      //     backoffice_tel: '010-1234-1234',
+      //     backoffice_email: 'test@test.com',
+      //   },
+      // ],
     };
   },
 
@@ -90,7 +91,7 @@ export default {
     },
 
     getSelectAllApplyList() {
-      const url = 'localhost:8800/master/backoffice_end';
+      const url = 'http://localhost:8800/master/backoffice_end';
 
       axios.get(url).then((res) => {
         console.log(res.data.vos);

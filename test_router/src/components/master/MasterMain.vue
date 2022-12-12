@@ -1,3 +1,4 @@
+<!-- eslint-disable quotes -->
 <!-- eslint-disable vuejs-accessibility/click-events-have-key-events -->
 <!-- eslint-disable camelcase -->
 <!-- eslint-disable max-len -->
@@ -59,29 +60,29 @@ export default {
   name: 'MainView',
   data() {
     return {
-      // vos: []
-      vos: [
-        {
-          backoffice_no: 'B1001',
-          apply_date: '2022-12-10',
-          backoffice_name: '테스트',
-          owner_name: '테스터',
-          backoffice_id: '1234567890',
-          company_name: '테스트 이름',
-          backoffice_tel: '010-1234-1234',
-          backoffice_email: 'test@test.com',
-        },
-        {
-          backoffice_no: 'B1002',
-          apply_date: '2022-12-10',
-          backoffice_name: '테스트2',
-          owner_name: '테스터2',
-          backoffice_id: '123456789022',
-          company_name: '테스트 이름2',
-          backoffice_tel: '010-1234-5678',
-          backoffice_email: 'test@test.com22',
-        },
-      ],
+      vos: [],
+      // vos: [
+      //   {
+      //     backoffice_no: 'B1001',
+      //     apply_date: '2022-12-10',
+      //     backoffice_name: '테스트',
+      //     owner_name: '테스터',
+      //     backoffice_id: '1234567890',
+      //     company_name: '테스트 이름',
+      //     backoffice_tel: '010-1234-1234',
+      //     backoffice_email: 'test@test.com',
+      //   },
+      //   {
+      //     backoffice_no: 'B1002',
+      //     apply_date: '2022-12-10',
+      //     backoffice_name: '테스트2',
+      //     owner_name: '테스터2',
+      //     backoffice_id: '123456789022',
+      //     company_name: '테스트 이름2',
+      //     backoffice_tel: '010-1234-5678',
+      //     backoffice_email: 'test@test.com22',
+      //   },
+      // ],
     };
   },
 
@@ -115,13 +116,25 @@ export default {
 
     // 신청 목록 가져오기
     getSelectAllApplyList() {
-      const url = 'localhost:8800/master/main';
+      // eslint-disable-next-line quotes
+      const url = 'http://localhost:8800/master/main';
+      console.log('getSelectAllApplyList');
+      console.log(url);
 
       axios.get(url).then((res) => {
-        console.log(res.data.vos);
-        this.vos = res.data.vos;
-      });
+        console.log(res.data.bvos);
+        this.vos = res.data.bvos;
+      })
+        .catch((e) => {
+          console.log(e);
+        });
     },
+  },
+
+  mounted() {
+    this.$nextTick(() => {
+      this.getSelectAllApplyList();
+    });
   },
 };
 

@@ -1,3 +1,4 @@
+<!-- eslint-disable brace-style -->
 <!-- eslint-disable no-plusplus -->
 <!-- eslint-disable no-mixed-spaces-and-tabs -->
 <!-- eslint-disable linebreak-style -->
@@ -8,160 +9,174 @@
 <!-- eslint-disable -->
 <template>
   <div class="popup-background blind">
-		<!-- START LOGIN SECTION -->
-		<div id="login-section" class="blind">
-			<section class="login-popup-logo-section">
-				<img src="@/assets/IMG/common/RENCE.svg" alt ="로고이미지" class="popup-logo">
-			</section>
-			<section class="login-popup-input-section">
-				<input type="text" id="login-id" @click="remove_null_input_border($event.target)" class="login-popup-input" placeholder="아이디를 입력하세요." autocomplete="off" />
-				<input type="password" id="login-pw" @click="remove_null_input_border($event.target)" class="login-popup-input" placeholder="비밀번호를 입력하세요." />
-			</section>
-			<section class="login-popup-btn-section">
-				<input type="button" id="login-btn" value="로그인">
-				<div class="txt-btn-wrap">
-					<span @click="go_find_id" class="txt-btn">아이디 찾기</span>
-					<span @click="go_find_pw" class="txt-btn">비밀번호 찾기</span>
-					<span @click="close_login_popup" class="txt-btn login-close">창닫기</span>
-				</div>
-			</section>
-		</div>
-		<!-- END LOGIN SECTION -->
+    <!-- START LOGIN SECTION -->
+    <div id="login-section" class="blind">
+      <section class="login-popup-logo-section">
+        <img src="@/assets/IMG/common/RENCE.svg" alt="로고이미지" class="popup-logo">
+      </section>
+      <section class="login-popup-input-section">
+        <input type="text" id="login-id" @click="remove_null_input_border($event.target)" class="login-popup-input"
+          placeholder="아이디를 입력하세요." autocomplete="off" />
+        <input type="password" id="login-pw" @click="remove_null_input_border($event.target)" class="login-popup-input"
+          placeholder="비밀번호를 입력하세요." />
+      </section>
+      <section class="login-popup-btn-section">
+        <input type="button" id="login-btn" value="로그인">
+        <div class="txt-btn-wrap">
+          <span @click="go_find_id" class="txt-btn">아이디 찾기</span>
+          <span @click="go_find_pw" class="txt-btn">비밀번호 찾기</span>
+          <span @click="close_login_popup" class="txt-btn login-close">창닫기</span>
+        </div>
+      </section>
+    </div>
+    <!-- END LOGIN SECTION -->
 
-		<!-- START JOIN SECTION -->
-		<div id="join-section" class="blind">
-			<section class="join-popup-title-section">
-				<span>회원가입</span>
-				<span class="join-closer">
-					<img src="@/assets/IMG/common/closer.svg" @click="close_join_popup" alt="closer-img" class="closer-img" />
-				</span>
-			</section>
-			<section class="join-popup-input-section">
-				<div class="input-wrap">
-					<div class="input-check">
-						<input type="email" @keyup="test_regx($event.target)" @keydown="test_regx($event.target)" @click="remove_null_input_border($event.target)" id="join-email" class="join-popup-input-short" placeholder="이메일"
-							autocomplete="off" />
-						<input type="button" @click="do_check_email" id="check_email" class="join-popup-check-btn" value="인증하기" />
-					</div>
-					<span class="warning-text blind">다시 시도해주세요.</span>
-				</div>
-				<div class="input-wrap">
-					<div class="input-check">
-						<input type="text" id="join-email-code" @click="remove_null_input_border($event.target)" class="join-popup-input-short" placeholder="인증번호" autocomplete="off" />
-						<input type="button" id="check_email-code" @click="do_check_email_code" class="join-popup-check-btn" value="확인" />
-					</div>
-					<span class="warning-text blind">다시 시도해주세요.</span>
-				</div>
-				<div class="input-wrap">
-					<div class="input-check">
-						<input type="text" @keyup="test_regx($event.target)" @keydown="test_regx($event.target)" id="join-id" @click="remove_null_input_border($event.target)" class="join-popup-input-short" placeholder="아이디(소문자, 숫자만 입력 = 5~10자))" autocomplete="off" />
-						<input type="button" @click="do_check_id" id="check_id" class="join-popup-check-btn" value="중복확인" />
-					</div>
-					<span class="warning-text blind">이미 아이디가 존재합니다.</span>
-				</div>
-				<div class="input-wrap">
-					<input type="password" @keyup="test_regx($event.target)" @keydown="test_regx($event.target)" id="join-pw" @click="remove_null_input_border($event.target)" class="join-popup-input"
-						placeholder="비밀번호(영문+숫자+특수문자 = 8~10글자)" />
-					<span class="warning-text blind">다시 시도해주세요.</span>
-				</div>
-				<div class="input-wrap">
-					<input type="password" @keyup="test_regx($event.target)" @keydown="test_regx($event.target)" id="join-re-pw" @click="remove_null_input_border($event.target)" class="join-popup-input" placeholder="비밀번호 재입력" />
-					<span class="warning-text blind">다시 시도해주세요.</span>
-				</div>
-				<div class="input-wrap">
-					<input type="text" id="join-name" @click="remove_null_input_border($event.target)" class="join-popup-input"
-           placeholder="이름" autocomplete="off" />
-				</div>
-				<div class="input-wrap">
-					<input type="number" @keyup="test_regx($event.target)" @keydown="test_regx($event.target)" id="join-tel" @click="remove_null_input_border($event.target)" class="join-popup-input" 
-					placeholder="전화번호(-없이 입력)" autocomplete="off" />
-					<span class="warning-text blind">-없이 입력하세요.</span>
-				</div>
-				<div class="input-wrap">
-					<input type="number" @keyup="test_regx($event.target)" @keydown="test_regx($event.target)" id="join-birth" @click="remove_null_input_border($event.target)" class="join-popup-input" placeholder="생년월일(숫자로만 입력)" autocomplete="off" />
-					<span class="warning-text blind">숫자로만 입력가능합니다.</span>
-				</div>
-			</section>
-			<section class="join-popup-btn-section">
-				<input type="button" @click="do_join" id="join-btn" value="회원가입">
-			</section>
-		</div>
-		<!-- END JOIN SECTION -->
+    <!-- START JOIN SECTION -->
+    <div id="join-section" class="blind">
+      <section class="join-popup-title-section">
+        <span>회원가입</span>
+        <span class="join-closer">
+          <img src="@/assets/IMG/common/closer.svg" @click="close_join_popup" alt="closer-img" class="closer-img" />
+        </span>
+      </section>
+      <section class="join-popup-input-section">
+        <div class="input-wrap">
+          <div class="input-check">
+            <input type="email" @keyup="test_regx($event.target)" @keydown="test_regx($event.target)"
+              @click="remove_null_input_border($event.target)" id="join-email" class="join-popup-input-short"
+              placeholder="이메일" autocomplete="off" />
+            <input type="button" @click="do_check_email" id="check_email" class="join-popup-check-btn" value="인증하기" />
+          </div>
+          <span class="warning-text blind">다시 시도해주세요.</span>
+        </div>
+        <div class="input-wrap">
+          <div class="input-check">
+            <input type="text" id="join-email-code" @click="remove_null_input_border($event.target)"
+              class="join-popup-input-short" placeholder="인증번호" autocomplete="off" />
+            <input type="button" id="check_email-code" @click="do_check_email_code" class="join-popup-check-btn"
+              value="확인" />
+          </div>
+          <span class="warning-text blind">다시 시도해주세요.</span>
+        </div>
+        <div class="input-wrap">
+          <div class="input-check">
+            <input type="text" @keyup="test_regx($event.target)" @keydown="test_regx($event.target)" id="join-id"
+              @click="remove_null_input_border($event.target)" class="join-popup-input-short"
+              placeholder="아이디(소문자, 숫자만 입력 = 5~10자))" autocomplete="off" />
+            <input type="button" @click="do_check_id" id="check_id" class="join-popup-check-btn" value="중복확인" />
+          </div>
+          <span class="warning-text blind">이미 아이디가 존재합니다.</span>
+        </div>
+        <div class="input-wrap">
+          <input type="password" @keyup="test_regx($event.target)" @keydown="test_regx($event.target)" id="join-pw"
+            @click="remove_null_input_border($event.target)" class="join-popup-input"
+            placeholder="비밀번호(영문+숫자+특수문자 = 8~10글자)" />
+          <span class="warning-text blind">다시 시도해주세요.</span>
+        </div>
+        <div class="input-wrap">
+          <input type="password" @keyup="test_regx($event.target)" @keydown="test_regx($event.target)" id="join-re-pw"
+            @click="remove_null_input_border($event.target)" class="join-popup-input" placeholder="비밀번호 재입력" />
+          <span class="warning-text blind">다시 시도해주세요.</span>
+        </div>
+        <div class="input-wrap">
+          <input type="text" id="join-name" @click="remove_null_input_border($event.target)" class="join-popup-input"
+            placeholder="이름" autocomplete="off" />
+        </div>
+        <div class="input-wrap">
+          <input type="number" @keyup="test_regx($event.target)" @keydown="test_regx($event.target)" id="join-tel"
+            @click="remove_null_input_border($event.target)" class="join-popup-input" placeholder="전화번호(-없이 입력)"
+            autocomplete="off" />
+          <span class="warning-text blind">-없이 입력하세요.</span>
+        </div>
+        <div class="input-wrap">
+          <input type="number" @keyup="test_regx($event.target)" @keydown="test_regx($event.target)" id="join-birth"
+            @click="remove_null_input_border($event.target)" class="join-popup-input" placeholder="생년월일(숫자로만 입력)"
+            autocomplete="off" />
+          <span class="warning-text blind">숫자로만 입력가능합니다.</span>
+        </div>
+      </section>
+      <section class="join-popup-btn-section">
+        <input type="button" @click="do_join" id="join-btn" value="회원가입">
+      </section>
+    </div>
+    <!-- END JOIN SECTION -->
 
-		<!-- START FIND-ID SECTION -->
-		<div id="find-id-section" class="find-section blind">
-			<section class="find-popup-logo-section">
-				<span>아이디 찾기</span>
-			</section>
-			<section class="find-popup-input-section">
-				<span class="find-guide-txt">회원가입 시 입력한 이메일을 입력해주세요.</span>
-				<input type="email" id="find-id-email" class="find-popup-input" placeholder="이메일을 입력하세요." autocomplete="off" />
-			</section>
-			<section class="find-popup-btn-section">
-				<input type="button" @click="do_find_id" id="find-id-btn" class="find-btn" value="메일 보내기">
-				<input type="button" @click="close_find_id_popup" id="find-id-close" class="p-close" value="창닫기">
-			</section>
-		</div>
-		<!-- END FIND-ID SECTION -->
+    <!-- START FIND-ID SECTION -->
+    <div id="find-id-section" class="find-section blind">
+      <section class="find-popup-logo-section">
+        <span>아이디 찾기</span>
+      </section>
+      <section class="find-popup-input-section">
+        <span class="find-guide-txt">회원가입 시 입력한 이메일을 입력해주세요.</span>
+        <input type="email" id="find-id-email" class="find-popup-input" placeholder="이메일을 입력하세요." autocomplete="off" />
+      </section>
+      <section class="find-popup-btn-section">
+        <input type="button" @click="do_find_id" id="find-id-btn" class="find-btn" value="메일 보내기">
+        <input type="button" @click="close_find_id_popup" id="find-id-close" class="p-close" value="창닫기">
+      </section>
+    </div>
+    <!-- END FIND-ID SECTION -->
 
-		<!-- START FIND-PW SECTION -->
-		<div id="find-pw-section" class="find-section blind">
-			<section class="find-popup-logo-section">
-				<span>비밀번호 찾기</span>
-			</section>
-			<section class="find-popup-input-section">
-				<div class="email-wrap">
-					<span class="find-guide-txt">회원가입 시 입력한 이메일을 입력해주세요.</span>
-					<input type="email" @click="remove_null_input_border($event.target)" id="find-pw-email" class="find-popup-input" placeholder="이메일을 입력하세요." autocomplete="off" />
-				</div>
-				<div>
-					<span class="find-guide-txt">회원가입 시 입력한 아이디를 입력해 주세요.</span>
-					<input type="text" @click="remove_null_input_border($event.target)" id="find-pw-id" class="find-popup-input" placeholder="아이디를 입력하세요." autocomplete="off" />
-				</div>
-			</section>
-			<section class="find-popup-btn-section">
-				<input type="button" @click="do_find_pw" id="find-pw-btn" class="find-btn" value="비밀번호 찾기">
-				<input type="button" @click="close_find_pw_popup" id="find-pw-close" class="p-close" value="창닫기">
-			</section>
-		</div>
-		<!-- END FIND-PW SECTION -->
+    <!-- START FIND-PW SECTION -->
+    <div id="find-pw-section" class="find-section blind">
+      <section class="find-popup-logo-section">
+        <span>비밀번호 찾기</span>
+      </section>
+      <section class="find-popup-input-section">
+        <div class="email-wrap">
+          <span class="find-guide-txt">회원가입 시 입력한 이메일을 입력해주세요.</span>
+          <input type="email" @click="remove_null_input_border($event.target)" id="find-pw-email"
+            class="find-popup-input" placeholder="이메일을 입력하세요." autocomplete="off" />
+        </div>
+        <div>
+          <span class="find-guide-txt">회원가입 시 입력한 아이디를 입력해 주세요.</span>
+          <input type="text" @click="remove_null_input_border($event.target)" id="find-pw-id" class="find-popup-input"
+            placeholder="아이디를 입력하세요." autocomplete="off" />
+        </div>
+      </section>
+      <section class="find-popup-btn-section">
+        <input type="button" @click="do_find_pw" id="find-pw-btn" class="find-btn" value="비밀번호 찾기">
+        <input type="button" @click="close_find_pw_popup" id="find-pw-close" class="p-close" value="창닫기">
+      </section>
+    </div>
+    <!-- END FIND-PW SECTION -->
 
-		<!-- START LOGOUT CONFIRM POPUP -->
-		<div id="logout-popup" class="confirm-popup blind">
-			<section class="confirm-txt-section">
-				<span class="logout-txt">
-					로그아웃 하시겠습니까?<br><br>
-					로그아웃 시 메인페이지로 이동됩니다.
-				</span>
-			</section>
-			<section class="confirm-btn-section">
-				<div id="logout-btn" @click="do_logout" class="confirm-yesBtn">로그아웃</div>
-				<div id="logout-closeBtn" @click="close_logout_popup" class="confirm-noBtn">닫기</div>
-			</section>
-		</div>
-	</div>
+    <!-- START LOGOUT CONFIRM POPUP -->
+    <div id="logout-popup" class="confirm-popup blind">
+      <section class="confirm-txt-section">
+        <span class="logout-txt">
+          로그아웃 하시겠습니까?<br><br>
+          로그아웃 시 메인페이지로 이동됩니다.
+        </span>
+      </section>
+      <section class="confirm-btn-section">
+        <div id="logout-btn" @click="do_logout" class="confirm-yesBtn">로그아웃</div>
+        <div id="logout-closeBtn" @click="close_logout_popup" class="confirm-noBtn">닫기</div>
+      </section>
+    </div>
+  </div>
 
-	<div class="popup-background blind">
-		<!-- START SPINNER SECTION -->
-		<div id="spinner-section" class="blind">
-			<img src="@/assets/IMG/common/spinner.gif" alt="로딩이미지" class="spinner-img">
-		</div>
-		<!-- END SPINNER SECTION -->
+  <div class="popup-background blind">
+    <!-- START SPINNER SECTION -->
+    <div id="spinner-section" class="blind">
+      <img src="@/assets/IMG/common/spinner.gif" alt="로딩이미지" class="spinner-img">
+    </div>
+    <!-- END SPINNER SECTION -->
 
-		<!-- START COMMON CUSTOM ALERT POPUP -->
-		<div id="common-alert-popup" class="alert-popup blind">
-			<section class="alert-txt-section">
-				<span class="common-alert-txt"></span>
-			</section>
-			<section id="common-alert-btn" class="alert-btn-section">
-				<span @click="common_alert($event.target)">확인</span>
-			</section>
-		</div>
+    <!-- START COMMON CUSTOM ALERT POPUP -->
+    <div id="common-alert-popup" class="alert-popup blind">
+      <section class="alert-txt-section">
+        <span class="common-alert-txt"></span>
+      </section>
+      <section id="common-alert-btn" class="alert-btn-section">
+        <span @click="common_alert($event.target)">확인</span>
+      </section>
+    </div>
   </div>
 </template>
 
 <style lang="scss" scoped>
-  @import '@/assets/CSS/office/login.scss';
+@import '@/assets/CSS/office/login.scss';
 </style>
 
 <script>
@@ -281,7 +296,7 @@ export default {
       $('.popup-background:eq(1)').removeClass('blind');
       $('#spinner-section').removeClass('blind');
 
-      axios.get('http://localhost:8800/rence/user_logoutOK')
+      axios.get('/rence/user_logoutOK')
         .then((res) => {
           this.find_id_flag = true;
 
@@ -290,11 +305,10 @@ export default {
           $('#spinner-section').addClass('blind');
 
           // 로그아웃 성공
-          if (res.result === 1) {
+          if (res.data.result === 1) {
             window.location.href = 'http://localhost:8081/';
-          }
-          // 로그아웃 실패
-          else {
+          } else {
+            // 로그아웃 실패
             // 로딩 화면 닫기
             $('.popup-background:eq(1)').addClass('blind');
             $('#spinner-section').addClass('blind');
@@ -325,7 +339,7 @@ export default {
 
           this.find_id_flag = false;
 
-          axios.post('http://localhost:8800/rence/find_id', {
+          this.$axios.post('/rence/find_id', {
             user_email: $('#find-id-email').val().trim(),
           })
             .then((res) => {
@@ -336,7 +350,7 @@ export default {
               $('#spinner-section').addClass('blind');
 
               // 아이디 찾기 성공
-              if (res.result == 1) {
+              if (res.result === 1) {
                 // INPUT 초기화
                 $('#find-id-email').val('');
 
@@ -351,9 +365,8 @@ export default {
                 $('.popup-background:eq(1)').removeClass('blind');
                 $('#common-alert-popup').removeClass('blind');
                 $('.common-alert-txt').text('이메일로 아이디를 발송해드렸어요!');
-              }
-              // 아이디 찾기 실패
-              else {
+              } else {
+                // 아이디 찾기 실패
                 $('.popup-background:eq(1)').removeClass('blind');
                 $('#common-alert-popup').removeClass('blind');
                 $('.common-alert-txt').text('해당 아이디로 가입된 회원이 없습니다.');
@@ -396,7 +409,7 @@ export default {
               $('#spinner-section').addClass('blind');
 
               // 비밀번호 찾기 성공
-              if (res.result == 1) {
+              if (res.data.result === 1) {
                 // INPUT 초기화
                 $('.find-popup-input').val('');
 
@@ -411,9 +424,8 @@ export default {
                 $('.popup-background:eq(1)').removeClass('blind');
                 $('#common-alert-popup').removeClass('blind');
                 $('.common-alert-txt').text('이메일로 비밀번호를 발송해드렸어요!');
-              }
-              // 아이디 찾기 실패
-              else {
+              } else {
+                // 아이디 찾기 실패
                 $('.popup-background:eq(1)').removeClass('blind');
                 $('#common-alert-popup').removeClass('blind');
                 $('.common-alert-txt').text('이메일 발송에 실패하였습니다.');
@@ -459,18 +471,16 @@ export default {
             }
           }
         }
-      }
-      // 비밀번호 조건 확인
-      else if ($(param).attr('id') === 'join-re-pw') {
+      } else if ($(param).attr('id') === 'join-re-pw') {
+        // 비밀번호 조건 확인
         if ($(param).val().trim() !== $('#join-pw').val().trim()) {
           $('.warning-text:eq(4)').removeClass('blind');
           $('.warning-text:eq(4)').text('위 비밀번호와 일치하지않습니다.');
         } else {
           $('.warning-text:eq(4)').addClass('blind');
         }
-      }
-      // 전화번호 형식인지 확인
-      else if ($(param).attr('id') === 'join-tel') {
+      } else if ($(param).attr('id') === 'join-tel') {
+        // 전화번호 형식인지 확인
         const phoneReg = /^01(0|1[6-9])(\d{3,4})(\d{4})$/;
 
         if (!phoneReg.test($(param).val().trim())) {
@@ -479,9 +489,8 @@ export default {
         } else {
           $('.warning-text:eq(5)').addClass('blind');
         }
-      }
-      // 생년월일 형식인지 확인
-      else if ($(param).attr('id') === 'join-birth') {
+      } else if ($(param).attr('id') === 'join-birth') {
+        // 생년월일 형식인지 확인
         const birthReg = /^[0-9]{8}$/;
         if (!birthReg.test($(param).val().trim())) {
           $('.warning-text:eq(6)').removeClass('blind');
@@ -489,9 +498,8 @@ export default {
         } else {
           $('.warning-text:eq(6)').addClass('blind');
         }
-      }
-      // 이메일 형식인지 확인
-      else if ($(param).attr('id') === 'join-email') {
+      } else if ($(param).attr('id') === 'join-email') {
+        // 이메일 형식인지 확인
         const email = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
         if (!email.test($(param).val().trim())) {
           $('.warning-text:eq(0)').removeClass('blind');
@@ -499,9 +507,8 @@ export default {
         } else {
           $('.warning-text:eq(0)').addClass('blind');
         }
-      }
-      // 아이디 형식에 맞는지 확인
-      else if ($(param).attr('id') === 'join-id') {
+      } else if ($(param).attr('id') === 'join-id') {
+        // 아이디 형식에 맞는지 확인
         const regExp = /^[a-z]+[a-z0-9]{4,5}$/g;
         if (!regExp.test($(param).val().trim())) {
           $('.warning-text:eq(2)').removeClass('blind');
@@ -573,7 +580,7 @@ export default {
     do_check_email() {
       if ($('#check_email').prop('check') !== true) {
         if ($('#join-email').val().trim().length > 0) {
-          if ($('.warning-text:eq(0)').hasClass('blind') || $('.warning-text:eq(0)').text() == '이미 존재하는 이메일입니다.') {
+          if ($('.warning-text:eq(0)').hasClass('blind') || $('.warning-text:eq(0)').text() === '이미 존재하는 이메일입니다.') {
             if (this.check_email_flag) {
               this.check_email_flag = false;
 
@@ -581,7 +588,7 @@ export default {
               $('.popup-background:eq(1)').removeClass('blind');
               $('#spinner-section').removeClass('blind');
 
-	            axios.post('http://localhost:8800/rence/user_auth', {
+              axios.post('http://localhost:8800/rence/user_auth', {
                 user_email: $('#join-email').val().trim(),
               })
                 .then((res) => {
@@ -698,15 +705,16 @@ export default {
     do_join() {
       if (
         $('#join-email').val().trim().length > 0
-            && $('#join-email-code').val().trim().length > 0
-            && $('#join-id').val().trim().length > 0
-            && $('#join-pw').val().trim().length > 0
-            && $('#join-re-pw').val().trim().length > 0
-            && $('#join-name').val().trim().length > 0
-            && $('#join-tel').val().trim().length > 0
-            && $('#join-birth').val().trim().length > 0) {
+        && $('#join-email-code').val().trim().length > 0
+        && $('#join-id').val().trim().length > 0
+        && $('#join-pw').val().trim().length > 0
+        && $('#join-re-pw').val().trim().length > 0
+        && $('#join-name').val().trim().length > 0
+        && $('#join-tel').val().trim().length > 0
+        && $('#join-birth').val().trim().length > 0) {
         const arr = $('.warning-text');
         let tmp = true;
+        // eslint-disable-next-line no-plusplus
         for (let i = 0; i < arr.length; i++) {
           if (!$(arr[i]).hasClass('blind')) {
             tmp = false;
@@ -736,7 +744,7 @@ export default {
                     this.find_pw_flag = true;
 
                     // 비밀번호 찾기 성공
-                    if (res.result == 1) {
+                    if (res.data.result === 1) {
                       // INPUT 초기화
                       $('.find-popup-input').val('');
 
@@ -751,9 +759,8 @@ export default {
                       $('.popup-background:eq(1)').removeClass('blind');
                       $('#common-alert-popup').removeClass('blind');
                       $('.common-alert-txt').text('이메일로 비밀번호를 발송해드렸어요!');
-                    }
-                    // 아이디 찾기 실패
-                    else {
+                    } else {
+                      // 아이디 찾기 실패
                       $('.popup-background:eq(1)').removeClass('blind');
                       $('#common-alert-popup').removeClass('blind');
                       $('.common-alert-txt').text('이메일 발송에 실패하였습니다.');
@@ -820,16 +827,19 @@ export default {
       }
 
       this.time = setInterval(() => {
+        // eslint-disable-next-line no-plusplus
         seconds--;
 
+        // eslint-disable-next-line no-useless-concat
         if (seconds <= 9) $('#check_email').val(`0${minute} : ` + `0${seconds}`);
         else $('#check_email').val(`0${minute} : ${seconds}`);
 
         if (seconds === 0) {
           if (minute !== 0) {
-		            --minute;
-		            seconds = 60;
-		        } else {
+            // eslint-disable-next-line no-plusplus
+            --minute;
+            seconds = 60;
+          } else {
             $('.popup-background:eq(1)').removeClass('blind');
             $('#common-alert-popup').removeClass('blind');
             $('.common-alert-txt').html('이메일 인증 시간을 초과했습니다.<br>다시 시도해주세요.');
@@ -847,8 +857,8 @@ export default {
             $('#join-email-code').removeClass('readOnly');
 
             clearInterval(this.time);
-		        }
-		    }
+          }
+        }
       }, 1000);
     },
   }, // END methods()

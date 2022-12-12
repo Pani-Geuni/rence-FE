@@ -45,8 +45,8 @@
 
         <section class="map-wrap ">
           <label class="map-title"> 상세 위치 지도 </label>
-          <input type="hidden" id="location_addr" th:value="${vo.roadname_address}" />
-          <input type="hidden" id="location_name" th:value="${vo.company_name}" />
+          <input type="hidden" id="location_addr" :value="vo.roadname_address" />
+          <input type="hidden" id="location_name" :value="vo.company_name" />
           <div id="map"></div>
         </section>
 
@@ -139,32 +139,117 @@
 </style>
 
 <script>
+import $ from 'jquery';
 // import axios from 'axios';
 import '@/assets/JS/master/master';
+import axios from 'axios';
 
 export default {
   name: 'ApplyDetail',
   data() {
     return {
-      backoffice_type: ['desk', 'meeting'],
-      backoffice_tag: ['tag1', 'tag2'],
-      backoffice_option: ['option1', 'option2'],
-      backoffice_around: ['around1', 'around2'],
-      backoffice_image: ['space1.jpeg', 'space2.jpeg'],
+      map: null,
+      backoffice_no: this.$route.query.backoffice_no,
       page: 'apply',
-      vo: {
-        backoffice_no: 'B1001',
-        owner_name: 'tester',
-        backoffice_id: '1234567890',
-        backoffice_name: 'test!!',
-        company_name: 'test11',
-        backoffice_tel: '010-1234-1234',
-        backoffice_email: 'test@test.com',
-        roadname_address: 'road road',
-        detail_address: 'detail road',
-        backoffice_info: 'asdfasdfalskdjf;alksdj;fak',
-      },
+      backoffice_type: [],
+      backoffice_tag: [],
+      backoffice_option: [],
+      backoffice_around: [],
+      backoffice_image: [],
+      vo: {},
     };
+  },
+
+  methods: {
+    initMap() {
+      const mapContainer = document.getElementById('map');
+      const mapOption = {
+        center: new kakao.maps.LatLng(33.450701, 126.570667),
+        // 지도의 중심좌표
+        level: 3, // 지도의 확대 레벨
+      };
+      this.map = new kakao.maps.Map(mapContainer, mapOption);
+
+      const geocoder = new kakao.maps.services.Geocoder();
+      const location = $('#location_addr').val();
+      console.log('location :', location);
+      // eslint-disable-next-line camelcase
+      const location_name = $('#location_name').val();
+      console.log('location_name :', location_name);
+
+      // 주소로 좌표를 검색합니다
+      geocoder.addressSearch(location, (result, status) => {
+        // 정상적으로 검색이 완료됐으면
+        if (status === kakao.maps.services.Status.OK) {
+          const coords = new kakao.maps.LatLng(result[0].y, result[0].x);
+
+          // 결과값으로 받은 위치를 마커로 표시합니다
+          const marker = new kakao.maps.Marker({
+            // eslint-disable-next-line no-undef
+            map: this.map,
+            position: coords,
+          });
+
+          // eslint-disable-next-line no-shadow
+          const mapContainer = document.getElementById('map'); // 지도를 표시할 div
+          // eslint-disable-next-line no-shadow
+          const mapOption = {
+            center: new kakao.maps.LatLng(result[0].y, result[0].x), // 지도의 중심좌표
+            level: 3, // 지도의 확대 레벨
+          };
+          this.map = new kakao.maps.Map(mapContainer, mapOption);
+
+          // 인포윈도우로 장소에 대한 설명을 표시합니다
+          const infowindow = new kakao.maps.InfoWindow({
+            // eslint-disable-next-line camelcase
+            content: `<div style="width:150px;text-align:center;padding:6px 0;">${location_name}</div>`,
+          });
+          infowindow.open(this.map, marker);
+
+          // 지도의 중심을 결과값으로 받은 위치로 이동시킵니다
+          this.map.setCenter(coords);
+        }
+      });
+    },
+
+    getApplyDetailInfo() {
+      console.log(this.backoffice_no);
+      const url = `http://localhost:8800/master/backoffice_apply_detail?backoffice_no=${this.backoffice_no}&page=apply`;
+      console.log(url);
+
+      axios.get(url).then((res) => {
+        console.log(res.data);
+        this.backoffice_type = res.data.backoffice_type;
+        this.backoffice_tag = res.data.backoffice_type;
+        this.backoffice_option = res.data.backoffice_option;
+        this.backoffice_around = res.data.backoffice_around;
+        this.backoffice_image = res.data.backoffice_image;
+        this.vo = res.data.vo;
+      });
+    },
+  },
+
+  mounted() {
+    if (!window.kakao || !window.kakap.map) {
+      // Kakao Map
+      const script = document.createElement('script');
+      script.src = '//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=3b12e82dc4c8922a38cfd990bfa0afbd&libraries=services';
+
+      /* global kakao */
+      script.addEventListener('load', () => {
+        console.log('loaded', kakao);
+        kakao.maps.load(this.initMap);
+      });
+
+      document.head.appendChild(script);
+    } else {
+      console.log('already loading kakao map :', window.kakao);
+      this.initMap();
+    }
+
+    this.$nextTick(() => {
+      this.getApplyDetailInfo();
+    });
   },
 };
 
