@@ -47,7 +47,7 @@
       <input type="hidden" v-bind:maxCnt="maxCnt" v-bind:nowCnt="nowCnt" id="maxCnt" />
       <div class="list-box-wrap">
           <!-- START LIST BOX -->
-          <div class="list-box" @click="go_space_detail_page($event.target)" v-for="obj in list" idx={{obj.backoffice_no}} >
+          <div class="list-box" @click="go_space_detail_page($event.target)" v-for="obj in list" v-bind:key="obj" v-bind:idx="obj.backoffice_no" >
             <section>
               <img v-bind:src="obj.backoffice_image" alt="default-space-img" class="list-thumbnail" />
             </section>

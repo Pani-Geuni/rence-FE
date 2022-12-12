@@ -1,0 +1,29 @@
+<!-- eslint-disable vuejs-accessibility/form-control-has-label -->
+<!-- eslint-disable no-tabs -->
+<template>
+  <div class="pageWrap">
+    <HeaderView />
+    <router-view></router-view>
+    <FooterView />
+  </div>
+  <PopupView />
+</template>
+
+<style lang="scss" scoped>
+  @import '@/assets/CSS/common/common.scss';
+</style>
+
+<script>
+import HeaderView from '@/components/office/common/HeaderView.vue';
+import FooterView from '@/components/office/common/FooterView.vue';
+import PopupView from '@/components/office/common/PopupView.vue';
+
+export default {
+  name: 'LayoutOffice',
+  components: {
+    HeaderView,
+    FooterView,
+    PopupView,
+  },
+};
+</script>
