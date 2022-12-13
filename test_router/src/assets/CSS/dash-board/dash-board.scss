@@ -3,6 +3,7 @@
 }
 
 .bodyWrap {
+  display: flex;
   width: 100%;
   height: auto;
   background-color: #f6f4ff;
@@ -14,12 +15,13 @@
   height: auto;
   padding: 60px;
 
-  &.host-update {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-bottom: 50px;
-  }
+}
+
+.board-contentWrap.host-update {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-bottom: 50px;
 }
 
 .titleSection {

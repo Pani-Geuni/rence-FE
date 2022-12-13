@@ -3,7 +3,7 @@
   <aside class="asideWrap">
     <div>
       <div class="logo-section">
-        <img src="@/assets/IMG/common/RENCE-Host.svg" class="logo-mku">
+        <img src="@/assets/IMG/common/RENCE-Host.svg" alt="Host logo" class="logo-mku">
       </div>
 
       <!-- START menuWrap -->
@@ -45,8 +45,11 @@
 </template>
 
 <style lang="scss" scoped>
-
+@import '@/assets/CSS/dash-board/left-side-menu.scss';
 </style>
 
 <script>
+export default {
+  name: 'SidebarView',
+};
 </script>
