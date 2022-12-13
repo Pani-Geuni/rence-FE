@@ -5,8 +5,12 @@ import MileageView from '../components/office/my_page/MileageView.vue';
 import ReviewView from '../components/office/my_page/ReviewView.vue';
 import QuestionView from '../components/office/my_page/QuestionView.vue';
 import ReserveListView from '../components/office/my_page/ReserveListView.vue';
+
 import BeforeReserveInfoView from '../components/office/reserve/BeforeReserveInfoView.vue';
 import NowReserveInfoView from '../components/office/reserve/NowReserveInfoView.vue';
+
+import SpaceDetailView from '../components/office/space_detail/SpaceDetailView.vue';
+
 import HomeView from '../components/office/HomeView.vue';
 import ListView from '../components/office/ListView.vue';
 
@@ -65,6 +69,11 @@ const routes = [
         path: 'question',
         name: 'QuestionView',
         component: QuestionView,
+      },
+      {
+        path: 'space',
+        name: 'SpaceDetailView',
+        component: SpaceDetailView,
       },
     ],
   },
