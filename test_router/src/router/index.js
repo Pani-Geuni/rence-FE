@@ -14,6 +14,7 @@ import LayoutOffice from '../views/LayoutOffice.vue';
 
 import masterRoutes from './masterRoutes';
 import backofficeRoutes from './backofficeRoutes';
+import dashboardRoutes from './dashboardRoutes';
 
 const routes = [
   {
@@ -68,6 +69,7 @@ const routes = [
     ],
   },
   ...backofficeRoutes,
+  ...dashboardRoutes,
   ...masterRoutes,
 ];
 

@@ -1,3 +1,4 @@
+/* eslint-disable linebreak-style */
 /**
 * @author : 전판근, 김예은
 */
@@ -5,54 +6,11 @@
 import $ from 'jquery';
 
 $(() => {
-  /** 로고 버튼 클릭 시 메인 페이지 이동 * */
-  $('.logo-mku.host').click(() => {
-    location.href = '/backoffice/landing';
-  });
-
-  /** 로그인 전 헤더 메뉴 */
-  $('#before_hostMenu').click(() => {
-    $('#before_login>.custom-select-host').toggleClass('blind');
-  });
-  /** 로그인 후 헤더 메뉴 */
-  $('#after_hostMenu').click(() => {
-    $('#after_login>.custom-select-host').toggleClass('blind');
-  });
-
-  /** 로그인 메뉴 - 로그인 팝업 띄움 */
-  $('#go-login').click(() => {
-    $('#before_login>.custom-select-host').addClass('blind');
-    $('.popup-background:eq(0)').removeClass('blind');
-    $('#login-section').removeClass('blind');
-  });
-
-  /** RENCE 페이지 이동 메뉴 */
-  $('#go-user-home').click(() => {
-    location.href = '/';
-  });
-
-  /** 공간등록신청 메뉴 */
-  $('#go-backOffice').click(() => {
-    location.href = '/backoffice/insert';
-  });
-
-  /** 호스트 신청 페이지 */
-  $('.btn-apply-hosting').click(() => {
-    location.href = '/backoffice/insert';
-  });
-
   /** 호스트 마이페이지 */
-  // $('#go-myPage').click(() => {
+  // $('#go-myPage').on('click', () => {
   // 	$('#after_login>.custom-select-host').addClass('blind');
-  // 	location.href = '/backoffice/go_my_page';
+  // 	window.location.href = '/backoffice/go_my_page';
   // });
-
-  /** 호스트 로그아웃 */
-  $('#go-logOut').click(() => {
-    $('#after_login>.custom-select-host').addClass('blind');
-    $('#logout-popup').removeClass('blind');
-    $('.popup-background:eq(0)').removeClass('blind');
-  });
 
   // ==================
   // 비밀번호 재설정 input 체크
@@ -92,9 +50,9 @@ $(() => {
   });
 
   // 비밀번호 재설정 ajax
-  $('#btn-pw-update').click(() => {
+  $('#btn-pw-update').on('click', () => {
     const password = /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,10}$/;
-    const backoffice_no = $(location).attr('search').split('?backoffice_no=')[1];
+    const backoffice_no = $(window.location).attr('search').split('?backoffice_no=')[1];
 
     if ($('#input-update-pw').val().trim().length > 0 && $('#input-update-pw-re').val().trim().length > 0) {
       if ($('#input-update-pw').val().trim() == $('#input-update-pw-re').val().trim() && password.test($('#input-update-pw').val().trim())) {
@@ -116,9 +74,9 @@ $(() => {
             $('#spinner-section').addClass('blind');
 
             if (res.result == 1) {
-              location.href = `/backoffice/settings?backoffice_no=${$.cookie('backoffice_no')}`;
+              window.location.href = `/backoffice/settings?backoffice_no=${$.cookie('backoffice_no')}`;
             } else if (res.result == 2) {
-              location.href = '/backoffice/landing';
+              window.location.href = '/backoffice/landing';
             } else {
               $('.popup-background:eq(1)').removeClass('blind');
               $('#common-alert-popup').removeClass('blind');
