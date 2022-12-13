@@ -1,0 +1,52 @@
+<template>
+  <!-- START aside-menu -->
+  <aside class="asideWrap">
+    <div>
+      <div class="logo-section">
+        <img src="@/assets/IMG/common/RENCE-Host.svg" class="logo-mku">
+      </div>
+
+      <!-- START menuWrap -->
+      <div class="menuWrap">
+        <div id="menu-home" class="menu-item">
+          <img src="@/assets/IMG/dash-board/ico-host-board.svg" alt="Dash Board" />
+          <p>대시보드</p>
+        </div>
+        <div id="menu-space" class="menu-item">
+          <img src="@/assets/IMG/dash-board/ico-host-room.svg" alt="room" />
+          <p>공간 관리</p>
+        </div>
+        <div id="menu-schedule" class="menu-item">
+          <img src="@/assets/IMG/dash-board/ico-host-calendar.svg" alt="room" />
+          <p>일정 관리</p>
+        </div>
+        <div id="menu-reserve" class="menu-item">
+          <img src="@/assets/IMG/dash-board/ico-host-time.svg" alt="time" />
+          <p>예약 관리</p>
+        </div>
+        <div id="menu-sales" class="menu-item">
+          <img src="@/assets/IMG/dash-board/ico-host-reciept.svg" alt="Reciept" />
+          <p>정산</p>
+        </div>
+        <div id="menu-settings" class="menu-item">
+          <img src="@/assets/IMG/dash-board/ico-host-settings.svg" alt="Settings" />
+          <p>환경설정</p>
+        </div>
+      </div>
+      <!-- END menuWrap -->
+    </div>
+
+    <div class="etcWrap">
+      <p id="go-rence-home">RENCE 이동</p>
+    </div>
+  </aside>
+  <!-- END aside-menu -->
+
+</template>
+
+<style lang="scss" scoped>
+
+</style>
+
+<script>
+</script>
