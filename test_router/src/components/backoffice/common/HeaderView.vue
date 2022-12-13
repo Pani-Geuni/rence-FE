@@ -7,8 +7,10 @@
     </div>
 
     <div class="hostMenu-section ">
+
       <!-- 로그인 전 유저 메뉴 -->
-      <section id="before_login" class="" @click="user_menu_select('before_login')">
+      <section id="before_login" class="" @click="user_menu_select('before_login')"
+        v-if="backoffice_no === null || backoffice_no === '' || backoffice_no === undefined">
         <div id="before_hostMenu" class="hostMenu">
           <img src="@/assets/IMG/header/user_menu.svg" alt="host_menu_img" class="host_menu_img" />
           <img src="@/assets/IMG/header/bx_user-circle.png" alt="host_profile_img" class="host_profile_img" />
@@ -25,7 +27,7 @@
       </section>
 
       <!-- 로그인 후 유저 메뉴 -->
-      <section id="after_login" class="blind" @click="user_menu_select('after_login')">
+      <section id="after_login" class="" @click="user_menu_select('after_login')" v-else>
         <div id="after_hostMenu" class="hostMenu">
           <img src="@/assets/IMG/header/user_menu.svg" alt="host_menu_img" class="host_menu_img" />
           <img src="https://rence.s3.ap-northeast-2.amazonaws.com/user/img_host_001.jpg" alt="host_profile_img"
@@ -58,6 +60,12 @@ console.log('backoffice header');
 
 export default {
   name: 'HostHeaderView',
+
+  data() {
+    return {
+      backoffice_no: this.$cookies.get('backoffice_no'),
+    };
+  },
 
   methods: {
 
@@ -94,7 +102,7 @@ export default {
 
     /** 호스트 로그아웃 */
     logout() {
-      $('#after_login>.custom-select-host').addClass('blind');
+      $('#after_hostMenu>.custom-select-host').addClass('blind');
       $('#logout-popup').removeClass('blind');
       $('.popup-background:eq(0)').removeClass('blind');
     },

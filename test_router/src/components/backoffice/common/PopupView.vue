@@ -58,8 +58,8 @@
         </span>
       </section>
       <section class="confirm-btn-section">
-        <div id="logout-btn" class="confirm-yesBtn">로그아웃</div>
-        <div id="logout-closeBtn" class="confirm-noBtn">닫기</div>
+        <div @click="logout" id="logout-btn" class="confirm-yesBtn">로그아웃</div>
+        <div @click="closeLogoutPopup" id="logout-closeBtn" class="confirm-noBtn">닫기</div>
       </section>
     </div>
     <!-- END logout popup -->
@@ -225,6 +225,25 @@ export default {
       $('#find-pw-section').addClass('blind');
     },
 
+    // 로그아웃
+    logout() {
+      axios.get('http://localhost:8800/backoffice/logoutOK').then((res) => {
+        console.log(res.data);
+        if (res.data.result === '1') {
+          console.log(this.$cookies.remove('backoffice_no'));
+          this.$cookies.remove('backoffice_no');
+          $('#logout-popup').addClass('blind');
+          $('.popup-background:eq(0)').addClass('blind');
+          // this.$router.go(0);
+        }
+      });
+    },
+
+    // 로그아웃 창 닫기
+    closeLogoutPopup() {
+      $('#logout-popup').addClass('blind');
+      $('.popup-background:eq(0)').addClass('blind');
+    },
   },
 };
 </script>
