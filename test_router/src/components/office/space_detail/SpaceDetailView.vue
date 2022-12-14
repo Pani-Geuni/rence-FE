@@ -422,7 +422,7 @@
 								예약 날짜
 							</label>
 							<div class="time-select-wrap">
-								<input type="text" class="type-border-txt time-input" placeholder="날짜 추가" readonly />
+								<input @pick="reserve_timePicker" type="text" class="type-border-txt time-input" placeholder="날짜 추가" readonly />
 								<img src="@/assets/IMG/office/full-dropdown.svg" alt="full-dropdown" class="full-dropdown" />
 							</div>
 						</section>
@@ -720,7 +720,7 @@ export default {
       }
 
       // 예약 불가 처리
-      if (this.pick_time_list.length == 2) {
+      if (this.pick_time_list.length === 2) {
         let reserveFlag = 0;
         for (let t = this.pick_time_list[0]; t <= this.pick_time_list[1]; t++) {
           // attr display가 있을 때만 추가
@@ -764,6 +764,10 @@ export default {
           }
         }
       }
+    },
+    /** DATEPICKER부분 */
+    reserve_timePicker() {
+
     },
     /** 예약 시간 실패 팝업창 닫기 버튼 클릭 */
     close_time_fail_popup() {

@@ -7,11 +7,18 @@
 <!-- eslint-disable array-callback-return -->
 <!-- eslint-disable space-before-blocks -->
 <!-- eslint-disable -->
+
+<!--
+ - @author 김예은
+ - @refactoring 김예은
+-->
+
 <template>
   <div class="homeWrap">
     <div class="homeTitle-wrap">
         <span class="homeTitle">어떤 공간을 찾으시나요?</span>
     </div>
+    <date-picker v-model="time1" valueType="format"></date-picker>
     <div class="type-list-wrap">
         <div class="type-list type-desk">
             <router-link :to="{ name: 'ListView', params: { call: 'list_page?type=desk&condition=date&page=1' }}">
@@ -74,7 +81,16 @@
 </style>
 
 <script>
+import DatePicker from 'vue2-datepicker';
+import 'vue2-datepicker/index.css';
+
 export default {
   name: 'HomeView',
+  components: { DatePicker },
+  data() {
+    return {
+      time1: null,
+    };
+  },
 };
 </script>
