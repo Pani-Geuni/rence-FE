@@ -498,8 +498,8 @@
           <div class="filebox">
             <input class="upload-name" value="" placeholder="첨부파일(.jpg/.jpeg/.png/.jfif)" />
             <label for="multipartFile_room">파일찾기</label>
-            <input type="file" id="multipartFile_room" name="multipartFile_room" accept=".jpg, .jpeg, .png, .jfif"
-              multiple="multiple" />
+            <input type="file" id="multipartFile_room" @change="uploadImage" name="multipartFile_room"
+              accept=".jpg, .jpeg, .png, .jfif" multiple="multiple" />
           </div>
           <input type="file" id="multipartFile_host" name="multipartFile_host" style="display: none;" />
         </div>
@@ -600,6 +600,8 @@ export default {
       thu_dayoff: 'F',
       fri_dayoff: 'F',
       sat_dayoff: 'F',
+
+      img_name: '',
     };
   },
 
@@ -756,7 +758,7 @@ export default {
 
     disableTimepicker(event) {
       console.log(event.target.checked);
-      let checked = event.target.checked;
+      const { checked } = event.target;
 
       if (checked === true) {
         $('#sat_stime').attr('disabled', true);
@@ -770,8 +772,8 @@ export default {
     execDaumPostcode() {
       new window.daum.Postcode({
         oncomplete: (data) => {
-          let roadAddr = data.roadAddress; // 도로명 주소 변수
-          let auto_roadAddr = data.autoRoadAddress; // 도로명 주소 변수
+          const roadAddr = data.roadAddress; // 도로명 주소 변수
+          const auto_roadAddr = data.autoRoadAddress; // 도로명 주소 변수
           let extraRoadAddr = ''; // 참고 항목 변수
 
           // 법정동명이 있을 경우 추가한다. (법정리는 제외)
@@ -781,7 +783,7 @@ export default {
           }
           // 건물명이 있고, 공동주택일 경우 추가한다.
           if (data.buildingName !== '' && data.apartment === 'Y') {
-            extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+            extraRoadAddr += (extraRoadAddr !== '' ? `, ${data.buildingName}` : data.buildingName);
           }
 
           console.log(roadAddr);
@@ -789,10 +791,7 @@ export default {
           // 우편번호와 주소 정보를 해당 필드에 넣는다.
           $('#zipcode').val(data.zonecode);
 
-          if (roadAddr.length > 0)
-            $('#roadname_address').val(roadAddr);
-          else
-            $('#roadname_address').val(auto_roadAddr);
+          if (roadAddr.length > 0) { $('#roadname_address').val(roadAddr); } else { $('#roadname_address').val(auto_roadAddr); }
 
           $('#number_address').val(data.jibunAddress);
         },
@@ -822,6 +821,45 @@ export default {
       return t;
     },
 
+    // 사진 업로드
+    uploadImage() {
+      this.img_name = '';
+      const { length } = $('#multipartFile_room').get(0).files;
+
+      if (length < 11) {
+        for (let i = 0; i < length; i++) {
+          const { type } = $('#multipartFile_room').get(0).files[i];
+          if (type === 'image/jpeg' || type === 'image/jpg' || type === 'image/png') {
+            this.img_name += $('#multipartFile_room').get(0).files[i].name;
+            if (i !== length - 1) {
+              this.img_name += ' / ';
+            }
+          } else {
+            // file 선택 값 초기화를 위한 코드 (타입을 바꿨다 돌아옴)
+            $('#multipartFile_room').attr('type', 'radio');
+            $('#multipartFile_room').attr('type', 'file');
+
+            $('.popup-background:eq(1)').removeClass('blind');
+            $('#common-alert-popup').removeClass('blind');
+            $('.common-alert-txt').text('jpg, jpeg, png 확장자만 선택가능합니다.');
+          }
+        }
+
+        $('.upload-name').val(this.img_name);
+      } else {
+        // file 선택 값 초기화를 위한 코드 (타입을 바꿨다 돌아옴)
+        $('#multipartFile_room').attr('type', 'radio');
+        $('#multipartFile_room').attr('type', 'file');
+
+        $('.popup-background:eq(1)').removeClass('blind');
+        $('#common-alert-popup').removeClass('blind');
+        $('.common-alert-txt').text('최대 10개의 이미지 선택이 가능합니다.');
+      }
+    },
+
+    // ******************
+    // 신청
+    // ******************
     submit() {
       const sun_stime = this.timeFormatter(this.sunStime);
       const sun_etime = this.timeFormatter(this.sunEtime);
@@ -849,6 +887,8 @@ export default {
       console.log(this.backoffice_type);
       console.log(this.backoffice_option);
       console.log(this.backoffice_around);
+
+      console.log(this.img_name);
     },
   },
 };
