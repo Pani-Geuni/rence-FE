@@ -12,38 +12,40 @@
       <div id="insertForm">
         <div class="inputWrap">
           <p>사업자 이름</p>
-          <input type="text" id="owner_name" name="owner_name" placeholder="사업자 이름을 입력하세요" v-on:keydown.enter.prevent />
+          <input type="text" v-model="owner_name" id="owner_name" name="owner_name" placeholder="사업자 이름을 입력하세요"
+            v-on:keydown.enter.prevent />
         </div>
         <div class="inputWrap">
           <p>사업자 등록 번호</p>
           <div class="check_wrap">
-            <input type="text" id="backoffice_id" name="backoffice_id" placeholder="사업자 등록 번호를 입력하세요 (- 포함)"
-              @keyup="keypressBackofficeId" @keydown="keypressBackofficeId" />
+            <input type="text" v-model="backoffice_id" id="backoffice_id" name="backoffice_id"
+              placeholder="사업자 등록 번호를 입력하세요 (- 포함)" @keyup="keypressBackofficeId" @keydown="keypressBackofficeId" />
             <span class="warning-text blind">형식에 맞지 않습니다.</span>
           </div>
         </div>
         <div class="inputWrap">
           <p>상호명</p>
-          <input type="text" id="backoffice_name" name="backoffice_name" placeholder="상호명을 입력해 주세요" />
+          <input type="text" v-model="backoffice_name" id="backoffice_name" name="backoffice_name"
+            placeholder="상호명을 입력해 주세요" />
         </div>
         <div class="inputWrap">
           <p>사업체 명</p>
-          <input type="text" id="company_name" name="company_name" placeholder="사업체 명을 입력해 주세요"
+          <input type="text" v-model="company_name" id="company_name" name="company_name" placeholder="사업체 명을 입력해 주세요"
             v-on:keydown.enter.prevent />
         </div>
         <div class="inputWrap">
           <p>사업자 전화번호</p>
           <div class="check_wrap">
-            <input type="tel" id="backoffice_tel" name="backoffice_tel" placeholder="사업자 전화번호를 입력해 주세요. (- 포함)"
-              @keyup="keypressBackofficeTel" @keydown="keypressBackofficeTel" />
+            <input type="tel" v-model="backoffice_tel" id="backoffice_tel" name="backoffice_tel"
+              placeholder="사업자 전화번호를 입력해 주세요. (- 포함)" @keyup="keypressBackofficeTel" @keydown="keypressBackofficeTel" />
             <span class="warning-text blind">형식에 맞지 않습니다.</span>
           </div>
         </div>
         <div class="inputWrap email">
           <p>사업자 이메일</p>
           <div>
-            <input type="email" id="backoffice_email" name="backoffice_email" placeholder="사업자 이메일을 입력해 주세요"
-              v-on:keydown.enter.prevent />
+            <input type="email" v-model="backoffice_email" id="backoffice_email" name="backoffice_email"
+              placeholder="사업자 이메일을 입력해 주세요" v-on:keydown.enter.prevent />
             <input @click="sendMail" type="button" id="btn-certification" value="인증번호 발송">
           </div>
         </div>
@@ -89,7 +91,8 @@
         <div class="inputWrap info">
           <p>사업체 소개</p>
           <div class="check_wrap">
-            <textarea id="backoffice_info" name="backoffice_info" placeholder="공간 소개를 입력해 주세요"></textarea>
+            <textarea v-model="backoffice_info" id="backoffice_info" name="backoffice_info"
+              placeholder="공간 소개를 입력해 주세요"></textarea>
             <div class="b_info_txt_length_wrap">
               <span class="b_info_txt_length">0</span>
               <span>&nbsp;/ 500</span>
@@ -580,18 +583,24 @@ export default {
 
   data() {
     return {
+      owner_name: '',
       backoffice_id: '',
+      backoffice_name: '',
+      company_name: '',
+      backoffice_tel: '',
       backoffice_email: $('#backoffice_email').val(),
       mail_flag: true,
-      backoffice_type: [],
-      backoffice_option: [],
-      backoffice_around: [],
 
       zipcode: '',
       roadname: '',
       roadname_address: '',
       number_address: '',
       detail_address: '',
+
+      backoffice_type: [],
+      backoffice_info: '',
+      backoffice_option: [],
+      backoffice_around: [],
 
       sun_dayoff: 'F',
       mon_dayoff: 'F',
@@ -876,6 +885,23 @@ export default {
       const sat_stime = this.timeFormatter(this.satStime);
       const sat_etime = this.timeFormatter(this.satEtime);
 
+
+      console.log(this.owner_name);
+      console.log(this.backoffice_id);
+      console.log(this.backoffice_name);
+      console.log(this.company_name);
+      console.log(this.backoffice_tel);
+      console.log(this.backoffice_email);
+      console.log(this.zipcode);
+      console.log(this.roadname_address);
+      console.log(this.number_address);
+      console.log(this.detail_address);
+      console.log(this.backoffice_info);
+
+      console.log(this.backoffice_type);
+      console.log(this.backoffice_option);
+      console.log(this.backoffice_around);
+
       console.log(sun_stime, sun_etime, this.sun_dayoff);
       console.log(mon_stime, mon_etime, this.mon_dayoff);
       console.log(tue_stime, tue_etime, this.tue_dayoff);
@@ -883,10 +909,6 @@ export default {
       console.log(thu_stime, thu_etime, this.thu_dayoff);
       console.log(fri_stime, fri_etime, this.fri_dayoff);
       console.log(sat_stime, sat_etime, this.sat_dayoff);
-
-      console.log(this.backoffice_type);
-      console.log(this.backoffice_option);
-      console.log(this.backoffice_around);
 
       console.log(this.img_name);
     },
