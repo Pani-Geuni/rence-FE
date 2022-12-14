@@ -348,11 +348,13 @@
                 <div class="table-body-cell">일</div>
                 <div class="table-body-cell">
                   <!-- <input type="text" id="sun_stime" class="time-picker" name="sun_stime" readonly /> -->
-                  <Datepicker v-model="time" time-picker :start-time="time" mode-height="160" minutes-increment="60"
-                    minutes-grid-increment="60"></Datepicker>
+                  <Datepicker v-model="sunStime" time-picker :start-time="startTime" mode-height="160"
+                    minutes-increment="60" minutes-grid-increment="60" placeholder="선택"></Datepicker>
                 </div>
                 <div class="table-body-cell">
-                  <input type="text" id="sun_etime" class="time-picker" name="sun_etime" readonly />
+                  <!-- <input type="text" id="sun_etime" class="time-picker" name="sun_etime" readonly /> -->
+                  <Datepicker v-model="sunEtime" time-picker :start-time="startTime" mode-height="160"
+                    minutes-increment="60" minutes-grid-increment="60" placeholder="선택"></Datepicker>
                 </div>
                 <div class="table-body-cell">
                   <input type="checkbox" id="sun_dayoff" class="checkbox" name="sun_dayoff" value="T" />
@@ -363,10 +365,13 @@
               <div class="table-body-row">
                 <div class="table-body-cell">월</div>
                 <div class="table-body-cell">
-                  <input type="text" id="mon_stime" class="time-picker" name="mon_stime" readonly />
+                  <!-- <input type="text" id="mon_stime" class="time-picker" name="mon_stime" readonly /> -->
+                  <Datepicker v-model="monStime" time-picker :start-time="startTime" mode-height="160"
+                    minutes-increment="60" minutes-grid-increment="60" placeholder="선택"></Datepicker>
                 </div>
                 <div class="table-body-cell">
-                  <input type="text" id="mon_etime" class="time-picker" name="mon_etime" readonly />
+                  <Datepicker v-model="monEtime" time-picker :start-time="startTime" mode-height="160"
+                    minutes-increment="60" minutes-grid-increment="60" placeholder="선택"></Datepicker>
                 </div>
                 <div class="table-body-cell">
                   <input type="checkbox" id="mon_dayoff" class="checkbox" name="mon_dayoff" value="T" />
@@ -377,10 +382,12 @@
               <div class="table-body-row">
                 <div class="table-body-cell">화</div>
                 <div class="table-body-cell">
-                  <input type="text" id="tue_stime" class="time-picker" name="tue_stime" readonly />
+                  <Datepicker v-model="tueStime" time-picker :start-time="startTime" mode-height="160"
+                    minutes-increment="60" minutes-grid-increment="60" placeholder="선택"></Datepicker>
                 </div>
                 <div class="table-body-cell">
-                  <input type="text" id="tue_etime" class="time-picker" name="tue_etime" readonly />
+                  <Datepicker v-model="tueEtime" time-picker :start-time="startTime" mode-height="160"
+                    minutes-increment="60" minutes-grid-increment="60" placeholder="선택"></Datepicker>
                 </div>
                 <div class="table-body-cell">
                   <input type="checkbox" id="tue_dayoff" class="checkbox" name="tue_dayoff" value="T" />
@@ -391,10 +398,12 @@
               <div class="table-body-row">
                 <div class="table-body-cell">수</div>
                 <div class="table-body-cell">
-                  <input type="text" id="wed_stime" class="time-picker" name="wed_stime" readonly />
+                  <Datepicker v-model="wedStime" time-picker :start-time="startTime" mode-height="160"
+                    minutes-increment="60" minutes-grid-increment="60" placeholder="선택"></Datepicker>
                 </div>
                 <div class="table-body-cell">
-                  <input type="text" id="wed_etime" class="time-picker" name="wed_etime" readonly />
+                  <Datepicker v-model="wedEtime" time-picker :start-time="startTime" mode-height="160"
+                    minutes-increment="60" minutes-grid-increment="60" placeholder="선택"></Datepicker>
                 </div>
                 <div class="table-body-cell">
                   <input type="checkbox" id="wed_dayoff" class="checkbox" name="wed_dayoff" value="T" />
@@ -405,10 +414,12 @@
               <div class="table-body-row">
                 <div class="table-body-cell">목</div>
                 <div class="table-body-cell">
-                  <input type="text" id="thu_stime" class="time-picker" name="thu_stime" readonly />
+                  <Datepicker v-model="thuStime" time-picker :start-time="startTime" mode-height="160"
+                    minutes-increment="60" minutes-grid-increment="60" placeholder="선택"></Datepicker>
                 </div>
                 <div class="table-body-cell">
-                  <input type="text" id="thu_etime" class="time-picker" name="thu_etime" readonly />
+                  <Datepicker v-model="thuEtime" time-picker :start-time="startTime" mode-height="160"
+                    minutes-increment="60" minutes-grid-increment="60" placeholder="선택"></Datepicker>
                 </div>
                 <div class="table-body-cell">
                   <input type="checkbox" id="thu_dayoff" class="checkbox" name="thu_dayoff" value="T" />
@@ -419,10 +430,12 @@
               <div class="table-body-row">
                 <div class="table-body-cell">금</div>
                 <div class="table-body-cell">
-                  <input type="text" id="fri_stime" class="time-picker" name="fri_stime" readonly />
+                  <Datepicker v-model="friStime" time-picker :start-time="startTime" mode-height="160"
+                    minutes-increment="60" minutes-grid-increment="60" placeholder="선택"></Datepicker>
                 </div>
                 <div class="table-body-cell">
-                  <input type="text" id="fri_etime" class="time-picker" name="fri_etime" readonly />
+                  <Datepicker v-model="friEtime" time-picker :start-time="startTime" mode-height="160"
+                    minutes-increment="60" minutes-grid-increment="60" placeholder="선택"></Datepicker>
                 </div>
                 <div class="table-body-cell">
                   <input type="checkbox" id="fri_dayoff" class="checkbox" name="fri_dayoff" value="T" />
@@ -433,10 +446,12 @@
               <div class="table-body-row">
                 <div class="table-body-cell">토</div>
                 <div class="table-body-cell">
-                  <input type="text" id="sat_stime" class="time-picker" name="sat_stime" value="" readonly />
+                  <Datepicker v-model="satStime" time-picker :start-time="startTime" mode-height="160"
+                    minutes-increment="60" minutes-grid-increment="60" placeholder="선택"></Datepicker>
                 </div>
                 <div class="table-body-cell">
-                  <input type="text" id="sat_etime" class="time-picker" name="sat_etime" value="" readonly />
+                  <Datepicker v-model="satEtime" time-picker :start-time="startTime" mode-height="160"
+                    minutes-increment="60" minutes-grid-increment="60" placeholder="선택"></Datepicker>
                 </div>
                 <div class="table-body-cell">
                   <input type="checkbox" id="sat_dayoff" class="checkbox" name="sat_dayoff" value="T" />
@@ -449,6 +464,12 @@
           <!-- END custom table -->
         </div>
         <!-- END inputWrap time -->
+        <div>
+          <date-picker v-model:value="time0" format="hh:mm" value-type="format" type="time"></date-picker>
+          <date-picker v-model:value="time1" type="datetime"></date-picker>
+          <date-picker v-model:value="time2" valueType="format"></date-picker>
+          <date-picker v-model:value="time3" range></date-picker>
+        </div>
 
         <div class="inputWrap">
           <p>공간 사진</p>
@@ -464,7 +485,7 @@
         <!-- END inputWrap image -->
 
         <div class="submit">
-          <input type="button" id="submit" class="submit-application" value="호스트 신청하기">
+          <input @click="submit" type="button" id="submit" class="submit-application" value="호스트 신청하기">
           <input type="submit" id="real-submit" class="submit-application" value="호스트 신청하기" style="display:none;">
         </div>
       </form>
@@ -476,23 +497,59 @@
 
 <style lang="scss" scoped>
 @import '@/assets/CSS/backoffice/host-insert.scss';
+@import '@/assets/CSS/backoffice/custom-timepicker.css';
+
+.mx-input-wrapper {
+  width: 100px;
+}
 </style>
 
 <script>
-// import Datepicker from '@vuepic/vue-datepicker';
 import '@vuepic/vue-datepicker/src/VueDatePicker/style/main.scss';
 import { ref } from 'vue';
 
 export default {
   name: 'InsertView',
+
   setup() {
-    const time = ref({
+    const time = ref();
+    const startTime = ref({
       hours: 9,
       minutes: 0,
     });
 
+    const sunStime = ref();
+    const sunEtime = ref();
+    const monStime = ref();
+    const monEtime = ref();
+    const tueStime = ref();
+    const tueEtime = ref();
+    const wedStime = ref();
+    const wedEtime = ref();
+    const thuStime = ref();
+    const thuEtime = ref();
+    const friStime = ref();
+    const friEtime = ref();
+    const satStime = ref();
+    const satEtime = ref();
+
     return {
       time,
+      startTime,
+      sunStime,
+      sunEtime,
+      monStime,
+      monEtime,
+      tueStime,
+      tueEtime,
+      wedStime,
+      wedEtime,
+      thuStime,
+      thuEtime,
+      friStime,
+      friEtime,
+      satStime,
+      satEtime,
     };
   },
 
@@ -507,6 +564,43 @@ export default {
 
   methods: {
 
+    timeFormatter: (time) => {
+      let h = time.hours;
+      const m = time.minutes;
+
+      let t = '';
+      if (h < 10) {
+        h = `0${h}`;
+      }
+
+      t = `${h}:${m}0`;
+
+      return t;
+    },
+
+    submit() {
+      const sun_stime = this.timeFormatter(this.sunStime);
+      const sun_etime = this.timeFormatter(this.sunEtime);
+      const mon_stime = this.timeFormatter(this.monStime);
+      const mon_etime = this.timeFormatter(this.monEtime);
+      const tue_stime = this.timeFormatter(this.tueStime);
+      const tue_etime = this.timeFormatter(this.tueEtime);
+      const wed_stime = this.timeFormatter(this.wedStime);
+      const wed_etime = this.timeFormatter(this.wedEtime);
+      const thu_stime = this.timeFormatter(this.thuStime);
+      const thu_etime = this.timeFormatter(this.thuEtime);
+      const fri_stime = this.timeFormatter(this.friStime);
+      const fri_etime = this.timeFormatter(this.friEtime);
+      const sat_stime = this.timeFormatter(this.satStime);
+      const sat_etime = this.timeFormatter(this.satEtime);
+      console.log(sun_stime, sun_etime);
+      console.log(mon_stime, mon_etime);
+      console.log(tue_stime, tue_etime);
+      console.log(wed_stime, wed_etime);
+      console.log(thu_stime, thu_etime);
+      console.log(fri_stime, fri_etime);
+      console.log(sat_stime, sat_etime);
+    },
   },
 };
 </script>
