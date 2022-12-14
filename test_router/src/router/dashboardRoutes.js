@@ -3,7 +3,7 @@ import DashBoardMainView from '@/components/backoffice/dashboard/MainView.vue';
 
 export default [
   {
-    path: '/dashboard',
+    path: '/backoffice/dash',
     component: LayoutDashboard,
     children: [
       {
