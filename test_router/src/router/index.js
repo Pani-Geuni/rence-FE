@@ -1,8 +1,20 @@
+/* eslint-disable linebreak-style */
 import { createRouter, createWebHistory } from 'vue-router';
 import MyPageView from '@/components/office/my_page/MyPageView.vue';
-import LayoutBase from '../views/LayoutBase.vue';
+import MileageView from '../components/office/my_page/MileageView.vue';
+import ReviewView from '../components/office/my_page/ReviewView.vue';
+import QuestionView from '../components/office/my_page/QuestionView.vue';
+import ReserveListView from '../components/office/my_page/ReserveListView.vue';
+
+import BeforeReserveInfoView from '../components/office/reserve/BeforeReserveInfoView.vue';
+import NowReserveInfoView from '../components/office/reserve/NowReserveInfoView.vue';
+
+import SpaceDetailView from '../components/office/space_detail/SpaceDetailView.vue';
+
 import HomeView from '../components/office/HomeView.vue';
 import ListView from '../components/office/ListView.vue';
+
+import LayoutOffice from '../views/LayoutOffice.vue';
 
 import masterRoutes from './masterRoutes';
 import backofficeRoutes from './backofficeRoutes';
@@ -11,7 +23,7 @@ import dashboardRoutes from './dashboardRoutes';
 const routes = [
   {
     path: '/',
-    component: LayoutBase,
+    component: LayoutOffice,
     children: [
       {
         path: '',
@@ -27,6 +39,41 @@ const routes = [
         path: 'my_page',
         name: 'MyPageView',
         component: MyPageView,
+      },
+      {
+        path: 'mileage',
+        name: 'MileageView',
+        component: MileageView,
+      },
+      {
+        path: 'reserve_list',
+        name: 'ReserveListView',
+        component: ReserveListView,
+      },
+      {
+        path: 'reserved_info',
+        name: 'BeforeReserveInfoView',
+        component: BeforeReserveInfoView,
+      },
+      {
+        path: 'reserve_info',
+        name: 'NowReserveInfoView',
+        component: NowReserveInfoView,
+      },
+      {
+        path: 'review',
+        name: 'ReviewView',
+        component: ReviewView,
+      },
+      {
+        path: 'question',
+        name: 'QuestionView',
+        component: QuestionView,
+      },
+      {
+        path: 'space',
+        name: 'SpaceDetailView',
+        component: SpaceDetailView,
       },
     ],
   },

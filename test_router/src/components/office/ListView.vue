@@ -47,7 +47,7 @@
       <input type="hidden" v-bind:maxCnt="maxCnt" v-bind:nowCnt="nowCnt" id="maxCnt" />
       <div class="list-box-wrap">
           <!-- START LIST BOX -->
-          <div class="list-box" @click="go_space_detail_page($event.target)" v-for="obj in list" idx={{obj.backoffice_no}} >
+          <div class="list-box" @click="go_space_detail_page($event.target)" v-for="obj in list" :key="obj" :idx="obj.backoffice_no" >
             <section>
               <img v-bind:src="obj.backoffice_image" alt="default-space-img" class="list-thumbnail" />
             </section>
@@ -275,9 +275,9 @@ export default {
       const backofficeNo = $(param).attr('idx');
       const type = decodeURI(window.location.href).split('?type=')[1].split('&')[0];
 
-      if (type !== 'office') { window.open(`/office/space_introduce?backoffice_no=${backofficeNo}&introduce_menu=info`); }
+      if (type !== 'office') { window.open(`http://localhost:8081/space?backoffice_no=${backofficeNo}`); }
       // 오피스용 공간 소개 페이지로 이동
-      else { window.open(`/office/space_introduce_office?backoffice_no=${backofficeNo}&introduce_menu=info`); }
+      else { window.open(`http://localhost:8081/space_office?backoffice_no=${backofficeNo}`); }
     },
   },
 };
