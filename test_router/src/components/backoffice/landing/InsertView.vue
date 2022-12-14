@@ -11,12 +11,13 @@
       <form action="insertOK" id="insertForm" method="POST" enctype="multipart/form-data">
         <div class="inputWrap">
           <p>사업자 이름</p>
-          <input type="text" id="owner_name" name="owner_name" placeholder="사업자 이름을 입력하세요" />
+          <input type="text" id="owner_name" name="owner_name" placeholder="사업자 이름을 입력하세요" v-on:keydown.enter.prevent />
         </div>
         <div class="inputWrap">
           <p>사업자 등록 번호</p>
           <div class="check_wrap">
-            <input type="text" id="backoffice_id" name="backoffice_id" placeholder="사업자 등록 번호를 입력하세요 (- 포함)" />
+            <input type="text" id="backoffice_id" name="backoffice_id" placeholder="사업자 등록 번호를 입력하세요 (- 포함)"
+              v-on:keydown.enter.prevent />
             <span class="warning-text blind">형식에 맞지 않습니다.</span>
           </div>
         </div>
@@ -26,26 +27,29 @@
         </div>
         <div class="inputWrap">
           <p>사업체 명</p>
-          <input type="text" id="company_name" name="company_name" placeholder="사업체 명을 입력해 주세요" />
+          <input type="text" id="company_name" name="company_name" placeholder="사업체 명을 입력해 주세요"
+            v-on:keydown.enter.prevent />
         </div>
         <div class="inputWrap">
           <p>사업자 전화번호</p>
           <div class="check_wrap">
-            <input type="tel" id="backoffice_tel" name="backoffice_tel" placeholder="사업자 전화번호를 입력해 주세요. (- 포함)" />
+            <input type="tel" id="backoffice_tel" name="backoffice_tel" placeholder="사업자 전화번호를 입력해 주세요. (- 포함)"
+              v-on:keydown.enter.prevent />
             <span class="warning-text blind">형식에 맞지 않습니다.</span>
           </div>
         </div>
         <div class="inputWrap email">
           <p>사업자 이메일</p>
           <div>
-            <input type="email" id="backoffice_email" name="backoffice_email" placeholder="사업자 이메일을 입력해 주세요" />
+            <input type="email" id="backoffice_email" name="backoffice_email" placeholder="사업자 이메일을 입력해 주세요"
+              v-on:keydown.enter.prevent />
             <input type="button" id="btn-certification" value="인증번호 발송">
           </div>
         </div>
         <div class="inputWrap email">
           <p>사업자 이메일 확인</p>
           <div>
-            <input type="text" id="auth_code" name="auth_code" placeholder="인증 번호를 입력하세요" />
+            <input type="text" id="auth_code" name="auth_code" placeholder="인증 번호를 입력하세요" v-on:keydown.enter.prevent />
             <input type="button" id="btn-check-certification" value="인증번호 확인">
           </div>
         </div>
@@ -59,7 +63,8 @@
 
             <input type="text" id="roadname_address" name="roadname_address" placeholder="도로명주소" readonly /> <br />
             <input type="text" id="number_address" name="number_address" placeholder="지번주소" readonly /> <br />
-            <input type="text" id="detail_address" name="detail_address" placeholder="상세주소" />
+            <input type="text" id="detail_address" name="detail_address" placeholder="상세주소"
+              v-on:keydown.enter.prevent />
           </div>
           <!-- END input-location -->
         </div>
@@ -69,9 +74,10 @@
           <p>사업체 태그</p>
           <div class="hashTag_area">
             <div class="hashTag-group">
-              <input type="hidden" value="" name="backoffice_tag" id="real-input-tag" />
+              <input type="hidden" value="" name="backoffice_tag" id="real-input-tag" v-on:keydown.enter.prevent />
             </div>
-            <input type="text" id="backoffice_tag" placeholder="사업체의 태그를 입력해 주세요 (최대 10글자)" maxlength=10 />
+            <input type="text" id="backoffice_tag" placeholder="사업체의 태그를 입력해 주세요 (최대 10글자)" maxlength=10
+              v-on:keydown.enter.prevent />
             <ul id="tag-list">
             </ul>
           </div>
@@ -341,7 +347,9 @@
               <div class="table-body-row">
                 <div class="table-body-cell">일</div>
                 <div class="table-body-cell">
-                  <input type="text" id="sun_stime" class="time-picker" name="sun_stime" readonly />
+                  <!-- <input type="text" id="sun_stime" class="time-picker" name="sun_stime" readonly /> -->
+                  <Datepicker v-model="time" time-picker :start-time="time" mode-height="160" minutes-increment="60"
+                    minutes-grid-increment="60"></Datepicker>
                 </div>
                 <div class="table-body-cell">
                   <input type="text" id="sun_etime" class="time-picker" name="sun_etime" readonly />
@@ -471,8 +479,34 @@
 </style>
 
 <script>
+// import Datepicker from '@vuepic/vue-datepicker';
+import '@vuepic/vue-datepicker/src/VueDatePicker/style/main.scss';
+import { ref } from 'vue';
 
 export default {
   name: 'InsertView',
+  setup() {
+    const time = ref({
+      hours: 9,
+      minutes: 0,
+    });
+
+    return {
+      time,
+    };
+  },
+
+  data() {
+    return {
+      tag: {},
+      counter: 0,
+      margin_tag_list: [],
+      backoffice_tag: '',
+    };
+  },
+
+  methods: {
+
+  },
 };
 </script>

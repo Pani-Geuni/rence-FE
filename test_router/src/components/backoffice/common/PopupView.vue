@@ -107,6 +107,7 @@ export default {
   data() {
     return {
       backoffice_no: this.$cookies.get('backoffice_no'),
+      host_image: this.$cookies.get('host_image'),
     };
   },
 
@@ -157,13 +158,14 @@ export default {
 
         axios.post('http://localhost:8800/backoffice/loginOK', params)
           .then((res) => {
-            console.log('res.data :', res.data);
-
             if (res.data.result === '1') {
-              console.log('login result :', res.data.result);
-              console.log(this.backoffice_no);
+              console.log('res.data : ', res.data);
+              // console.log(this.backoffice_no);
+              this.$cookies.set('backoffice_no', res.data.backoffice_no);
+              this.$cookies.set('host_image', res.data.host_image);
+              this.$storage.setStorageSync('backoffice_id', res.data.backoffice_id);
 
-              this.$router.push(`/backoffice/main?backoffice_no=${this.backoffice_no}`);
+              this.$router.push(`/backoffice/dash/main?backoffice_no=${this.$cookies.get('backoffice_no')}`);
             } else {
               // 로딩 화면 닫기
               $('.popup-background:eq(1)').addClass('blind');
@@ -232,9 +234,11 @@ export default {
         if (res.data.result === '1') {
           console.log(this.$cookies.remove('backoffice_no'));
           this.$cookies.remove('backoffice_no');
+          this.$cookies.remove('host_image');
+
           $('#logout-popup').addClass('blind');
           $('.popup-background:eq(0)').addClass('blind');
-          // this.$router.go(0);
+          this.$router.go(0);
         }
       });
     },

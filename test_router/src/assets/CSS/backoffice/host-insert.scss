@@ -1,13 +1,13 @@
+* {
+  font-family: "HallymGothic";
+  font-weight: 500;
+}
+
 .bodyWrap {
   display: flex;
   flex-direction: column;
   align-items: center;
   width: 100%;
-
-  * {
-    font-family: "HallymGothic";
-    font-weight: 500;
-  }
 }
 
 .applyWrap {
