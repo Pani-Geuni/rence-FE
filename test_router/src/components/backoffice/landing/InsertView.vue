@@ -102,20 +102,20 @@
           <div class="option-group-column">
             <div class="option-group-row">
               <div class="option-item">
-                <input type="checkbox" id="type_checkbox_desk" class="checkbox" name="backoffice_type" value="desk"
+                <input type="checkbox" id="type_checkbox_desk" class="checkbox" v-model="backoffice_type" value="desk"
                   readonly />
                 <label>데스크</label>
               </div>
               <!-- END option-item -->
               <div class="option-item">
-                <input type="checkbox" id="type_checkbox_meeting_room" class="checkbox" name="backoffice_type"
+                <input type="checkbox" id="type_checkbox_meeting_room" class="checkbox" v-model="backoffice_type"
                   value="meeting_room" readonly />
                 <label>회의실</label>
               </div>
               <!-- END option-item -->
               <div class="option-item">
-                <input type="checkbox" id="type_checkbox_office" class="checkbox" name="backoffice_type" value="office"
-                  readonly />
+                <input type="checkbox" id="type_checkbox_office" class="checkbox" v-model="backoffice_type"
+                  value="office" readonly />
                 <label>오피스</label>
               </div>
               <!-- END option-item -->
@@ -130,17 +130,17 @@
           <div class="option-group-column">
             <div class="option-group-row">
               <div class="option-item">
-                <input type="checkbox" id="chair-desk" class="checkbox" name="backoffice_option" value="chair-desk"
+                <input type="checkbox" id="chair-desk" class="checkbox" v-model="backoffice_option" value="chair-desk"
                   readonly /> <label>의자/테이블</label>
               </div>
 
               <div class="option-item">
-                <input type="checkbox" id="internet-wifi" class="checkbox" name="backoffice_option"
+                <input type="checkbox" id="internet-wifi" class="checkbox" v-model="backoffice_option"
                   value="internet-wifi" /> <label>인터넷/Wi-Fi</label>
               </div>
 
               <div class="option-item">
-                <input type="checkbox" id="restroom" class="checkbox" name="backoffice_option" value="restroom" />
+                <input type="checkbox" id="restroom" class="checkbox" v-model="backoffice_option" value="restroom" />
                 <label>내부 화장실</label>
               </div>
             </div>
@@ -148,17 +148,18 @@
 
             <div class="option-group-row">
               <div class="option-item">
-                <input type="checkbox" id="no-smoking" class="checkbox" name="backoffice_option" value="no-smoking" />
+                <input type="checkbox" id="no-smoking" class="checkbox" v-model="backoffice_option"
+                  value="no-smoking" />
                 <label>금연</label>
               </div>
 
               <div class="option-item">
-                <input type="checkbox" id="smoking-room" class="checkbox" name="backoffice_option"
+                <input type="checkbox" id="smoking-room" class="checkbox" v-model="backoffice_option"
                   value="smoking-room" /> <label>흡연실</label>
               </div>
 
               <div class="option-item">
-                <input type="checkbox" id="terrace-rooftop" class="checkbox" name="backoffice_option"
+                <input type="checkbox" id="terrace-rooftop" class="checkbox" v-model="backoffice_option"
                   value="terrace-rooftop" /> <label>테라스/루프탑</label>
               </div>
             </div>
@@ -166,17 +167,18 @@
 
             <div class="option-group-row">
               <div class="option-item">
-                <input type="checkbox" id="tv-projector" class="checkbox" name="backoffice_option"
+                <input type="checkbox" id="tv-projector" class="checkbox" v-model="backoffice_option"
                   value="tv-projector" /> <label>TV/프로젝터</label>
               </div>
 
               <div class="option-item">
-                <input type="checkbox" id="whiteboard" class="checkbox" name="backoffice_option" value="whiteboard" />
+                <input type="checkbox" id="whiteboard" class="checkbox" v-model="backoffice_option"
+                  value="whiteboard" />
                 <label>화이트보드</label>
               </div>
 
               <div class="option-item">
-                <input type="checkbox" id="sound-microphone" class="checkbox" name="backoffice_option"
+                <input type="checkbox" id="sound-microphone" class="checkbox" v-model="backoffice_option"
                   value="sound-microphone" /> <label>음향/마이크</label>
               </div>
             </div>
@@ -184,17 +186,17 @@
 
             <div class="option-group-row">
               <div class="option-item">
-                <input type="checkbox" id="parking" class="checkbox" name="backoffice_option" value="parking" />
+                <input type="checkbox" id="parking" class="checkbox" v-model="backoffice_option" value="parking" />
                 <label>주차</label>
               </div>
 
               <div class="option-item">
-                <input type="checkbox" id="pc-laptop" class="checkbox" name="backoffice_option" value="pc-laptop" />
+                <input type="checkbox" id="pc-laptop" class="checkbox" v-model="backoffice_option" value="pc-laptop" />
                 <label>PC/노트북</label>
               </div>
 
               <div class="option-item">
-                <input type="checkbox" id="printer" class="checkbox" name="backoffice_option" value="printer" />
+                <input type="checkbox" id="printer" class="checkbox" v-model="backoffice_option" value="printer" />
                 <label>복사/인쇄기</label>
               </div>
             </div>
@@ -202,17 +204,17 @@
 
             <div class="option-group-row">
               <div class="option-item">
-                <input type="checkbox" id="lounge" class="checkbox" name="backoffice_option" value="lounge" />
+                <input type="checkbox" id="lounge" class="checkbox" v-model="backoffice_option" value="lounge" />
                 <label>공용 라운지</label>
               </div>
 
               <div class="option-item">
-                <input type="checkbox" id="kitchen" class="checkbox" name="backoffice_option" value="kitchen" />
+                <input type="checkbox" id="kitchen" class="checkbox" v-model="backoffice_option" value="kitchen" />
                 <label>공용 주방</label>
               </div>
 
               <div class="option-item">
-                <input type="checkbox" id="water-purifier" class="checkbox" name="backoffice_option"
+                <input type="checkbox" id="water-purifier" class="checkbox" v-model="backoffice_option"
                   value="water-purifier" /> <label>정수기</label>
               </div>
             </div>
@@ -220,17 +222,17 @@
 
             <div class="option-group-row">
               <div class="option-item">
-                <input type="checkbox" id="can-food" class="checkbox" name="backoffice_option" value="can-food" />
+                <input type="checkbox" id="can-food" class="checkbox" v-model="backoffice_option" value="can-food" />
                 <label>음식물 반입 가능</label>
               </div>
 
               <div class="option-item">
-                <input type="checkbox" id="can-drink" class="checkbox" name="backoffice_option" value="can-drink" />
+                <input type="checkbox" id="can-drink" class="checkbox" v-model="backoffice_option" value="can-drink" />
                 <label>주류 반입 가능</label>
               </div>
 
               <div class="option-item">
-                <input type="checkbox" id="air-conditioner" class="checkbox" name="backoffice_option"
+                <input type="checkbox" id="air-conditioner" class="checkbox" v-model="backoffice_option"
                   value="air-conditioner" /> <label>에어컨</label>
               </div>
             </div>
@@ -238,17 +240,18 @@
 
             <div class="option-group-row">
               <div class="option-item">
-                <input type="checkbox" id="fitting-room" class="checkbox" name="backoffice_option"
+                <input type="checkbox" id="fitting-room" class="checkbox" v-model="backoffice_option"
                   value="fitting-room" /> <label>탈의실</label>
               </div>
 
               <div class="option-item">
-                <input type="checkbox" id="shower" class="checkbox" name="backoffice_option" value="shower" />
+                <input type="checkbox" id="shower" class="checkbox" v-model="backoffice_option" value="shower" />
                 <label>샤워시설</label>
               </div>
 
               <div class="option-item">
-                <input type="checkbox" id="body-mirror" class="checkbox" name="backoffice_option" value="body-mirror" />
+                <input type="checkbox" id="body-mirror" class="checkbox" v-model="backoffice_option"
+                  value="body-mirror" />
                 <label>전신거울</label>
               </div>
             </div>
@@ -256,24 +259,24 @@
 
             <div class="option-group-row">
               <div class="option-item">
-                <input type="checkbox" id="door-lock" class="checkbox" name="backoffice_option" value="door-lock" />
+                <input type="checkbox" id="door-lock" class="checkbox" v-model="backoffice_option" value="door-lock" />
                 <label>도어락</label>
               </div>
 
               <div class="option-item">
-                <input type="checkbox" id="outlet-multitap" class="checkbox" name="backoffice_option"
+                <input type="checkbox" id="outlet-multitap" class="checkbox" v-model="backoffice_option"
                   value="outlet-multitap" /> <label>콘센트/멀티탭</label>
               </div>
 
               <div class="option-item">
-                <input type="checkbox" id="personal-locker" class="checkbox" name="backoffice_option"
+                <input type="checkbox" id="personal-locker" class="checkbox" v-model="backoffice_option"
                   value="personal-locker" /> <label>개인락커</label>
               </div>
             </div>
             <!-- END option-group row -->
             <div class="option-group-row">
               <div class="option-item">
-                <input type="checkbox" id="fax" class="checkbox" name="backoffice_option" value="fax" />
+                <input type="checkbox" id="fax" class="checkbox" v-model="backoffice_option" value="fax" />
                 <label>팩스</label>
               </div>
             </div>
@@ -288,17 +291,17 @@
           <div class="option-group-column">
             <div class="option-group-row">
               <div class="option-item">
-                <input type="checkbox" id="public-parking" class="checkbox" name="backoffice_around"
+                <input type="checkbox" id="public-parking" class="checkbox" v-model="backoffice_around"
                   value="public-parking" /> <label>공영주차장</label>
               </div>
 
               <div class="option-item">
-                <input type="checkbox" id="paid-parking" class="checkbox" name="backoffice_around"
+                <input type="checkbox" id="paid-parking" class="checkbox" v-model="backoffice_around"
                   value="paid-parking" /> <label>유료주차장</label>
               </div>
 
               <div class="option-item">
-                <input type="checkbox" id="pharmacy" class="checkbox" name="backoffice_around" value="pharmacy" />
+                <input type="checkbox" id="pharmacy" class="checkbox" v-model="backoffice_around" value="pharmacy" />
                 <label>약국</label>
               </div>
             </div>
@@ -306,17 +309,17 @@
 
             <div class="option-group-row">
               <div class="option-item">
-                <input type="checkbox" id="hospital" class="checkbox" name="backoffice_around" value="hospital" />
+                <input type="checkbox" id="hospital" class="checkbox" v-model="backoffice_around" value="hospital" />
                 <label>병원</label>
               </div>
 
               <div class="option-item">
-                <input type="checkbox" id="convenience-store" class="checkbox" name="backoffice_around"
+                <input type="checkbox" id="convenience-store" class="checkbox" v-model="backoffice_around"
                   value="convenience-store" /> <label>편의점</label>
               </div>
 
               <div class="option-item">
-                <input type="checkbox" id="cafe" class="checkbox" name="backoffice_around" value="cafe" />
+                <input type="checkbox" id="cafe" class="checkbox" v-model="backoffice_around" value="cafe" />
                 <label>카페</label>
               </div>
             </div>
@@ -352,15 +355,18 @@
                 <div class="table-body-cell">
                   <!-- <input type="text" id="sun_stime" class="time-picker" name="sun_stime" readonly /> -->
                   <Datepicker v-model="sunStime" time-picker :start-time="startTime" mode-height="160"
-                    minutes-increment="60" minutes-grid-increment="60" placeholder="선택"></Datepicker>
+                    minutes-increment="60" minutes-grid-increment="60" placeholder="09:00"
+                    :disabled="sun_dayoff === 'T'"></Datepicker>
                 </div>
                 <div class="table-body-cell">
                   <!-- <input type="text" id="sun_etime" class="time-picker" name="sun_etime" readonly /> -->
                   <Datepicker v-model="sunEtime" time-picker :start-time="startTime" mode-height="160"
-                    minutes-increment="60" minutes-grid-increment="60" placeholder="선택"></Datepicker>
+                    minutes-increment="60" minutes-grid-increment="60" placeholder="09:00"
+                    :disabled="sun_dayoff === 'T'"></Datepicker>
                 </div>
                 <div class="table-body-cell">
-                  <input type="checkbox" id="sun_dayoff" class="checkbox" name="sun_dayoff" value="T" />
+                  <input type="checkbox" id="sun_dayoff" class="checkbox" name="sun_dayoff" v-model="sun_dayoff"
+                    true-value="T" false-value="F" />
                 </div>
               </div>
               <!-- END table body row -->
@@ -370,14 +376,17 @@
                 <div class="table-body-cell">
                   <!-- <input type="text" id="mon_stime" class="time-picker" name="mon_stime" readonly /> -->
                   <Datepicker v-model="monStime" time-picker :start-time="startTime" mode-height="160"
-                    minutes-increment="60" minutes-grid-increment="60" placeholder="선택"></Datepicker>
+                    minutes-increment="60" minutes-grid-increment="60" placeholder="09:00"
+                    :disabled="mon_dayoff === 'T'"></Datepicker>
                 </div>
                 <div class="table-body-cell">
                   <Datepicker v-model="monEtime" time-picker :start-time="startTime" mode-height="160"
-                    minutes-increment="60" minutes-grid-increment="60" placeholder="선택"></Datepicker>
+                    minutes-increment="60" minutes-grid-increment="60" placeholder="09:00"
+                    :disabled="mon_dayoff === 'T'"></Datepicker>
                 </div>
                 <div class="table-body-cell">
-                  <input type="checkbox" id="mon_dayoff" class="checkbox" name="mon_dayoff" value="T" />
+                  <input type="checkbox" id="mon_dayoff" class="checkbox" name="mon_dayoff" v-model="mon_dayoff"
+                    true-value="T" false-value="F" />
                 </div>
               </div>
               <!-- END table body row -->
@@ -386,14 +395,17 @@
                 <div class="table-body-cell">화</div>
                 <div class="table-body-cell">
                   <Datepicker v-model="tueStime" time-picker :start-time="startTime" mode-height="160"
-                    minutes-increment="60" minutes-grid-increment="60" placeholder="선택"></Datepicker>
+                    minutes-increment="60" minutes-grid-increment="60" placeholder="09:00"
+                    :disabled="tue_dayoff === 'T'"></Datepicker>
                 </div>
                 <div class="table-body-cell">
                   <Datepicker v-model="tueEtime" time-picker :start-time="startTime" mode-height="160"
-                    minutes-increment="60" minutes-grid-increment="60" placeholder="선택"></Datepicker>
+                    minutes-increment="60" minutes-grid-increment="60" placeholder="09:00"
+                    :disabled="tue_dayoff === 'T'"></Datepicker>
                 </div>
                 <div class="table-body-cell">
-                  <input type="checkbox" id="tue_dayoff" class="checkbox" name="tue_dayoff" value="T" />
+                  <input type="checkbox" id="tue_dayoff" class="checkbox" name="tue_dayoff" v-model="tue_dayoff"
+                    true-value="T" false-value="F" />
                 </div>
               </div>
               <!-- END table body row -->
@@ -402,14 +414,17 @@
                 <div class="table-body-cell">수</div>
                 <div class="table-body-cell">
                   <Datepicker v-model="wedStime" time-picker :start-time="startTime" mode-height="160"
-                    minutes-increment="60" minutes-grid-increment="60" placeholder="선택"></Datepicker>
+                    minutes-increment="60" minutes-grid-increment="60" placeholder="09:00"
+                    :disabled="wed_dayoff === 'T'"></Datepicker>
                 </div>
                 <div class="table-body-cell">
                   <Datepicker v-model="wedEtime" time-picker :start-time="startTime" mode-height="160"
-                    minutes-increment="60" minutes-grid-increment="60" placeholder="선택"></Datepicker>
+                    minutes-increment="60" minutes-grid-increment="60" placeholder="09:00"
+                    :disabled="wed_dayoff === 'T'"></Datepicker>
                 </div>
                 <div class="table-body-cell">
-                  <input type="checkbox" id="wed_dayoff" class="checkbox" name="wed_dayoff" value="T" />
+                  <input type="checkbox" id="wed_dayoff" class="checkbox" name="wed_dayoff" v-model="wed_dayoff"
+                    true-value="T" false-value="F" />
                 </div>
               </div>
               <!-- END table body row -->
@@ -418,14 +433,17 @@
                 <div class="table-body-cell">목</div>
                 <div class="table-body-cell">
                   <Datepicker v-model="thuStime" time-picker :start-time="startTime" mode-height="160"
-                    minutes-increment="60" minutes-grid-increment="60" placeholder="선택"></Datepicker>
+                    minutes-increment="60" minutes-grid-increment="60" placeholder="09:00"
+                    :disabled="thu_dayoff === 'T'"></Datepicker>
                 </div>
                 <div class="table-body-cell">
                   <Datepicker v-model="thuEtime" time-picker :start-time="startTime" mode-height="160"
-                    minutes-increment="60" minutes-grid-increment="60" placeholder="선택"></Datepicker>
+                    minutes-increment="60" minutes-grid-increment="60" placeholder="09:00"
+                    :disabled="thu_dayoff === 'T'"></Datepicker>
                 </div>
                 <div class="table-body-cell">
-                  <input type="checkbox" id="thu_dayoff" class="checkbox" name="thu_dayoff" value="T" />
+                  <input type="checkbox" id="thu_dayoff" class="checkbox" name="thu_dayoff" v-model="thu_dayoff"
+                    true-value="T" false-value="F" />
                 </div>
               </div>
               <!-- END table body row -->
@@ -434,14 +452,17 @@
                 <div class="table-body-cell">금</div>
                 <div class="table-body-cell">
                   <Datepicker v-model="friStime" time-picker :start-time="startTime" mode-height="160"
-                    minutes-increment="60" minutes-grid-increment="60" placeholder="선택"></Datepicker>
+                    minutes-increment="60" minutes-grid-increment="60" placeholder="09:00"
+                    :disabled="fri_dayoff === 'T'"></Datepicker>
                 </div>
                 <div class="table-body-cell">
                   <Datepicker v-model="friEtime" time-picker :start-time="startTime" mode-height="160"
-                    minutes-increment="60" minutes-grid-increment="60" placeholder="선택"></Datepicker>
+                    minutes-increment="60" minutes-grid-increment="60" placeholder="09:00"
+                    :disabled="fri_dayoff === 'T'"></Datepicker>
                 </div>
                 <div class="table-body-cell">
-                  <input type="checkbox" id="fri_dayoff" class="checkbox" name="fri_dayoff" value="T" />
+                  <input type="checkbox" id="fri_dayoff" class="checkbox" name="fri_dayoff" v-model="fri_dayoff"
+                    true-value="T" false-value="F" />
                 </div>
               </div>
               <!-- END table body row -->
@@ -449,15 +470,18 @@
               <div class="table-body-row">
                 <div class="table-body-cell">토</div>
                 <div class="table-body-cell">
-                  <Datepicker v-model="satStime" time-picker :start-time="startTime" mode-height="160"
-                    minutes-increment="60" minutes-grid-increment="60" placeholder="선택"></Datepicker>
+                  <Datepicker v-model="satStime" id="sat_stime" time-picker :start-time="startTime" mode-height="160"
+                    minutes-increment="60" minutes-grid-increment="60" placeholder="09:00"
+                    :disabled="sat_dayoff === 'T'"></Datepicker>
                 </div>
                 <div class="table-body-cell">
-                  <Datepicker v-model="satEtime" time-picker :start-time="startTime" mode-height="160"
-                    minutes-increment="60" minutes-grid-increment="60" placeholder="선택"></Datepicker>
+                  <Datepicker v-model="satEtime" id="sat_etime" time-picker :start-time="startTime" mode-height="160"
+                    minutes-increment="60" minutes-grid-increment="60" placeholder="09:00"
+                    :disabled="sat_dayoff === 'T'"></Datepicker>
                 </div>
                 <div class="table-body-cell">
-                  <input type="checkbox" id="sat_dayoff" class="checkbox" name="sat_dayoff" value="T" />
+                  <input type="checkbox" id="sat_dayoff" class="checkbox" name="sat_dayoff" v-model="sat_dayoff"
+                    true-value="T" false-value="F" @change="disableTimepicker" />
                 </div>
               </div>
               <!-- END table body row -->
@@ -557,13 +581,25 @@ export default {
   data() {
     return {
       backoffice_id: '',
+      backoffice_email: $('#backoffice_email').val(),
       mail_flag: true,
+      backoffice_type: [],
+      backoffice_option: [],
+      backoffice_around: [],
 
       zipcode: '',
       roadname: '',
       roadname_address: '',
       number_address: '',
       detail_address: '',
+
+      sun_dayoff: 'F',
+      mon_dayoff: 'F',
+      tue_dayoff: 'F',
+      wed_dayoff: 'F',
+      thu_dayoff: 'F',
+      fri_dayoff: 'F',
+      sat_dayoff: 'F',
     };
   },
 
@@ -608,14 +644,15 @@ export default {
               $('#spinner-section').removeClass('blind');
               this.mail_flag = false;
 
-              console.log($('#backoffice_email').val().trim());
+              console.log($('#backoffice_email').val().trim(), this.mail_flag);
 
               const params = new URLSearchParams();
-              params.append('backoffice_email', $('#backoffice_email').val().trim());
+              params.append('backoffice_email', 'lifebook0809@gmail.com');
 
               axios.get('http://localhost:8800/backoffice/auth', params)
                 .then((res) => {
                   this.mail_flag = true;
+                  console.log('success');
 
                   // 로딩 화면 닫기
                   $('.popup-background:eq(1)').addClass('blind');
@@ -704,6 +741,29 @@ export default {
       }, 1000);
     },
 
+    clickSunDayoff(event) {
+      console.log(event.target.value);
+      if (this.sun_dayoff === false) {
+        console.log('1 :', this.sun_dayoff);
+        this.sun_dayoff = true;
+        console.log('2 :', this.sun_dayoff);
+      } else {
+        this.sun_dayoff = false;
+      }
+
+      console.log(this.sun_dayoff);
+    },
+
+    disableTimepicker(event) {
+      console.log(event.target.checked);
+      let checked = event.target.checked;
+
+      if (checked === true) {
+        $('#sat_stime').attr('disabled', true);
+        $('#sat_etime').find('.dp__pointer').attr('disabled', true);
+      }
+    },
+
     // ************
     // DAUM ZIPCODE
     // ************
@@ -745,6 +805,10 @@ export default {
 
     // 운영 시간 formatter
     timeFormatter: (time) => {
+      if (time === undefined) {
+        return '09:00';
+      }
+
       let h = time.hours;
       const m = time.minutes;
 
@@ -773,13 +837,18 @@ export default {
       const fri_etime = this.timeFormatter(this.friEtime);
       const sat_stime = this.timeFormatter(this.satStime);
       const sat_etime = this.timeFormatter(this.satEtime);
-      console.log(sun_stime, sun_etime);
-      console.log(mon_stime, mon_etime);
-      console.log(tue_stime, tue_etime);
-      console.log(wed_stime, wed_etime);
-      console.log(thu_stime, thu_etime);
-      console.log(fri_stime, fri_etime);
-      console.log(sat_stime, sat_etime);
+
+      console.log(sun_stime, sun_etime, this.sun_dayoff);
+      console.log(mon_stime, mon_etime, this.mon_dayoff);
+      console.log(tue_stime, tue_etime, this.tue_dayoff);
+      console.log(wed_stime, wed_etime, this.wed_dayoff);
+      console.log(thu_stime, thu_etime, this.thu_dayoff);
+      console.log(fri_stime, fri_etime, this.fri_dayoff);
+      console.log(sat_stime, sat_etime, this.sat_dayoff);
+
+      console.log(this.backoffice_type);
+      console.log(this.backoffice_option);
+      console.log(this.backoffice_around);
     },
   },
 };
