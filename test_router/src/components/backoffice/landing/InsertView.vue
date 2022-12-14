@@ -8,7 +8,8 @@
         <h1>호스트 신청하기</h1>
       </div>
 
-      <form action="insertOK" id="insertForm" method="POST" enctype="multipart/form-data">
+      <!-- <form action="insertOK" id="insertForm" method="POST" enctype="multipart/form-data"> -->
+      <div id="insertForm">
         <div class="inputWrap">
           <p>사업자 이름</p>
           <input type="text" id="owner_name" name="owner_name" placeholder="사업자 이름을 입력하세요" v-on:keydown.enter.prevent />
@@ -17,7 +18,7 @@
           <p>사업자 등록 번호</p>
           <div class="check_wrap">
             <input type="text" id="backoffice_id" name="backoffice_id" placeholder="사업자 등록 번호를 입력하세요 (- 포함)"
-              v-on:keydown.enter.prevent />
+              @keyup="keypressBackofficeId" @keydown="keypressBackofficeId" />
             <span class="warning-text blind">형식에 맞지 않습니다.</span>
           </div>
         </div>
@@ -34,7 +35,7 @@
           <p>사업자 전화번호</p>
           <div class="check_wrap">
             <input type="tel" id="backoffice_tel" name="backoffice_tel" placeholder="사업자 전화번호를 입력해 주세요. (- 포함)"
-              v-on:keydown.enter.prevent />
+              @keyup="keypressBackofficeTel" @keydown="keypressBackofficeTel" />
             <span class="warning-text blind">형식에 맞지 않습니다.</span>
           </div>
         </div>
@@ -43,13 +44,13 @@
           <div>
             <input type="email" id="backoffice_email" name="backoffice_email" placeholder="사업자 이메일을 입력해 주세요"
               v-on:keydown.enter.prevent />
-            <input type="button" id="btn-certification" value="인증번호 발송">
+            <input @click="sendMail" type="button" id="btn-certification" value="인증번호 발송">
           </div>
         </div>
         <div class="inputWrap email">
           <p>사업자 이메일 확인</p>
           <div>
-            <input type="text" id="auth_code" name="auth_code" placeholder="인증 번호를 입력하세요" v-on:keydown.enter.prevent />
+            <input type="text" id="auth_code" name="auth_code" placeholder="인증 번호를 입력하세요" />
             <input type="button" id="btn-check-certification" value="인증번호 확인">
           </div>
         </div>
@@ -57,13 +58,15 @@
           <p>사업장 위치</p>
           <div class="input-location">
             <div>
-              <input type="text" id="zipcode" name="zipcode" placeholder="우편번호" readonly />
-              <input id="find-zipcode" onclick="sample4_execDaumPostcode()" type="button" value="우편번호 찾기" />
+              <input type="text" v-model="zipcode" id="zipcode" name="zipcode" placeholder="우편번호" readonly />
+              <input id="find-zipcode" @click="execDaumPostcode" type="button" value="우편번호 찾기" />
             </div>
 
-            <input type="text" id="roadname_address" name="roadname_address" placeholder="도로명주소" readonly /> <br />
-            <input type="text" id="number_address" name="number_address" placeholder="지번주소" readonly /> <br />
-            <input type="text" id="detail_address" name="detail_address" placeholder="상세주소"
+            <input type="text" v-model="roadname_address" id="roadname_address" name="roadname_address"
+              placeholder="도로명주소" readonly /> <br />
+            <input type="text" v-model="number_address" id="number_address" name="number_address" placeholder="지번주소"
+              readonly /> <br />
+            <input type="text" v-model="detail_address" id="detail_address" name="detail_address" placeholder="상세주소"
               v-on:keydown.enter.prevent />
           </div>
           <!-- END input-location -->
@@ -464,12 +467,6 @@
           <!-- END custom table -->
         </div>
         <!-- END inputWrap time -->
-        <div>
-          <date-picker v-model:value="time0" format="hh:mm" value-type="format" type="time"></date-picker>
-          <date-picker v-model:value="time1" type="datetime"></date-picker>
-          <date-picker v-model:value="time2" valueType="format"></date-picker>
-          <date-picker v-model:value="time3" range></date-picker>
-        </div>
 
         <div class="inputWrap">
           <p>공간 사진</p>
@@ -488,7 +485,8 @@
           <input @click="submit" type="button" id="submit" class="submit-application" value="호스트 신청하기">
           <input type="submit" id="real-submit" class="submit-application" value="호스트 신청하기" style="display:none;">
         </div>
-      </form>
+      </div>
+      <!-- </form> -->
     </div>
     <!-- END applyWrap -->
   </section>
@@ -505,8 +503,11 @@
 </style>
 
 <script>
+import $ from 'jquery';
 import '@vuepic/vue-datepicker/src/VueDatePicker/style/main.scss';
 import { ref } from 'vue';
+import '@/assets/JS/backoffice/host_insert';
+import axios from 'axios';
 
 export default {
   name: 'InsertView',
@@ -555,15 +556,194 @@ export default {
 
   data() {
     return {
-      tag: {},
-      counter: 0,
-      margin_tag_list: [],
-      backoffice_tag: '',
+      backoffice_id: '',
+      mail_flag: true,
+
+      zipcode: '',
+      roadname: '',
+      roadname_address: '',
+      number_address: '',
+      detail_address: '',
     };
   },
 
   methods: {
 
+    // 사업자 번호 형식 체크
+    keypressBackofficeId() {
+      /* 사업자등록번호 */
+      const regExp = /^([0-9]{3})-?([0-9]{2})-?([0-9]{5})$/;
+      if (!regExp.test($('#backoffice_id').val().trim())) {
+        $('.warning-text:eq(0)').removeClass('blind');
+      } else {
+        $('.warning-text:eq(0)').addClass('blind');
+      }
+    },
+
+    // 전화번호 형식 확인
+    keypressBackofficeTel() {
+      /* 유전 전화 + 휴대폰 번호 */
+      const telExp = /^(0[2-8][0-5]?|01[01346-9])-?([1-9]{1}[0-9]{2,3})-?([0-9]{4})$/;
+
+      /* 대표전화번호 1588 등 */
+      const telExp2 = /^(1544|1566|1577|1588|1644|1688)-?([0-9]{4})$/;
+
+      if (!telExp.test($('#backoffice_tel').val().trim()) && !telExp2.test($('#backoffice_tel').val().trim())) {
+        $('.warning-text:eq(1)').removeClass('blind');
+      } else {
+        $('.warning-text:eq(1)').addClass('blind');
+      }
+    },
+
+    // 이메일 확인
+    sendMail() {
+      if (!$('#btn-certification').prop('check')) {
+        if ($('#backoffice_email').val().trim().length > 0) {
+          const email = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+
+          if (email.test($('#backoffice_email').val().trim())) {
+            if (this.mail_flag) {
+              // 로딩 화면
+              $('.popup-background:eq(1)').removeClass('blind');
+              $('#spinner-section').removeClass('blind');
+              this.mail_flag = false;
+
+              console.log($('#backoffice_email').val().trim());
+
+              const params = new URLSearchParams();
+              params.append('backoffice_email', $('#backoffice_email').val().trim());
+
+              axios.get('http://localhost:8800/backoffice/auth', params)
+                .then((res) => {
+                  this.mail_flag = true;
+
+                  // 로딩 화면 닫기
+                  $('.popup-background:eq(1)').addClass('blind');
+                  $('#spinner-section').addClass('blind');
+
+                  // 이메일 중복 성공
+                  if (res.data.result === '1') {
+                    $('#btn-certification').prop('check', true);
+                    this.timer();
+                    $('#backoffice_email').attr('readonly', true);
+                    $('#backoffice_email').addClass('readOnly');
+
+                    $('.popup-background:eq(1)').removeClass('blind');
+                    $('#common-alert-popup').removeClass('blind');
+                    $('.common-alert-txt').html('이메일로 인증번호를 발송하였습니다.<br> 2분 내로 인증번호 인증을 완료해주세요.<br> 2분 초과 시 이메일 재인증이 필요합니다!');
+                  } else if (res.data.result === '3') {
+                    $('.popup-background:eq(1)').removeClass('blind');
+                    $('#common-alert-popup').removeClass('blind');
+                    $('.common-alert-txt').html('해당 이메일은 인증번호 발송 후<br> 2분이 되지 않았습니다.<br> 잠시만 기다려주세요!');
+                  } else {
+                    $('.popup-background:eq(1)').removeClass('blind');
+                    $('#common-alert-popup').removeClass('blind');
+                    $('.common-alert-txt').text('이미 존재하는 이메일입니다.');
+                  }
+                })
+                .catch(() => {
+                  this.mail_flag = true;
+
+                  // 로딩 화면 닫기
+                  $('.popup-background:eq(1)').addClass('blind');
+                  $('#spinner-section').addClass('blind');
+
+                  $('.popup-background:eq(1)').removeClass('blind');
+                  $('#common-alert-popup').removeClass('blind');
+                  $('.common-alert-txt').text('오류 발생으로 인해 처리에 실패하였습니다.');
+                });
+            }
+          }
+        } else {
+          $('#backoffice_email').addClass('null-input-border');
+        }
+      }
+    },
+
+    timer(check) {
+      let minute = 1;
+      let seconds = 60;
+
+      if (check === 'true') {
+        clearInterval(this.time);
+        $('#btn-certification').val('인증 완료');
+        return;
+      }
+
+      this.time = setInterval(() => {
+        seconds -= 1;
+
+        // eslint-disable-next-line no-useless-concat
+        if (seconds <= 9) $('#btn-certification').val(`0${minute} : ` + `0${seconds}`);
+        else $('#btn-certification').val(`0${minute} : ${seconds}`);
+
+        if (seconds === 0) {
+          if (minute !== 0) {
+            minute = 1 - minute;
+            seconds = 60;
+          } else {
+            $('.popup-background:eq(1)').removeClass('blind');
+            $('#common-alert-popup').removeClass('blind');
+            $('.common-alert-txt').html('이메일 인증 시간을 초과했습니다.<br>다시 시도해주세요.');
+
+            $('#btn-certification').prop('check', false);
+            $('#btn-certification').val('이메일 입력');
+            $('#backoffice_email').val('');
+            $('#backoffice_email').attr('readonly', false);
+            $('#backoffice_email').removeClass('readOnly');
+
+            $('#btn-check-certification').prop('check', false);
+            $('#btn-check-certification').val('인증번호 확인');
+            $('#auth_code').val('');
+            $('#auth_code').attr('readonly', false);
+            $('#auth_code').removeClass('readOnly');
+
+            clearInterval(this.time);
+          }
+        }
+      }, 1000);
+    },
+
+    // ************
+    // DAUM ZIPCODE
+    // ************
+    execDaumPostcode() {
+      new window.daum.Postcode({
+        oncomplete: (data) => {
+          let roadAddr = data.roadAddress; // 도로명 주소 변수
+          let auto_roadAddr = data.autoRoadAddress; // 도로명 주소 변수
+          let extraRoadAddr = ''; // 참고 항목 변수
+
+          // 법정동명이 있을 경우 추가한다. (법정리는 제외)
+          // 법정동의 경우 마지막 문자가 "동/로/가"로 끝난다.
+          if (data.bname !== '' && /[동|로|가]$/g.test(data.bname)) {
+            extraRoadAddr += data.bname;
+          }
+          // 건물명이 있고, 공동주택일 경우 추가한다.
+          if (data.buildingName !== '' && data.apartment === 'Y') {
+            extraRoadAddr += (extraRoadAddr !== '' ? ', ' + data.buildingName : data.buildingName);
+          }
+
+          console.log(roadAddr);
+
+          // 우편번호와 주소 정보를 해당 필드에 넣는다.
+          $('#zipcode').val(data.zonecode);
+
+          if (roadAddr.length > 0)
+            $('#roadname_address').val(roadAddr);
+          else
+            $('#roadname_address').val(auto_roadAddr);
+
+          $('#number_address').val(data.jibunAddress);
+        },
+      }).open();
+    },
+
+    // **************
+    // TAG
+    // **************
+
+    // 운영 시간 formatter
     timeFormatter: (time) => {
       let h = time.hours;
       const m = time.minutes;

@@ -14,7 +14,6 @@
 // ******************
 
 import $ from 'jquery';
-import '@/assets/JS/backoffice/custom_timepicker';
 
 $(() => {
 	const tag = {};
@@ -115,16 +114,6 @@ $(() => {
 		$('.popup-background:eq(0)').addClass('blind');
 	});
 
-	// TIME PICKER
-	$('.time-picker').timepicker({
-		timeFormat: 'HH:mm',
-		interval: 60,
-		defaultTime: '09',
-		dynamic: false,
-		dropdown: true,
-		scrollbar: true,
-	});
-
 	// 휴무일 체크시 timepicker block
 	$('#sun_dayoff').click(() => {
 		if (this.checked) {
@@ -222,32 +211,6 @@ $(() => {
 		}
 	});
 
-	/** 사업자 번호 형식 맞는지 확인 */
-	$('#backoffice_id').on('keyup keydown', () => {
-		/* 사업자등록번호 */
-		const regExp = /^([0-9]{3})-?([0-9]{2})-?([0-9]{5})$/;
-		if (!regExp.test($('#backoffice_id').val().trim())) {
-			$('.warning-text:eq(0)').removeClass('blind');
-		} else {
-			$('.warning-text:eq(0)').addClass('blind');
-		}
-	});
-
-	/** 전화번호 형식 맞는지 확인 */
-	$('#backoffice_tel').on('keyup keydown', () => {
-		/* 유전 전화 + 휴대폰 번호 */
-		const telExp = /^(0[2-8][0-5]?|01[01346-9])-?([1-9]{1}[0-9]{2,3})-?([0-9]{4})$/;
-
-		/* 대표전화번호 1588 등 */
-		const telExp2 = /^(1544|1566|1577|1588|1644|1688)-?([0-9]{4})$/;
-
-		if (!telExp.test($('#backoffice_tel').val().trim()) && !telExp2.test($('#backoffice_tel').val().trim())) {
-			$('.warning-text:eq(1)').removeClass('blind');
-		} else {
-			$('.warning-text:eq(1)').addClass('blind');
-		}
-	});
-
 	$('#backoffice_info').on('keydown keyup', () => {
 		$('.b_info_txt_length').text($(this).val().length);
 
@@ -259,69 +222,7 @@ $(() => {
 	let mail_flag = true;
 	/** 인증번호 발송 버튼 클릭 * */
 	$('#btn-certification').click(() => {
-		if (!$('#btn-certification').prop('check')) {
-			if ($('#backoffice_email').val().trim().length > 0) {
-				const email = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
 
-				if (email.test($('#backoffice_email').val().trim())) {
-					if (mail_flag) {
-						// 로딩 화면
-						$('.popup-background:eq(1)').removeClass('blind');
-						$('#spinner-section').removeClass('blind');
-						mail_flag = false;
-
-						$.ajax({
-							url: '/backoffice/auth',
-							type: 'GET',
-							dataType: 'json',
-							data: {
-								backoffice_email: $('#backoffice_email').val().trim(),
-							},
-							success(res) {
-								mail_flag = true;
-
-								// 로딩 화면 닫기
-								$('.popup-background:eq(1)').addClass('blind');
-								$('#spinner-section').addClass('blind');
-
-								// 이메일 중복 성공
-								if (res.result === 1) {
-									$('#btn-certification').prop('check', true);
-									timer();
-									$('#backoffice_email').attr('readonly', true);
-									$('#backoffice_email').addClass('readOnly');
-
-									$('.popup-background:eq(1)').removeClass('blind');
-									$('#common-alert-popup').removeClass('blind');
-									$('.common-alert-txt').html('이메일로 인증번호를 발송하였습니다.<br> 2분 내로 인증번호 인증을 완료해주세요.<br> 2분 초과 시 이메일 재인증이 필요합니다!');
-								} else if (res.result === 3) {
-									$('.popup-background:eq(1)').removeClass('blind');
-									$('#common-alert-popup').removeClass('blind');
-									$('.common-alert-txt').html('해당 이메일은 인증번호 발송 후<br> 2분이 되지 않았습니다.<br> 잠시만 기다려주세요!');
-								} else {
-									$('.popup-background:eq(1)').removeClass('blind');
-									$('#common-alert-popup').removeClass('blind');
-									$('.common-alert-txt').text('이미 존재하는 이메일입니다.');
-								}
-							},
-							error() {
-								mail_flag = true;
-
-								// 로딩 화면 닫기
-								$('.popup-background:eq(1)').addClass('blind');
-								$('#spinner-section').addClass('blind');
-
-								$('.popup-background:eq(1)').removeClass('blind');
-								$('#common-alert-popup').removeClass('blind');
-								$('.common-alert-txt').text('오류 발생으로 인해 처리에 실패하였습니다.');
-							},
-						});
-					}
-				}
-			} else {
-				$('#backoffice_email').addClass('null-input-border');
-			}
-		}
 	});
 
 	/** 인증번호 확인 버튼 클릭 * */
@@ -447,48 +348,4 @@ $(() => {
 			}
 		}
 	});
-
-	let time = '';
-	function timer(check) {
-		let minute = 1;
-		let seconds = 60;
-
-		if (check === 'true') {
-			clearInterval(time);
-			$('#btn-certification').val('인증 완료');
-			return;
-		}
-
-		time = setInterval(() => {
-			seconds--;
-
-			if (seconds <= 9) $('#btn-certification').val(`0${minute} : ` + `0${seconds}`);
-			else $('#btn-certification').val(`0${minute} : ${seconds}`);
-
-			if (seconds === 0) {
-				if (minute !== 0) {
-					--minute;
-					seconds = 60;
-				} else {
-					$('.popup-background:eq(1)').removeClass('blind');
-					$('#common-alert-popup').removeClass('blind');
-					$('.common-alert-txt').html('이메일 인증 시간을 초과했습니다.<br>다시 시도해주세요.');
-
-					$('#btn-certification').prop('check', false);
-					$('#btn-certification').val('이메일 입력');
-					$('#backoffice_email').val('');
-					$('#backoffice_email').attr('readonly', false);
-					$('#backoffice_email').removeClass('readOnly');
-
-					$('#btn-check-certification').prop('check', false);
-					$('#btn-check-certification').val('인증번호 확인');
-					$('#auth_code').val('');
-					$('#auth_code').attr('readonly', false);
-					$('#auth_code').removeClass('readOnly');
-
-					clearInterval(time);
-				}
-			}
-		}, 1000);
-	}
 });
