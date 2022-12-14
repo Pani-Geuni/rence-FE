@@ -18,12 +18,12 @@
     <div class="homeTitle-wrap">
         <span class="homeTitle">어떤 공간을 찾으시나요?</span>
     </div>
-    <date-picker v-model="time1" valueType="format"></date-picker>
+
     <div class="type-list-wrap">
         <div class="type-list type-desk">
             <router-link :to="{ name: 'ListView', params: { call: 'list_page?type=desk&condition=date&page=1' }}">
                 <section class="type-img-section">
-                    <img src="../../assets/IMG/home/desk.svg" alt="type-desk-img" class="type-img"/>
+                    <img src="@/assets/IMG/home/desk.svg" alt="type-desk-img" class="type-img"/>
                 </section>
                 <section class="type-title-section">
                     <span>데스크</span>
@@ -39,7 +39,7 @@
         <div class="type-list type-meeting-room">
             <router-link :to="{ name: 'ListView', params: { call: 'list_page?type=meeting_room&condition=date&page=1' }}">
                 <section class="type-img-section">
-                    <img src="../../assets/IMG/home/meeting-room.svg"
+                    <img src="@/assets/IMG/home/meeting-room.svg"
                      alt="type-metting-room-img" class="type-img" />
                 </section>
                 <section class="type-title-section">
@@ -57,7 +57,7 @@
         <div class="type-list type-office">
             <router-link :to="{ name: 'ListView', params: { call: 'list_page?type=office&condition=date&page=1' }}">
                 <section class="type-img-section">
-                    <img src="../../assets/IMG/home/office-building.svg"
+                    <img src="@/assets/IMG/home/office-building.svg"
                     alt="type-office-img" class="type-img" />
                 </section>
                 <section class="type-title-section">
@@ -81,16 +81,7 @@
 </style>
 
 <script>
-import DatePicker from 'vue2-datepicker';
-import 'vue2-datepicker/index.css';
-
 export default {
   name: 'HomeView',
-  components: { DatePicker },
-  data() {
-    return {
-      time1: null,
-    };
-  },
 };
 </script>
