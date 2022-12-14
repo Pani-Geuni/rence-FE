@@ -37,7 +37,7 @@
         <div class="custom-select-host blind">
           <ul class="host-select-wrap">
             <li @click="goRence" id="go-user-home" class="host-select-list">Rence로 이동</li>
-            <li id="go-dashboard" class="host-select-list">대시보드로 이동</li>
+            <li @click="goDashboard" id="go-dashboard" class="host-select-list">대시보드로 이동</li>
             <li @click="logout" id="go-logOut" class="host-select-list">로그아웃</li>
           </ul>
         </div>
@@ -98,6 +98,11 @@ export default {
     /** RENCE 페이지 이동 메뉴 */
     goRence() {
       this.$router.push('/');
+    },
+
+    // Dashboard로 이동
+    goDashboard() {
+      this.$router.push(`/backoffice/dash/main?backoffice_no=${this.backoffice_no}`);
     },
 
     /** 호스트 로그아웃 */
