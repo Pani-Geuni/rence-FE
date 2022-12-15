@@ -1,31 +1,42 @@
+/* ************ */
+/* @author 전판근 */
+/* ************ */
+
+/* ************ */
+/* QNA 상세 보기  */
+/* ************ */
+.detail-qna-wrap.blind {
+  display: none;
+}
+
 .detail-qna-wrap {
   box-sizing: border-box;
   display: flex;
   flex-direction: column;
+
   width: 100%;
   height: auto;
+
   border-radius: 8px;
   background-color: #f8f8f8;
-  padding: 8px 20px;
 
-  &.blind {
-    display: none;
-  }
+  padding: 8px 20px;
 }
 
 .qna-table-wrap {
   min-height: 500px;
   max-height: 500px;
   overflow-y: overlay;
+}
 
-  &::-webkit-scrollbar {
-    width: 0px;
-  }
+.qna-table-wrap::-webkit-scrollbar {
+  width: 0px;
 }
 
 .question-section {
   display: flex;
   flex-direction: column;
+
   padding: 12px 0;
   margin-bottom: 12px;
   border-bottom: 1px solid #e4e4e4;
@@ -34,6 +45,7 @@
 .answer-section {
   display: flex;
   flex-direction: column;
+
   padding: 12px 0;
 }
 
@@ -68,6 +80,10 @@
   font-size: 10px;
 }
 
+/* **************** */
+/* 문의 답글 남기기 팝업 */
+/* **************** */
+
 * {
   margin: 0;
 }
@@ -78,18 +94,21 @@
   height: auto;
   background-color: #ffffff;
   border-radius: 8px;
+
   padding: 20px;
 }
 
 .comment-popup-title-section {
   display: flex;
   flex-direction: column;
-  padding-bottom: 20px;
-  border-bottom: 1px solid #e4e4e4;
 
-  span {
-    font-weight: 700;
-  }
+  padding-bottom: 20px;
+
+  border-bottom: 1px solid #e4e4e4;
+}
+
+.comment-popup-title-section span {
+  font-weight: 700;
 }
 
 .user-comment-section {
@@ -100,24 +119,23 @@
 .user-comment-content h5,
 .host-comment-section h5 {
   font-size: 16px;
+
   margin-bottom: 12px;
 }
 
-.user-comment-title {
-  p {
-    font-size: 14px;
-    margin-bottom: 20px;
-  }
+.user-comment-title p {
+  font-size: 14px;
+
+  margin-bottom: 20px;
 }
 
-.user-comment-content {
-  pre {
-    width: 100%;
-    font-size: 14px;
-    height: auto;
-    overflow: auto;
-    white-space: pre-wrap;
-  }
+.user-comment-content pre {
+  width: 100%;
+  font-size: 14px;
+
+  height: auto;
+  overflow: auto;
+  white-space: pre-wrap;
 }
 
 .host-comment-section {
@@ -127,7 +145,9 @@
 #host-comment {
   width: 100%;
   height: 150px;
+
   padding: 8px;
+
   border: 1px solid #e4e4e4;
   outline-color: #b2a4ff;
   resize: none;
@@ -137,15 +157,17 @@
   display: flex;
   justify-content: flex-end;
   margin-bottom: 20px;
+}
 
-  button {
-    padding: 4px 16px;
-    font-weight: 700;
-    color: #ffffff;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-  }
+.button-group button {
+  padding: 4px 16px;
+  font-weight: 700;
+  color: #ffffff;
+
+  border: none;
+  border-radius: 8px;
+
+  cursor: pointer;
 }
 
 .btn-comment-cancel {
@@ -157,9 +179,14 @@
   background-color: #b2a4ff;
 }
 
+
+/**************************/
+/**** PAGING SECTION ******/
+/**************************/
 .paging-section {
   width: 100%;
   height: 10%;
+
   display: flex;
   justify-content: center;
 }
@@ -173,13 +200,16 @@
 .paging-box {
   width: 11px;
   height: 10px;
+
   display: flex;
   justify-content: center;
   align-items: center;
+
   border: 1.5px solid #D8D8D8;
   background-color: #ffffff;
   color: #B2B2B2;
   font-size: 9px;
+
   padding: 2px 2px 2px 1px;
   cursor: pointer;
 }

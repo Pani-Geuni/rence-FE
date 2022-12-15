@@ -49,7 +49,15 @@
 </style>
 
 <script>
+import '@/assets/JS/backoffice/dashboard';
+
 export default {
   name: 'SidebarView',
+
+  data() {
+  },
+
+  methods: {
+  },
 };
 </script>
