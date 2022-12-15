@@ -1,0 +1,102 @@
+<!-- eslint-disable vuejs-accessibility/label-has-for -->
+<!-- eslint-disable max-len -->
+<!-- eslint-disable vuejs-accessibility/form-control-has-label -->
+<template>
+  <div class="titleSection">
+    <h1>일정관리</h1>
+    <button id="btn-dayoff-calendar" class="btn-dayoff-calendar">휴무 일정</button>
+  </div>
+
+  <div class="boardWrap">
+    <div class="cardSection schedule">
+      <div class="setScheduleSection">
+        <div class="setScheduleWrap">
+          <h3>임시 일정 설정</h3>
+          <div class="radio-wrap">
+            <input type="radio" name="set_schedule" id="set-dayoff" class="schedule-radio" value="dayoff" />
+            <label for="set-dayoff"> 휴무 설정 </label>
+
+            <input type="radio" name="set_schedule" id="set-breaktime" class="schedule-radio" value="breaktime" />
+            <label for="set-breaktime"> 브레이크 타임 설정 </label>
+          </div>
+          <div>
+            <span class="off-type-warning blind">휴무 설정은 선택 당일 휴무입니다.<br>(시간 선택과 관계 없습니다.)</span>
+            <span class="off-type-warning blind">브레이크 타임은 당일 설정만 가능합니다.<br>(시작 날짜와 종료 날짜를 같게 설정해 주세요.)</span>
+          </div>
+        </div>
+        <!-- END setScheduleWrap -->
+        <div class="setScheduleWrap">
+          <h3>날짜 및 시간 설정</h3>
+          <div class="time-select-section">
+            <div class="time-select-wrap">
+              <input type="text" class="type-border-txt time-input" placeholder="시작 날짜/시간" readonly />
+              <img src="@/assets/IMG/office/full-dropdown.svg" alt="full-dropdown" class="full-dropdown" />
+            </div>
+            <div class="time-select-wrap">
+              <input type="text" class="type-border-txt time-input" placeholder="종료 날짜/시간" readonly />
+              <img src="@/assets/IMG/office/full-dropdown.svg" alt="full-dropdown" class="full-dropdown" />
+            </div>
+            <input type="button" class="btn-schedule-research" value="적용 공간 검색" />
+          </div>
+        </div>
+      </div>
+      <!-- END setScheduleSection -->
+
+      <div class="select-room-section">
+        <div class="select-room-section-title">
+          <h3>적용 공간 선택</h3>
+          <div class="select-all-section">
+            <label for="select-all-room">전체선택</label>
+            <input type="checkbox" id="select-all-room" />
+            <input type="hidden" id="maxCnt" />
+          </div>
+        </div>
+        <!-- END select-room-section-title -->
+
+        <div class="custom-table">
+          <div class="ct-header">
+            <div class="ct-header-cell schedule">선택</div>
+            <div class="ct-header-cell schedule">공간 타입</div>
+            <div class="ct-header-cell schedule">공간 이름</div>
+            <div class="ct-header-cell schedule">공간 예약 유무</div>
+            <div class="ct-header-cell schedule">예약 수</div>
+          </div>
+        </div>
+        <div class="ct-body schedule-ct">
+
+          <div class="ct-body-row blind">
+            <div class="ct-body-cell schedule">
+              <input type="checkbox" name="select-room" id="room_no" class="room-checkbox" value="" />
+            </div>
+            <div class="ct-body-cell schedule">
+              <span class="room_type"></span>
+            </div>
+            <div class="ct-body-cell schedule">
+              <span class="room_name"></span>
+            </div>
+            <div class="ct-body-cell schedule">
+              <span class="reserve_is"></span>
+            </div>
+            <div class="ct-body-cell schedule">
+              <span class="reserve_cnt"></span>
+            </div>
+          </div>
+          <!-- END ct-body-row -->
+        </div>
+      </div>
+      <!-- END select-room-section -->
+    </div>
+    <!-- END cardSection schedule -->
+  </div>
+  <!-- END boardWrap -->
+</template>
+
+<style>
+@import '@/assets/CSS/dash-board/dash-schedule.scss';
+</style>
+
+<script>
+export default {
+  name: 'ScheduleView',
+};
+</script>

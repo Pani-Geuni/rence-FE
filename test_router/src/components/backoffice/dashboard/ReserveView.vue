@@ -1,0 +1,145 @@
+<!-- eslint-disable vuejs-accessibility/form-control-has-label -->
+<!-- eslint-disable max-len -->
+<template>
+  <div class="titleSection">
+    <h1>예약 관리</h1>
+  </div>
+  <!-- END titleSection -->
+
+  <div class="boardWrap reserve">
+    <section class="reserve-header">
+      <div class="searchBar-section">
+        <div class="searchBar-wrap">
+          <div id="type" class="sb_1 type">
+            <!-- <span>타입</span> -->
+            <span>예약자</span>
+          </div>
+          <div class="sb_2">
+            <input type="text" placeholder="검색어를 입력하세요." id="input_searchBar" />
+          </div>
+
+          <!-- CUSTOM SELECT -->
+          <section>
+            <!-- START TYPE SELECT -->
+            <div id="custom-type-select" class="type-select-wrap blind">
+              <ul class="type-select">
+                <li id="type-list-desk" class="type-select-list" type="desk">데스크</li>
+                <li id="type-list-metting-room" class="type-select-list" type="meeting-room">회의실</li>
+                <li id="type-list-office" class="type-select-list" type="office">오피스</li>
+              </ul>
+            </div>
+            <!-- END TYPE SELECT -->
+          </section>
+        </div>
+      </div>
+
+      <ul class="reserve-filter-list">
+        <li id="reserve-all" class="reserve-item" th:classappend="${reserve_state}=='all' ? 'active'">전체</li>
+        <li id="reserve-ing" class="reserve-item" th:classappend="${reserve_state}=='in_use' ? 'active'">예약중
+        </li>
+        <li id="reserve-cancel" class="reserve-item" th:classappend="${reserve_state}=='cancel' ? 'active'">취소
+        </li>
+        <li id="reserve-end" class="reserve-item" th:classappend="${reserve_state}=='end' ? 'active'">종료</li>
+      </ul>
+    </section>
+    <!-- END reserve-header -->
+
+    <section class="reserveWrap">
+      <div class="custom-table">
+        <!--<input type="hidden" th:attr="maxCnt=${res.maxCnt}, nowCnt=${res.nowCnt}" id="maxCnt" />-->
+        <div class="ct-header reserve">
+          <div class="ct-header-cell reserve">예약 날짜</div>
+          <div class="ct-header-cell reserve">진행 여부</div>
+          <div class="ct-header-cell reserve">예약 공간</div>
+          <div class="ct-header-cell reserve">예약자</div>
+          <div class="ct-header-cell reserve">연락처</div>
+          <div class="ct-header-cell reserve">예약자 이메일</div>
+          <div class="ct-header-cell reserve">예약 금액</div>
+          <div class="ct-header-cell reserve">취소 버튼</div>
+        </div>
+        <!-- END ct-header -->
+
+        <div class="ct-body reserve-ct">
+          <!-- START ct-body-row reserve -->
+          <div class="ct-body-row reserve" v-for="vos in r_vos" :key="vos">
+            <div class="ct-body-cell reserve reserve_date_set">
+              {{ vos.reserve_sdate }} ~ <br />{{ vos.reserve_edate }}
+            </div>
+            <div class="ct-body-cell reserve reserve_state">
+              <button v-if="vos.reserve_state === 'begin'" class="ct-body-btn reserve-ing">이용전</button>
+              <button v-if="vos.reserve_state === 'in_use'" class="ct-body-btn reserve-doing">이용중</button>
+              <button v-if="vos.reserve_state === 'end'" class="ct-body-btn reserve-end">이용완료</button>
+              <button v-if="vos.reserve_state === 'cancel'" class="ct-body-btn reserve-cancel">취소</button>
+            </div>
+
+            <div class="ct-body-cell reserve reserve_room_name">{{ vos.room_name }}</div>
+            <div class="ct-body-cell reserve reserve_user_name">{{ vos.user_name }}</div>
+            <div class="ct-body-cell reserve reserve_user_tel">{{ vos.user_tel }}</div>
+            <div class="ct-body-cell reserve reserve_user_email">{{ vos.user_email }}</div>
+            <div class="ct-body-cell reserve reserve_price">
+              {{ vos.actual_payment }}원 /
+              <span v-if="vos.payment_state === 'T'">선</span>
+              <span v-if="vos.payment_state === 'F'">후</span>
+            </div>
+            <div class="ct-body-cell reserve reserve-btn-cell">
+              <button class="ct-body-btn reserve-ing reserve_is_cancle" v-if="vos.reserve_state === 'begin'"
+                :reserve_no="vos.reserve_no" :user_no="vos.user_no">예약 취소</button>
+
+              <button class="ct-body-btn reserve-end" v-if="vos.reserve_state !== 'begin'">취소불가</button>
+            </div>
+          </div>
+          <!-- END ct-body-row reserve -->
+        </div>
+        <!-- END ct-body -->
+
+        <section class="paging-section reserve_search_paging" v-if="res.masPage > 0">
+          <section class="paging-section">
+            <div class="paging-wrap">
+              <span th:if="${res.maxPage} <= 5" class="paging-box before-page-btn hide"> &lt;&lt; </span>
+              <span th:unless="${res.maxPage} <= 5" class="paging-box before-page-btn"> &lt;&lt; </span>
+
+              <!-- <th:block th:with="ceil=${#numbers.formatInteger(T(java.lang.Math).ceil((res.nowPage)/5.0),1)}">
+                  <th:block th:with="start=(5 * (${ceil} - 1) + 1)">
+                    <div class="paging-num-wrap paging-wrap">
+                      <th:block th:each="num : ${#numbers.sequence(start, res.maxPage)}">
+                        <span th:if="${num} == ${res.nowPage}" th:attr="idx=${num}"
+                          class="paging-box paging-num choice">[[${num}]]</span>
+                        <span th:if="${num} != ${res.nowPage}" th:attr="idx=${num}"
+                          class="paging-box paging-num un-choice">[[${num}]]</span>
+                      </th:block>
+                    </div>
+                  </th:block>
+                </th:block> -->
+
+              <span v-if="res.totalPageCnt > 5 && re.maxPage < res.totalPageCnt"
+                class="paging-box next-page-btn">>></span>
+              <span v-if="res.totalPageCnt <= 5 && res.maxPage >= res.totalPageCnt"
+                class="paging-box next-page-btn hide">>></span>
+              <input type="hidden" id="totalPageCnt" :value="res.totalPageCnt">
+            </div>
+          </section>
+        </section>
+      </div>
+      <!-- END custom-table -->
+    </section>
+    <!-- END reserveWrap -->
+  </div>
+  <!-- boardWrap reserve -->
+</template>
+
+<style>
+@import '@/assets/CSS/dash-board/dash-reserve-list.scss';
+</style>
+
+<script>
+export default {
+  name: 'ReserveView',
+
+  data() {
+    return {
+      r_vos: [],
+      res: [],
+    };
+  },
+};
+</script>
