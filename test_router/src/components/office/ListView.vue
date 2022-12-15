@@ -6,6 +6,11 @@
 <!-- eslint-disable linebreak-style -->
 <!-- eslint-disable max-len -->
 
+<!--
+ - @author 김예은
+ - @refactoring 김예은
+-->
+
 <template>
   <!-- NULL SECTION -->
   <div class="list-page-wrap">
@@ -111,10 +116,10 @@ export default {
 
     // axios.get(this.url)
     //   .then((res) => {
-    //     this.list = res.list;
-    //     this.maxCnt = res.maxCnt;
-    //     this.nowCnt = res.nowCnt;
-    //     this.condition = res.condition;
+    //     this.list = res.data.list;
+    //     this.maxCnt = res.data.maxCnt;
+    //     this.nowCnt = res.data.nowCnt;
+    //     this.condition = res.data.condition;
 
     //     if (this.list.length !== 0) {
     //       $('.list-page-wrap').addClass('blind');

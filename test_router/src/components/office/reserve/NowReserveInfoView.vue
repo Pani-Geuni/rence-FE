@@ -4,6 +4,12 @@
 <!-- eslint-disable space-before-blocks -->
 <!-- eslint-disable next-line default-case-->
 <!-- eslint-disable -->
+
+<!--
+ - @author 김예은
+ - @refactoring 김예은
+-->
+
 <template>
   <div class="space-detail-wrap" th:fragment="content">
     <section class="page-title-section">
@@ -207,7 +213,7 @@ export default {
 
     // axios.get(`http://localhost:8800/rence/reserve_info?reserve_no=${reserveNo}`)
     //   .then((res) => {
-    //     this.list = res;
+    //     this.list = res.data;
     //   })
     //   .catch(() => {
     //     $('.popup-background:eq(1)').removeClass('blind');

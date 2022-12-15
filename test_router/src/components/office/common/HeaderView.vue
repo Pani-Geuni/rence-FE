@@ -8,7 +8,7 @@
   <section class ="headerWrap">
     <div class = "logo-section">
       <router-link to="/">
-        <img src="../../../assets/IMG/common/RENCE.svg" alt="로고 이미지" class="logo-mku">
+        <img src="@/assets/IMG/common/RENCE.svg" alt="로고 이미지" class="logo-mku">
       </router-link>
     </div>
     <div class = "searchBar-section">
@@ -20,12 +20,10 @@
                   <span id="location_val">장소</span>
               </div>
               <div class = "sb_2">
-                  <input type="text" placeholder="검색어를 입력하세요."
-                  @:keydown.enter="before_search" @:keyup.enter="before_search" id="input_searchBar"/>
+                  <input type="text" placeholder="검색어를 입력하세요." @keyup.enter="before_search" id="input_searchBar"/>
               </div>
               <div class = "searchBar-btnWrap">
-                <img src="../../../assets/IMG/header/Search_Button.svg" alt="searchBar-btn"
-                  @click="before_search" class="searchBar-btn"/>
+                <img src="@/assets/IMG/header/Search_Button.svg" alt="searchBar-btn" @click="before_search" class="searchBar-btn"/>
               </div>
 
             <!-- CUSTOM SELECT -->
@@ -44,10 +42,10 @@
                 <!-- START Location SELECT -->
                 <div id = "custom-location-select" class="location-select-wrap blind">
                     <ul id = "location-city" class="location-select">
-                        <li class="location-select-list" v-for="c in city" @click="load_town({c})">{{ c }}</li>
+                        <li class="location-select-list" v-for="c in city" :key="c" @click="load_town({c})">{{ c }}</li>
                     </ul>
                     <ul id = "location-town" class="location-select blind">
-                        <li class="location-select-list" v-for="t in town" @click="set_location({t})">{{ t }}</li>
+                        <li class="location-select-list" v-for="t in town" :key="t" @click="set_location({t})">{{ t }}</li>
                     </ul>
                 </div>
                 <!-- END TYPE SELECT -->
@@ -56,7 +54,7 @@
     </div>
     <div class="userMenu-section ">
         <!-- 로그인 전 유저 메뉴 -->
-        <section id="before_login" class="blind">
+        <section id="before_login" class="">
             <div id = "before_userMenu" class ="userMenu" @click="user_menu_select('before_login')">
                 <img src="@/assets/IMG/header/user_menu.svg" alt="user_menu_img" class="user_menu_img"/>
                 <img src="@/assets/IMG/header/bx_user-circle.png" alt="user_profile_img" class="user_profile_img"/>
@@ -72,7 +70,7 @@
             </div>
         </section>
 
-        <section id="after_login" class="" @click="user_menu_select('after_login')">
+        <section id="after_login" class="blind" @click="user_menu_select('after_login')">
             <div id = "after_userMenu" class ="userMenu">
               <img src="@/assets/IMG/header/user_menu.svg" alt="user_menu_img" class="user_menu_img"/>
               <img alt="user_profile_img" class="user_profile_img"/>
@@ -119,22 +117,22 @@ export default {
     },
     type_set(param) {
       console.log($(param).text());
-      let type_txt = '';
+      let typeTxt = '';
 
       // eslint-disable-next-line default-case
       switch ($(param).text()) {
         case '데스크':
-          type_txt = 'desk';
+          typeTxt = 'desk';
           break;
         case '회의실':
-          type_txt = 'meeting-room';
+          typeTxt = 'meeting-room';
           break;
         case '오피스':
-          type_txt = 'office';
+          typeTxt = 'office';
           break;
       }
       $('#type>span').text($(param).text());
-      $('#type>span').attr('val', type_txt);
+      $('#type>span').attr('val', typeTxt);
       $('#custom-type-select').addClass('blind');
     },
     // 서치바에서 타입 클릭 시 셀렉트 SHOW/HIDE

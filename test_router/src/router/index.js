@@ -10,6 +10,7 @@ import BeforeReserveInfoView from '../components/office/reserve/BeforeReserveInf
 import NowReserveInfoView from '../components/office/reserve/NowReserveInfoView.vue';
 
 import SpaceDetailView from '../components/office/space_detail/SpaceDetailView.vue';
+import OfficeSpaceDetailView from '../components/office/space_detail/OfficeSpaceDetailView.vue';
 
 import HomeView from '../components/office/HomeView.vue';
 import ListView from '../components/office/ListView.vue';
@@ -74,6 +75,11 @@ const routes = [
         path: 'space',
         name: 'SpaceDetailView',
         component: SpaceDetailView,
+      },
+      {
+        path: 'space_office',
+        name: 'OfficeSpaceDetailView',
+        component: OfficeSpaceDetailView,
       },
     ],
   },

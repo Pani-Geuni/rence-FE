@@ -8,6 +8,12 @@
 <!-- eslint-disable array-callback-return -->
 <!-- eslint-disable space-before-blocks -->
 <!-- eslint-disable -->
+
+<!--
+ - @author 김예은
+ - @refactoring 김예은
+-->
+
 <template>
   <div class="popup-background blind">
 		<!-- START LOGIN SECTION -->
@@ -20,7 +26,7 @@
 				<input type="password" id="login-pw" @click="remove_null_input_border($event.target)" class="login-popup-input" placeholder="비밀번호를 입력하세요." />
 			</section>
 			<section class="login-popup-btn-section">
-				<input type="button" id="login-btn" value="로그인">
+				<input @click="do_login" type="button" id="login-btn" value="로그인">
 				<div class="txt-btn-wrap">
 					<span @click="go_find_id" class="txt-btn">아이디 찾기</span>
 					<span @click="go_find_pw" class="txt-btn">비밀번호 찾기</span>
@@ -301,9 +307,13 @@
 <script>
 import axios from 'axios';
 import $ from 'jquery';
+import VueCookies from 'vue-cookies';
 
 export default {
   name: 'PopupView',
+  components: {
+    VueCookies,
+  },
   data() {
     return {
       // eslint-disable-next-line array-callback-return
@@ -336,6 +346,50 @@ export default {
     remove_null_input_border(param) {
       if ($(param).hasClass('null-input-border')) {
         $(param).removeClass('null-input-border');
+      }
+    },
+    do_login() {
+      // 로그인 시도
+      if ($('#login-id').val().trim().length > 0 && $('#login-pw').val().trim().length > 0) {
+        const params = new URLSearchParams();
+        params.append('username', $('#login-id').val().trim());
+        params.append('password', $('#login-pw').val().trim());
+
+        axios.post('http://localhost:8800/rence/loginOK', params).then((res) => {
+          console.log(res);
+          // 로그인 성공
+          if (res.data.result === '1') {
+            this.$cookies.set('user_no', res.data.user_no);
+            this.$cookies.set('user_image', res.data.user_image);
+            console.log(this.$session.get('user_id'));
+            window.location.reload();
+          } else {
+          // 로딩 화면 닫기
+            $('#spinner-section').addClass('blind');
+
+            $('.popup-background:eq(1)').removeClass('blind');
+            $('#common-alert-popup').removeClass('blind');
+            $('.common-alert-txt').text('로그인에 실패하였습니다.');
+          }
+        })
+          .catch(() => {
+          // 로딩 화면 닫기
+            $('.popup-background:eq(1)').addClass('blind');
+            $('#spinner-section').addClass('blind');
+
+            $('.popup-background:eq(1)').removeClass('blind');
+            $('#common-alert-popup').removeClass('blind');
+            $('.common-alert-txt').text('오류 발생으로 인해 로그인 처리에 실패하였습니다.');
+          });
+      }
+      // 로그인 불가
+      else {
+        if ($('#login-id').val().trim().length === 0) {
+          $('#login-id').addClass('null-input-border');
+        }
+        if ($('#login-pw').val().trim().length === 0) {
+          $('#login-pw').addClass('null-input-border');
+        }
       }
     },
     /** 아이디 찾기 버튼 클릭 이벤트 */

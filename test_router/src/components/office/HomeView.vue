@@ -16,7 +16,7 @@
 <template>
   <div class="homeWrap">
     <div class="homeTitle-wrap">
-        <span class="homeTitle">어떤 공간을 찾으시나요?</span>
+        <span class="homeTitle" data-v-007a04d7>어떤 공간을 찾으시나요?</span>
     </div>
 
     <div class="type-list-wrap">
@@ -77,7 +77,7 @@
 </template>
 
 <style lang="scss" scoped>
-  @import '@/assets/CSS/office/home.scss';
+@import '@/assets/CSS/office/home.scss';
 </style>
 
 <script>

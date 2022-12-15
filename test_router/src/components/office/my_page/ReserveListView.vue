@@ -4,6 +4,12 @@
 <!-- eslint-disable space-before-blocks -->
 <!-- eslint-disable next-line default-case-->
 <!-- eslint-disable -->
+
+<!--
+ - @author 김예은
+ - @refactoring 김예은
+-->
+
 <template>
   <div class="reserve-list-wrap">
     <div class="reserve-list">
@@ -113,14 +119,14 @@ export default {
   mounted() {
     // axios.get('http://localhost:8800/rence/reserve_list?time_point=now&user_no=${$.cookie('user_no')}&page=1')
     //   .then((res) => {
-    //     this.type = res.type;
-    //     this.cnt = res.cnt;
+    //     this.type = res.data.type;
+    //     this.cnt = res.data.cnt;
 
-    //     this.list = res.list;
-    //     this.maxPage = res.maxPage;
-    //     this.nowPage = res.nowPage;
-    //     this.totalPageCnt = res.totalPageCnt;
-    //     this.start = Math.ceil(res.nowPage/5.0);
+    //     this.list = res.data.list;
+    //     this.maxPage = res.data.maxPage;
+    //     this.nowPage = res.data.nowPage;
+    //     this.totalPageCnt = res.data.totalPageCnt;
+    //     this.start = Math.ceil(res.data.nowPage/5.0);
     //     this.start = 5 * (this.start - 1) + 1;
 
     //     this.forRange = [];

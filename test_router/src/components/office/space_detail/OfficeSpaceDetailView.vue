@@ -15,13 +15,13 @@
 -->
 
 <template>
-  <section class="space-detail-introduce-section">
+  <section class="space-detail-introduce-section" th:fragment="content">
 		<div class="space-detail-introduce-wrap">
 			<section class="space-detail-title-section">
 				<span class="space-detail-company-name">
 					{{list.ovo.company_name}}
 				</span>
-        <span v-for="type_item in list.type_list" :key="type_item" class="space-detail-type">
+				<span v-for="type_item in list.type_list" :key="type_item" class="space-detail-type">
           {{type_item}}
         </span>
 			</section>
@@ -31,7 +31,7 @@
 					<span class="space-info-txt">{{list.ovo.avg_rating}}</span>
 				</div>
 				<div class="space-tags">
-          <span v-for="tag_item in list.tag_list" :key="tag_item" class="space-info-txt tag-txt">
+					<span v-for="tag_item in list.tag_list" :key="tag_item" class="space-info-txt tag-txt">
             {{tag_item}}
           </span>
 				</div>
@@ -74,7 +74,7 @@
 						<div class="option-wrap">
 							<label class="section-title"> 옵션 </label>
 							<ul class="option-list-wrap">
-                <li v-for="option_item in list.option_list" :key="option_item" class="option-list">
+								<li v-for="option_item in list.option_list" :key="option_item" class="option-list">
                   {{option_item}}
                 </li>
 							</ul>
@@ -397,24 +397,30 @@
 						</section>
 					</section>
 					<section class="reserve-type-section">
-						<label class="fixed-section-label"> 예약 타입 </label>
+						<label class="fixed-section-label">
+							예약 공간
+						</label>
 
 						<!-- 타입 셀렉트 열 때 open-select클래스 add해야함 -->
 						<!-- 타입 셀렉트 닫을 때 open-select클래스 remove해야함 -->
 						<div class="type-border" @click="toggle_type_select">
-							<span id="type-choice-value" class="type-border-txt room-name">타입을 선택해주세요.</span>
-							<img src="@/assets/IMG/office/full-dropdown.svg" alt="full-dropdown" class="full-dropdown" />
+							<span id="type-choice-value" class="type-border-txt room-li-txt">오피스 공간을 선택해주세요.</span>
+							<img src="@/assets/IMG/space-introduce/full-dropdown.svg" alt="full-dropdown" class="full-dropdown" />
 						</div>
 
 						<!-- CUSTOM SELECT SECTION -->
 						<ul class="custom-select-type blind">
-              <li @click="choice_reserve_type($event.target)" v-for="rvo in list.rvos" :key="rvo" class="custom-select-type-list">
+							<li @click="choice_reserve_type($event.target)" v-for="rvo in list.rvos" :key="rvo" class="custom-select-type-list">
                 <span class="room-name" :room_no="rvo.room_no" :room_type="rvo.room_type">
                   {{rvo.room_name}} ({{rvo.room_type}})
                 </span>
                 <span class="room-price-unit">
-                  <span class="room-price-big"> {{rvo.room_price}} 원</span>
-                  <span class="room-unit-small"> /시간 </span>
+                  <span class="room-price-big">
+                    {{rvo.room_price}}원
+                  </span>
+                  <span class="room-unit-small">
+                    /개월
+                  </span>
                 </span>
               </li>
 						</ul>
@@ -422,60 +428,48 @@
 					<section class="using-time-section">
 						<section class="time-boundary">
 							<label class="fixed-section-label">
-								예약 날짜
+								체크인 시간
 							</label>
 							<div class="time-select-wrap">
                 <date-picker v-model:value="time0" @change="set_time"></date-picker>
-								<!-- <input @pick="reserve_timePicker" type="text" class="type-border-txt time-input" placeholder="날짜 추가" readonly /> -->
+								<!-- <input type="text" class="type-border-txt time-input" placeholder="날짜/시간 추가" readonly /> -->
 								<img src="@/assets/IMG/office/full-dropdown.svg" alt="full-dropdown" class="full-dropdown" />
 							</div>
 						</section>
-					</section>
-
-					<section class="using-time-section" id="reserve-time-boundary">
 						<section class="time-boundary">
-							<label class="fixed-section-label">
-								사용 시간
-							</label>
-							<div class="time-boundary-selector-wrap">
-								<ul class="time-boundary-list">
-									<li @click="choice_reserve_time($event.target)" class="time-boundary-item" value="0">00:00</li>
-									<li @click="choice_reserve_time($event.target)" class="time-boundary-item" value="1">01:00</li>
-									<li @click="choice_reserve_time($event.target)" class="time-boundary-item" value="2">02:00</li>
-									<li @click="choice_reserve_time($event.target)" class="time-boundary-item" value="3">03:00</li>
-									<li @click="choice_reserve_time($event.target)" class="time-boundary-item" value="4">04:00</li>
-									<li @click="choice_reserve_time($event.target)" class="time-boundary-item" value="5">05:00</li>
-									<li @click="choice_reserve_time($event.target)" class="time-boundary-item" value="6">06:00</li>
-									<li @click="choice_reserve_time($event.target)" class="time-boundary-item" value="7">07:00</li>
-									<li @click="choice_reserve_time($event.target)" class="time-boundary-item" value="8">08:00</li>
-									<li @click="choice_reserve_time($event.target)" class="time-boundary-item" value="9">09:00</li>
-									<li @click="choice_reserve_time($event.target)" class="time-boundary-item" value="10">10:00</li>
-									<li @click="choice_reserve_time($event.target)" class="time-boundary-item" value="11">11:00</li>
-									<li @click="choice_reserve_time($event.target)" class="time-boundary-item" value="12">12:00</li>
-									<li @click="choice_reserve_time($event.target)" class="time-boundary-item" value="13">13:00</li>
-									<li @click="choice_reserve_time($event.target)" class="time-boundary-item" value="14">14:00</li>
-									<li @click="choice_reserve_time($event.target)" class="time-boundary-item" value="15">15:00</li>
-									<li @click="choice_reserve_time($event.target)" class="time-boundary-item" value="16">16:00</li>
-									<li @click="choice_reserve_time($event.target)" class="time-boundary-item" value="17">17:00</li>
-									<li @click="choice_reserve_time($event.target)" class="time-boundary-item" value="18">18:00</li>
-									<li @click="choice_reserve_time($event.target)" class="time-boundary-item" value="19">19:00</li>
-									<li @click="choice_reserve_time($event.target)" class="time-boundary-item" value="20">20:00</li>
-									<li @click="choice_reserve_time($event.target)" class="time-boundary-item" value="21">21:00</li>
-									<li @click="choice_reserve_time($event.target)" class="time-boundary-item" value="22">22:00</li>
-									<li @click="choice_reserve_time($event.target)" class="time-boundary-item" value="23">23:00</li>
-								</ul>
+							<label class="fixed-section-label">대여 개월 수</label>
+							<div @click="show_month_select" id="month_section" class="time-select-wrap">
+								<span class="type-border-txt month-select-txt">개월수</span>
+								<img src="@/assets/IMG/office/full-dropdown.svg" alt="full-dropdown" class="full-dropdown" />
+
+								<div class="month-select-wrap blind">
+									<ul class="month-select"> //!
+										<li @click="choice_reserve_month($event.target)" class="month-select-li" month="1">1개월</li>
+										<li @click="choice_reserve_month($event.target)" class="month-select-li" month="2">2개월</li>
+										<li @click="choice_reserve_month($event.target)" class="month-select-li" month="3">3개월</li>
+										<li @click="choice_reserve_month($event.target)" class="month-select-li" month="4">4개월</li>
+										<li @click="choice_reserve_month($event.target)" class="month-select-li" month="5">5개월</li>
+										<li @click="choice_reserve_month($event.target)" class="month-select-li" month="6">6개월</li>
+										<li @click="choice_reserve_month($event.target)" class="month-select-li" month="7">7개월</li>
+										<li @click="choice_reserve_month($event.target)" class="month-select-li" month="8">8개월</li>
+										<li @click="choice_reserve_month($event.target)" class="month-select-li" month="9">9개월</li>
+										<li @click="choice_reserve_month($event.target)" class="month-select-li" month="10">10개월</li>
+										<li @click="choice_reserve_month($event.target)" class="month-select-li" month="11">11개월</li>
+										<li @click="choice_reserve_month($event.target)" class="month-select-li" month="12">12개월</li>
+									</ul>
+								</div>
 							</div>
 						</section>
+						<span class="duration blind"></span>
 					</section>
-
 					<section class="maybe-pay-section blind">
 						<label class="fixed-section-label"> 예상 결제 금액 </label>
 						<span class="fixed-section-label"> 40,000원 </span>
 					</section>
-					<section id="check_available" @click="reset_choice_time" class="btn-section">
+					<section id="office_check_available" @click="reset_choice_time" class="btn-section">
 						<span>예약 가능 여부 확인하기</span>
 					</section>
-					<section @click="do_reservation" id="go_reserve" class="btn-section blind">
+					<section id="office_go_reserve" @click="do_reservation" class="btn-section blind">
 						<span>예약 하러 가기</span>
 					</section>
 				</section>
@@ -496,7 +490,7 @@ import DatePicker from 'vue-datepicker-next';
 import 'vue-datepicker-next/index.css';
 
 export default {
-  name: 'SpaceDetailView',
+  name: 'OfficeSpaceDetailView',
   components: { DatePicker },
   data() {
     return {
@@ -525,6 +519,8 @@ export default {
       time0: null,
       time: '',
       question_flag: true,
+      now: '',
+      checkout: '',
     };
   },
   mounted() {
@@ -546,7 +542,7 @@ export default {
 
     const backofficeNo = decodeURI(window.location.href).split('?backoffice_no=')[1];
 
-    // axios.get(`http://localhost:8800/office/space_introduce?backoffice_no=${backofficeNo}&introduce_menu=info`)
+    // axios.get(`http://localhost:8800/office/space_introduce_office?backoffice_no=${backofficeNo}&introduce_menu=info`)
     //   .then((res) => {
     //     this.list = res;
 
@@ -824,27 +820,38 @@ export default {
     /** *** ************** **** */
     /** 예약 타입 셀렉트 클릭 시  -> 커스텀 셀렉트 SHOW */
     toggle_type_select() {
-      if ($('.custom-select-type').hasClass('blind')) {
-        $('.custom-select-type').removeClass('blind');
-        $('.type-border').addClass('open-select');
+      if ($('.custom-select-type:eq(0)').hasClass('blind')) {
+        $('.custom-select-type:eq(0)').removeClass('blind');
+        $('.type-border:eq(0)').addClass('open-select');
       } else {
-        $('.custom-select-type').addClass('blind');
-        $('.type-border').removeClass('open-select');
+        $('.custom-select-type:eq(0)').addClass('blind');
+        $('.type-border:eq(0)').removeClass('open-select');
       }
     },
     /** 예약 타입 리스트 클릭 */
-    choice_reserve_type(param) {
-      $('.type-border-txt').text($(param).children('.room-name').text());
-      $('.type-border-txt').prop('check', true);
+    choice_reserve_month(param) {
+      $('.month-select-txt').text($(this).text());
+      $('.month-select-txt').prop('check', true);
+      $(param).parents('.month-select-wrap').addClass('blind');
 
-      const attr_room_no = $(param).children('.room-name').attr('room_no');
-      $('#type-choice-value').attr('room_no', attr_room_no);
+      this.now = new Date(this.time);	// 현재 날짜 및 시간
+      this.checkout = new Date(this.now.setMonth(this.now.getMonth() + Number($(param).attr('month'))));	// 한달 후
 
-      const attr_room_type = $(param).children('.room-name').attr('room_type');
-      $('#type-choice-value').attr('room_type', attr_room_type);
+      $('.duration').removeClass('blind');
+      $('.duration').text(`기간 | ${this.time} ~ ${this.checkout.getFullYear()}/${Number(this.checkout.getMonth()) + 1}/${this.checkout.getDate()}`);
+      $('.duration').prop('last-date', `${this.checkout.getFullYear()}/${Number(this.checkout.getMonth()) + 1}/${this.checkout.getDate()}`);
 
-      $('.custom-select-type').addClass('blind');
-      $('.type-border').removeClass('open-select');
+      $('#office_check_available').removeClass('blind');
+      $('#office_go_reserve').addClass('blind');
+    },
+    /** 개월 수 셀렉트 클릭 시 -> 커스텀 셀렉트 SHOW */
+    show_month_select() {
+      if ($('.time-input').val() !== '') {
+        $('.month-select-wrap').toggleClass('blind');
+      } else {
+        $('.fixed-popup').removeClass('blind');
+        $('.using-time-fail-txt').html('체크인 시간 먼저 선택하여 주십시오.');
+      }
     },
     set_date() {
       let month = '';
@@ -853,9 +860,13 @@ export default {
       this.time0.getDate() < 10 ? date = `0${this.time0.getDate()}` : date = this.time0.getDate();
       this.time = `${this.time0.getFullYear()}/${month}/${date}`;
 
-      $('#check_available').removeClass('blind');
-      $('#go_reserve').addClass('blind');
-      $('.time-boundary-list li').css('display', 'none');
+      $('#office_check_available').removeClass('blind');
+      $('#office_go_reserve').addClass('blind');
+      $('.type-border-txt.month-select-txt').text('개월수');
+
+      this.now = '';
+      this.checkout = '';
+      $('.duration').addClass('blind');
     },
     /** 선택한 시간 초기화 */
     reset_choice_time() {
@@ -931,40 +942,22 @@ export default {
       const user_no = $.cookie('user_no');
       const backoffice_no = decodeURI(window.location.href).split('?backoffice_no=')[1];
       const room_no = $('#type-choice-value').attr('room_no');
-      const reserve_date = this.time;
+      const reserve_stime = String(`${this.time} 00:00:00`);
+      const reserve_etime = String(`${this.checkout.getFullYear()}/${this.checkout.getMonth() + 1}/${this.checkout.getDate()} 00:00:00`);
       let roomType = $('#type-choice-value').attr('room_type').trim();
 
-      if (this.pick_time_list.length === 0) {
+      if (roomType == '오피스') {
+        roomType = 'office';
+      }
+
+      if (this.time.length === 0) {
         $('.fixed-popup').removeClass('blind');
         $('.using-time-fail-txt:eq(0)').html(
-          '시간을 선택해 주세요.<br><br> 표시가 안 된 시간은 예약이 불가합니다.',
+          '날짜를 선택해 주세요.',
         );
 
-        $('#check_available').removeClass('blind');
-        $('#go_reserve').addClass('blind');
-      }
-
-      if (this.pick_time_list[0] > this.pick_time_list[1]) {
-        [this.pick_time_list[0], this.pick_time_list[1]] = [this.pick_time_list[1], this.pick_time_list[0]];
-      }
-
-      if (this.pick_time_list.length === 1) {
-        this.pick_time_list.push(this.pick_time_list[0] + 1);
-      } else {
-        this.pick_time_list[1] += 1;
-      }
-
-      const reserve_stime = `${reserve_date} ${this.pick_time_list[0]}:00:00`;
-      const reserve_etime = `${reserve_date} ${this.pick_time_list[1]}:00:00`;
-
-      if (roomType === '데스크') {
-        roomType = 'desk';
-      } else if (roomType === '4인 미팅룸') {
-        roomType = 'meeting_04';
-      } else if (roomType === '6인 미팅룸') {
-        roomType = 'meeting_06';
-      } else if (roomType === '10인 미팅룸') {
-        roomType = 'meeting_10';
+        $('#office_check_available').removeClass('blind');
+        $('#office_go_reserve').addClass('blind');
       }
 
       // 로딩 화면
@@ -977,7 +970,7 @@ export default {
       params.append('room_no', room_no);
       params.append('reserve_stime', reserve_stime);
       params.append('reserve_etime', reserve_etime);
-      params.append('room_type', roomType.trim());
+      params.append('room_type', roomType);
 
       axios.get('http://localhost:8800/office/reserve', params)
         .then((res) => {
