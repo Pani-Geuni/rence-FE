@@ -45,7 +45,7 @@
           <p>사업자 이메일</p>
           <div>
             <input type="email" v-model="backoffice_email" id="backoffice_email" name="backoffice_email"
-              placeholder="사업자 이메일을 입력해 주세요" v-on:keydown.enter.prevent />
+              placeholder="사업자 이메일을 입력해 주세요" />
             <input @click="sendMail" type="button" id="btn-certification" value="인증번호 발송">
           </div>
         </div>
@@ -645,10 +645,10 @@ export default {
     // 이메일 확인
     sendMail() {
       if (!$('#btn-certification').prop('check')) {
-        if ($('#backoffice_email').val().trim().length > 0) {
+        if (this.backoffice_email.length > 0) {
           const email = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
 
-          if (email.test($('#backoffice_email').val().trim())) {
+          if (email.test(this.backoffice_email)) {
             if (this.mail_flag) {
               // 로딩 화면
               $('.popup-background:eq(1)').removeClass('blind');
@@ -658,7 +658,7 @@ export default {
               console.log($('#backoffice_email').val().trim(), this.mail_flag);
 
               const params = new URLSearchParams();
-              params.append('backoffice_email', 'lifebook0809@gmail.com');
+              params.append('backoffice_email', this.backoffice_email);
 
               axios.get('http://localhost:8800/backoffice/auth', params)
                 .then((res) => {

@@ -148,11 +148,11 @@ $(() => {
 		}
 	});
 
-	let mail_flag = true;
+	// let mail_flag = true;
 	/** 인증번호 발송 버튼 클릭 * */
-	$('#btn-certification').click(() => {
+	// $('#btn-certification').click(() => {
 
-	});
+	// });
 
 	/** 인증번호 확인 버튼 클릭 * */
 	$('#btn-check-certification').click(() => {
@@ -182,7 +182,7 @@ $(() => {
 							$('#auth_code').attr('readonly', true);
 							$('#auth_code').addClass('readOnly');
 
-							timer('true');
+							this.timer('true');
 
 							$('.popup-background:eq(1)').removeClass('blind');
 							$('#common-alert-popup').removeClass('blind');
