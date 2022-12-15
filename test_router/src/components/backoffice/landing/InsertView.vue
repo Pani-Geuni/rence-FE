@@ -52,8 +52,8 @@
         <div class="inputWrap email">
           <p>사업자 이메일 확인</p>
           <div>
-            <input type="text" id="auth_code" name="auth_code" placeholder="인증 번호를 입력하세요" />
-            <input type="button" id="btn-check-certification" value="인증번호 확인">
+            <input type="text" v-model="auth_code" id="auth_code" name="auth_code" placeholder="인증 번호를 입력하세요" />
+            <input @click="authOK" type="button" id="btn-check-certification" value="인증번호 확인">
           </div>
         </div>
         <div class="inputWrap location">
@@ -589,6 +589,7 @@ export default {
       company_name: '',
       backoffice_tel: '',
       backoffice_email: $('#backoffice_email').val(),
+      auth_code: '',
       mail_flag: true,
 
       zipcode: '',
@@ -709,6 +710,56 @@ export default {
       }
     },
 
+    authOK() {
+      if (!$('#btn-check-certification').prop('check')) {
+        if ($('#auth_code').val().trim().length > 0) {
+          // 로딩 화면
+          $('.popup-background:eq(1)').removeClass('blind');
+          $('#spinner-section').removeClass('blind');
+
+          console.log(this.backoffice_email);
+          console.log(this.auth_code);
+
+          const params = new URLSearchParams();
+          params.append('backoffice_email', this.backoffice_email);
+          params.append('auth_code', this.auth_code);
+          axios.post('http://localhost:8800/backoffice/authOK', params).then((res) => {
+            // 로딩 화면 닫기
+            $('.popup-background:eq(1)').addClass('blind');
+            $('#spinner-section').addClass('blind');
+
+            // 이메일 중복 성공
+            if (res.data.result === '1') {
+              $('#btn-check-certification').prop('check', true);
+              $('#btn-check-certification').val('인증완료');
+              $('#auth_code').attr('readonly', true);
+              $('#auth_code').addClass('readOnly');
+
+              this.timer('true');
+
+              $('.popup-background:eq(1)').removeClass('blind');
+              $('#common-alert-popup').removeClass('blind');
+              $('.common-alert-txt').text('인증완료 되었습니다.');
+            } else {
+              $('.popup-background:eq(1)').removeClass('blind');
+              $('#common-alert-popup').removeClass('blind');
+              $('.common-alert-txt').text('인증에 실패하였습니다.');
+            }
+          }).catch(() => {
+            // 로딩 화면 닫기
+            $('.popup-background:eq(1)').addClass('blind');
+            $('#spinner-section').addClass('blind');
+
+            $('.popup-background:eq(1)').removeClass('blind');
+            $('#common-alert-popup').removeClass('blind');
+            $('.common-alert-txt').text('오류 발생으로 인해 처리에 실패하였습니다.');
+          })
+        } else {
+          $('#auth_code').addClass('null-input-border');
+        }
+      }
+    },
+
     timer(check) {
       let minute = 1;
       let seconds = 60;
@@ -751,19 +802,6 @@ export default {
           }
         }
       }, 1000);
-    },
-
-    clickSunDayoff(event) {
-      console.log(event.target.value);
-      if (this.sun_dayoff === false) {
-        console.log('1 :', this.sun_dayoff);
-        this.sun_dayoff = true;
-        console.log('2 :', this.sun_dayoff);
-      } else {
-        this.sun_dayoff = false;
-      }
-
-      console.log(this.sun_dayoff);
     },
 
     disableTimepicker(event) {
