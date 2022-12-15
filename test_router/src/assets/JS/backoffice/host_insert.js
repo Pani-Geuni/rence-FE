@@ -155,59 +155,59 @@ $(() => {
 	// });
 
 	/** 인증번호 확인 버튼 클릭 * */
-	$('#btn-check-certification').click(() => {
-		if (!$('#btn-check-certification').prop('check')) {
-			if ($('#auth_code').val().trim().length > 0) {
-				// 로딩 화면
-				$('.popup-background:eq(1)').removeClass('blind');
-				$('#spinner-section').removeClass('blind');
+	// $('#btn-check-certification').click(() => {
+	// 	if (!$('#btn-check-certification').prop('check')) {
+	// 		if ($('#auth_code').val().trim().length > 0) {
+	// 			// 로딩 화면
+	// 			$('.popup-background:eq(1)').removeClass('blind');
+	// 			$('#spinner-section').removeClass('blind');
 
-				$.ajax({
-					url: '/backoffice/authOK',
-					type: 'POST',
-					dataType: 'json',
-					data: {
-						backoffice_email: $('#backoffice_email').val().trim(),
-						auth_code: $('#auth_code').val().trim(),
-					},
-					success(res) {
-						// 로딩 화면 닫기
-						$('.popup-background:eq(1)').addClass('blind');
-						$('#spinner-section').addClass('blind');
+	// 			$.ajax({
+	// 				url: '/backoffice/authOK',
+	// 				type: 'POST',
+	// 				dataType: 'json',
+	// 				data: {
+	// 					backoffice_email: $('#backoffice_email').val().trim(),
+	// 					auth_code: $('#auth_code').val().trim(),
+	// 				},
+	// 				success(res) {
+	// 					// 로딩 화면 닫기
+	// 					$('.popup-background:eq(1)').addClass('blind');
+	// 					$('#spinner-section').addClass('blind');
 
-						// 이메일 중복 성공
-						if (res.result === 1) {
-							$('#btn-check-certification').prop('check', true);
-							$('#btn-check-certification').val('인증완료');
-							$('#auth_code').attr('readonly', true);
-							$('#auth_code').addClass('readOnly');
+	// 					// 이메일 중복 성공
+	// 					if (res.result === 1) {
+	// 						$('#btn-check-certification').prop('check', true);
+	// 						$('#btn-check-certification').val('인증완료');
+	// 						$('#auth_code').attr('readonly', true);
+	// 						$('#auth_code').addClass('readOnly');
 
-							this.timer('true');
+	// 						this.timer('true');
 
-							$('.popup-background:eq(1)').removeClass('blind');
-							$('#common-alert-popup').removeClass('blind');
-							$('.common-alert-txt').text('인증완료 되었습니다.');
-						} else {
-							$('.popup-background:eq(1)').removeClass('blind');
-							$('#common-alert-popup').removeClass('blind');
-							$('.common-alert-txt').text('인증에 실패하였습니다.');
-						}
-					},
-					error() {
-						// 로딩 화면 닫기
-						$('.popup-background:eq(1)').addClass('blind');
-						$('#spinner-section').addClass('blind');
+	// 						$('.popup-background:eq(1)').removeClass('blind');
+	// 						$('#common-alert-popup').removeClass('blind');
+	// 						$('.common-alert-txt').text('인증완료 되었습니다.');
+	// 					} else {
+	// 						$('.popup-background:eq(1)').removeClass('blind');
+	// 						$('#common-alert-popup').removeClass('blind');
+	// 						$('.common-alert-txt').text('인증에 실패하였습니다.');
+	// 					}
+	// 				},
+	// 				error() {
+	// 					// 로딩 화면 닫기
+	// 					$('.popup-background:eq(1)').addClass('blind');
+	// 					$('#spinner-section').addClass('blind');
 
-						$('.popup-background:eq(1)').removeClass('blind');
-						$('#common-alert-popup').removeClass('blind');
-						$('.common-alert-txt').text('오류 발생으로 인해 처리에 실패하였습니다.');
-					},
-				});
-			} else {
-				$('#auth_code').addClass('null-input-border');
-			}
-		}
-	});
+	// 					$('.popup-background:eq(1)').removeClass('blind');
+	// 					$('#common-alert-popup').removeClass('blind');
+	// 					$('.common-alert-txt').text('오류 발생으로 인해 처리에 실패하였습니다.');
+	// 				},
+	// 			});
+	// 		} else {
+	// 			$('#auth_code').addClass('null-input-border');
+	// 		}
+	// 	}
+	// });
 
 	let submit_flag = true;
 	/** 호스트 신청 버튼 클릭 */

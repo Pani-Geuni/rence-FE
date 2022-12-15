@@ -655,15 +655,16 @@ export default {
               $('#spinner-section').removeClass('blind');
               this.mail_flag = false;
 
-              console.log($('#backoffice_email').val().trim(), this.mail_flag);
+              // console.log($('#backoffice_email').val().trim(), this.mail_flag);
 
               const params = new URLSearchParams();
               params.append('backoffice_email', this.backoffice_email);
-
-              axios.get('http://localhost:8800/backoffice/auth', params)
+              const url = `http://localhost:8800/backoffice/auth?${params}`;
+              axios.get(url)
                 .then((res) => {
                   this.mail_flag = true;
                   console.log('success');
+                  console.log(res);
 
                   // 로딩 화면 닫기
                   $('.popup-background:eq(1)').addClass('blind');
@@ -884,7 +885,6 @@ export default {
       const fri_etime = this.timeFormatter(this.friEtime);
       const sat_stime = this.timeFormatter(this.satStime);
       const sat_etime = this.timeFormatter(this.satEtime);
-
 
       console.log(this.owner_name);
       console.log(this.backoffice_id);
