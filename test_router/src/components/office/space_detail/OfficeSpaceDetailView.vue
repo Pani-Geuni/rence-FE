@@ -544,7 +544,7 @@ export default {
 
     // axios.get(`http://localhost:8800/office/space_introduce_office?backoffice_no=${backofficeNo}&introduce_menu=info`)
     //   .then((res) => {
-    //     this.list = res;
+    //     this.list = res.data;
 
     //     this.maxPage = res.data.maxPage;
     //     this.nowPage = res.data.nowPage;
@@ -568,7 +568,7 @@ export default {
     //          this.forRange2.push(i);
     //     }
 
-    //     if ($('.img').length == 1) {
+    //     if ($('.img').length === 1) {
     //       $('.next').addClass('hide');
     //     }
 
@@ -753,7 +753,7 @@ export default {
           $('#toggle').prop('checked') ? is_secret = 'T' : is_secret = 'F';
 
           const params = new URLSearchParams();
-          params.append('user_no', $.cookie('user_no'));
+          params.append('user_no', this.$cookies.get('user_no'));
           params.append('backoffice_no', decodeURI(window.location.href).split('?backoffice_no=')[1]);
           params.append('room_no', $('#question-select-choice').attr('choice_idx'));
           params.append('comment_content', $('#question-write').val().trim());
@@ -767,7 +767,7 @@ export default {
               $('.popup-background:eq(1)').addClass('blind');
               $('#spinner-section').addClass('blind');
 
-              if (res.result === 1) {
+              if (res.data.result === 1) {
                 $('.qna-length').text('0');
                 $('#question-write').val('');
 
@@ -939,7 +939,7 @@ export default {
     },
     /** 예약 로직 */
     do_reservation() {
-      const user_no = $.cookie('user_no');
+      const user_no = this.$cookies.get('user_no');
       const backoffice_no = decodeURI(window.location.href).split('?backoffice_no=')[1];
       const room_no = $('#type-choice-value').attr('room_no');
       const reserve_stime = String(`${this.time} 00:00:00`);
@@ -979,7 +979,7 @@ export default {
           $('#spinner-section').addClass('blind');
 
           if (res.data.result === '1') {
-            // location.href = `/office/payment?reserve_no=${res.reserve_no}`;
+            window.location.href = `http://localhost:8081/payment?reserve_no=${res.reserve_no}`;
           }
         })
         .catch(() => {

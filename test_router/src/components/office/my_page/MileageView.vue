@@ -105,15 +105,15 @@ export default {
     };
   },
   mounted() {
-    // axios.get('http://localhost:8800/rence/mileage?user_no=${$.cookie('user_no')}&page=1')
+    // axios.get('http://localhost:8800/rence/mileage?user_no=${this.$cookies.get('user_no')}&page=1')
     //   .then((res) => {
-    //     this.mileage_total = res.mileage_total;
-    //     this.searchKey = res.searchKey;
-    //     this.list = res.list;
-    //     this.maxPage = res.maxPage;
-    //     this.nowPage = res.nowPage;
-    //     this.totalPageCnt = res.totalPageCnt;
-    //     this.start = Math.ceil(res.nowPage/5.0);
+    //     this.mileage_total = res.data.mileage_total;
+    //     this.searchKey = res.data.searchKey;
+    //     this.list = res.data.list;
+    //     this.maxPage = res.data.maxPage;
+    //     this.nowPage = res.data.nowPage;
+    //     this.totalPageCnt = res.data.totalPageCnt;
+    //     this.start = Math.ceil(res.data.nowPage/5.0);
     //     this.start = 5 * (this.start - 1) + 1;
 
     //     this.forRange = [];
@@ -153,19 +153,19 @@ export default {
       $('.popup-background:eq(1)').removeClass('blind');
       $('#spinner-section').removeClass('blind');
 
-      axios.get('http://localhost:8800/rence/mileage_search_list?searchKey="+$(this).attr("id")+"&user_no="+$.cookie("user_no")+"&page=1')
+      axios.get(`http://localhost:8800/rence/mileage_search_list?searchKey=${$(this).attr('id')}&user_no=${this.$cookies.get('user_no')}&page=1`)
         .then((res) => {
           // 로딩 화면 닫기
           $('.popup-background:eq(1)').addClass('blind');
           $('#spinner-section').addClass('blind');
 
-          this.mileage_total = res.mileage_total;
-          this.searchKey = res.searchKey;
-          this.list = res.list;
-          this.maxPage = res.maxPage;
-          this.nowPage = res.nowPage;
-          this.totalPageCnt = res.totalPageCnt;
-          this.start = Math.ceil(res.nowPage / 5.0);
+          this.mileage_total = res.data.mileage_total;
+          this.searchKey = res.data.searchKey;
+          this.list = res.data.list;
+          this.maxPage = res.data.maxPage;
+          this.nowPage = res.data.nowPage;
+          this.totalPageCnt = res.data.totalPageCnt;
+          this.start = Math.ceil(res.data.nowPage / 5.0);
           this.start = 5 * (this.start - 1) + 1;
           this.searchFlag = true;
 
@@ -252,9 +252,9 @@ export default {
 
       const URL = '';
       if (this.searchFlag) {
-        URL = `http://localhost:8800/rence/mileage_search_list?searchKey=${this.searchKey}&user_no=${$.cookie('user_no')}&page=${$(param).attr('idx')}`;
+        URL = `http://localhost:8800/rence/mileage_search_list?searchKey=${this.searchKey}&user_no=${this.$cookies.get('user_no')}&page=${$(param).attr('idx')}`;
       } else {
-        URL = `http://localhost:8800/rence/mileage?user_no=${$.cookie('user_no')}&page=${$(param).attr('idx')}`;
+        URL = `http://localhost:8800/rence/mileage?user_no=${this.$cookies.get('user_no')}&page=${$(param).attr('idx')}`;
       }
 
       axios.get(URL)

@@ -70,8 +70,8 @@
             </div>
         </section>
 
-        <section id="after_login" class="blind" @click="user_menu_select('after_login')">
-            <div id = "after_userMenu" class ="userMenu">
+        <section id="after_login" class="blind">
+            <div id = "after_userMenu" class ="userMenu" @click="user_menu_select('after_login')">
               <img src="@/assets/IMG/header/user_menu.svg" alt="user_menu_img" class="user_menu_img"/>
               <img alt="user_profile_img" class="user_profile_img"/>
             </div>
@@ -90,7 +90,7 @@
 </template>
 
 <style lang="scss" scoped>
-  @import '@/assets/CSS/office/header.scss';
+@import '@/assets/CSS/office/header.scss';
 </style>
 
 <script>
@@ -116,7 +116,6 @@ export default {
       $('#custom-type-select').toggleClass('blind');
     },
     type_set(param) {
-      console.log($(param).text());
       let typeTxt = '';
 
       // eslint-disable-next-line default-case

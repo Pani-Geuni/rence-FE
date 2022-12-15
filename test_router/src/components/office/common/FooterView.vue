@@ -5,7 +5,7 @@
 </template>
 
 <style>
-  @import '../../../assets/CSS/common/footer.scss';
+  @import '@/assets/CSS/common/footer.scss';
 </style>
 
 <script>

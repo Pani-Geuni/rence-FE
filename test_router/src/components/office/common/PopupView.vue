@@ -100,7 +100,12 @@
 			</section>
 			<section class="find-popup-input-section">
 				<span class="find-guide-txt">회원가입 시 입력한 이메일을 입력해주세요.</span>
-				<input type="email" @click="remove_null_input_border($event.target)" id="find-id-email" class="find-popup-input" placeholder="이메일을 입력하세요." autocomplete="off" />
+				<input type="text" 
+        @keyup="check_mail_regx_find($event.target)" 
+        @keydown="check_mail_regx_find($event.target)" 
+        @click="remove_null_input_border($event.target)" 
+        id="find-id-email" class="find-popup-input" placeholder="이메일을 입력하세요." autocomplete="off" />
+        <span class="warning-text blind">다시 시도해주세요.</span>
 			</section>
 			<section class="find-popup-btn-section">
 				<input type="button" @click="do_find_id" id="find-id-btn" class="find-btn" value="메일 보내기">
@@ -117,11 +122,21 @@
 			<section class="find-popup-input-section">
 				<div class="email-wrap">
 					<span class="find-guide-txt">회원가입 시 입력한 이메일을 입력해주세요.</span>
-					<input type="email" @click="remove_null_input_border($event.target)" id="find-pw-email" class="find-popup-input" placeholder="이메일을 입력하세요." autocomplete="off" />
+					<input type="email" 
+            @keyup="check_mail_regx_find($event.target)" 
+            @keydown="check_mail_regx_find($event.target)" 
+            @click="remove_null_input_border($event.target)" 
+          id="find-pw-email" class="find-popup-input" placeholder="이메일을 입력하세요." autocomplete="off" />
+          <span class="warning-text blind">다시 시도해주세요.</span>
 				</div>
-				<div>
+				<div class="id-wrap">
 					<span class="find-guide-txt">회원가입 시 입력한 아이디를 입력해 주세요.</span>
-					<input type="text" @click="remove_null_input_border($event.target)" id="find-pw-id" class="find-popup-input" placeholder="아이디를 입력하세요." autocomplete="off" />
+					<input type="text" 
+            @keyup="check_id_regx_find($event.target)" 
+            @keydown="check_id_regx_find($event.target)"
+            @click="remove_null_input_border($event.target)" 
+          id="find-pw-id" class="find-popup-input" placeholder="아이디를 입력하세요." autocomplete="off" />
+          <span class="warning-text blind">다시 시도해주세요.</span>
 				</div>
 			</section>
 			<section class="find-popup-btn-section">
@@ -332,6 +347,9 @@ export default {
     };
   },
   methods: {
+    /** ********************************** */
+    /** ************ COMMON ************** */
+    /** ********************************** */
     /** 공용 알러트 버튼 클릭 이벤트 함수 */
     common_alert() {
       $('.popup-background:eq(1)').addClass('blind');
@@ -348,6 +366,10 @@ export default {
         $(param).removeClass('null-input-border');
       }
     },
+
+    /** ********************************** */
+    /** ************ LOGIN ************** */
+    /** ********************************** */
     do_login() {
       // 로그인 시도
       if ($('#login-id').val().trim().length > 0 && $('#login-pw').val().trim().length > 0) {
@@ -392,16 +414,6 @@ export default {
         }
       }
     },
-    /** 아이디 찾기 버튼 클릭 이벤트 */
-    go_find_id() {
-      $('#login-section').addClass('blind');
-      $('#find-id-section').removeClass('blind');
-    },
-    /** 비밀번호 찾기 버튼 클릭 이벤트 */
-    go_find_pw() {
-      $('#login-section').addClass('blind');
-      $('#find-pw-section').removeClass('blind');
-    },
     /** 로그인 창닫기 찾기 버튼 클릭 이벤트 */
     close_login_popup() {
       // INPUT 초기화
@@ -414,6 +426,91 @@ export default {
       // 팝업 관련창 닫음
       $('#login-section').addClass('blind');
       $('.popup-background:eq(0)').addClass('blind');
+    },
+
+    /** ********************************** */
+    /** ************ LOGOUT ************** */
+    /** ********************************** */
+    /** 로그아웃 팝업 창닫기 버튼 */
+    close_logout_popup() {
+      $('#logout-popup').addClass('blind');
+      $('.popup-background:eq(0)').addClass('blind');
+    },
+    /** 로그아웃 처리 함수 */
+    do_logout() {
+      // 로딩 화면 닫기
+      $('.popup-background:eq(1)').removeClass('blind');
+      $('#spinner-section').removeClass('blind');
+
+      axios.get('/rence/user_logoutOK')
+        .then((res) => {
+          // 로딩 화면 닫기
+          $('.popup-background:eq(1)').addClass('blind');
+          $('#spinner-section').addClass('blind');
+
+          // 로그아웃 성공
+          if (res.data.result === '1') {
+            this.$cookies.remove('user_no');
+            this.$cookies.remove('user_image');
+
+            window.location.href = 'http://localhost:8081/';
+          }
+          // 로그아웃 실패
+          else {
+            // 로딩 화면 닫기
+            $('.popup-background:eq(1)').addClass('blind');
+            $('#spinner-section').addClass('blind');
+
+            $('.popup-background:eq(1)').removeClass('blind');
+            $('#common-alert-popup').removeClass('blind');
+            $('.common-alert-txt').text('오류 발생으로 인해 로그아웃에 실패하였습니다');
+          }
+        })
+        .catch(() => {
+          // 로딩 화면 닫기
+          $('.popup-background:eq(1)').addClass('blind');
+          $('#spinner-section').addClass('blind');
+
+          $('.popup-background:eq(1)').removeClass('blind');
+          $('#common-alert-popup').removeClass('blind');
+          $('.common-alert-txt').text('오류 발생으로 인해 처리에 실패하였습니다.');
+        });
+    },
+
+    /** ********************************** */
+    /** ********** FIND ID/PW ************ */
+    /** ********************************** */
+    /** 아이디/비밀번호 찾기 이메일 형식 체크 함수 */
+    check_mail_regx_find(param) {
+      // 이메일 형식인지 확인
+      const email = /^[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*@[0-9a-zA-Z]([-_.]?[0-9a-zA-Z])*.[a-zA-Z]{2,3}$/i;
+      if (!email.test($(param).val().trim())) {
+        $(param).next('.warning-text').removeClass('blind');
+        $(param).next('.warning-text').text('이메일 형식이 아닙니다.');
+      } else {
+        $(param).next('.warning-text').addClass('blind');
+      }
+    },
+    /** 비밀번호 찾기 아이디 형식 체크 함수 */
+    check_id_regx_find(param) {
+      // 아이디 형식에 맞는지 확인
+      const idRegExp = /^[a-z]+[a-z0-9]{4,5}$/g;
+      if (!idRegExp.test($(param).val().trim())) {
+        $(param).next('.warning-text').removeClass('blind');
+        $(param).next('.warning-text').text('아이디 형식이 아닙니다.');
+      } else {
+        $(param).next('.warning-text').addClass('blind');
+      }
+    },
+    /** 아이디 찾기 버튼 클릭 이벤트 */
+    go_find_id() {
+      $('#login-section').addClass('blind');
+      $('#find-id-section').removeClass('blind');
+    },
+    /** 비밀번호 찾기 버튼 클릭 이벤트 */
+    go_find_pw() {
+      $('#login-section').addClass('blind');
+      $('#find-pw-section').removeClass('blind');
     },
     /** 아이디 찾기 팝업 창닫기 버튼 */
     close_find_id_popup() {
@@ -435,209 +532,22 @@ export default {
       $('#find-pw-section').addClass('blind');
       $('.popup-background:eq(0)').addClass('blind');
     },
-    /** 회원가입 팝업 창닫기 버튼 */
-    close_join_popup() {
-      // INPUT 초기화
-      $('.join-popup-input').val('');
-      $('.join-popup-input-short').val('');
-      $('.join-popup-input-short').removeClass('readOnly');
-      $('.join-popup-input-short').attr('readonly', false);
-
-      // 에러 메세지 초기화
-      $('.warning-text').addClass('blind');
-
-      // 경고 테두리 초기화
-      $('.join-popup-input').removeClass('null-input-border');
-      $('.join-popup-input-short').removeClass('null-input-border');
-
-      // 버튼 초기화
-      $('#check_id').prop('check', false);
-      $('#check_id').val('중복확인');
-      $('#check_email').prop('check', false);
-      $('#check_email').val('인증하기');
-      $('#check_email-code').prop('check', false);
-      $('#check_email-code').val('확인');
-
-      // 팝업 관련창 닫음
-      $('#join-section').addClass('blind');
-      $('.popup-background:eq(0)').addClass('blind');
-
-      clearInterval(this.time);
-    },
-    /** 로그아웃 팝업 창닫기 버튼 */
-    close_logout_popup() {
-      $('#logout-popup').addClass('blind');
-      $('.popup-background:eq(0)').addClass('blind');
-    },
-    /** 회원 탈퇴 팝업 창닫기 버튼 */
-    close_user_delete_popup() {
-      $('.popup-background:eq(0)').addClass('blind');
-      $('#user-delete-confirm-popup').addClass('blind');
-    },
-    /** 비밀번호 팝업 닫기 처리 함수 */
-    close_modify_pw_popup() {
-      // INPUT 초기화
-      $('.modify-popup-input').val('');
-      $('.modify-popup-input-short').val('');
-
-      // 경고 테두리 초기화
-      $('.modify-popup-input-short').removeClass('null-input-border');
-      $('.modify-popup-input').removeClass('null-input-border');
-
-      // 에러 메세지 초기화
-      $('.modify-error-txt').addClass('blind');
-
-      // 팝업 관련창 닫음
-      $('#modify-pw-section').addClass('blind');
-      $('.popup-background:eq(0)').addClass('blind');
-    },
-    /** 비밀번호 수정 팝업 닫기 * */
-    close_modify_img_popup() {
-      $('.review-upload-value').removeClass('null-input-border');
-      $('.review-upload-value').val('');
-      $('.popup-background:eq(0)').addClass('blind');
-      $('#modify-img-section').addClass('blind');
-    },
-    /** 환불 여부 묻는 팝업 닫기 */
-    close_refund_popup() {
-      $('#reserve-cancel-popup').addClass('blind');
-		  $('.popup-background:eq(0)').addClass('blind');
-    },
-    /** 예약 취소 성공에 대한 결과 팝업 닫기 */
-    close_cancle_result_success_popup() {
-      $('#reserve-cancel-confirm-popup').addClass('blind');
-		 $('.popup-background:eq(0)').addClass('blind');
-    },
-    /** 예약 취소 실패에 대한 결과 팝업 닫기 */
-    close_cancle_result_fail_popup() {
-      $('#reserve-cancel-fail-popup').addClass('blind');
-		 $('.popup-background:eq(0)').addClass('blind');
-    },
-    /** 후기 삭제 팝업 - "아니오" 클릭 시, 발생하는 이벤트 */
-    close_r_delete_popup() {
-      $('#r-delete-btn').attr('idx', undefined);
-      $('#r-delete-popup').addClass('blind');
-      $('.popup-background:eq(0)').addClass('blind');
-    },
-    /** 댓글 컨펌 팝업 - 창닫기 버튼 */
-    close_q_delete_popup() {
-      $('#r-delete-popup').addClass('blind');
-      $('.popup-background:eq(0)').addClass('blind');
-    },
-    /** 프로필 이미지 버튼 클릭 -> 파일선택 SHOW */
-    show_upload_file() {
-      $('.file').click();
-    },
-    /** 파일선택 시 처리 로직 * */
-    select_user_img() {
-      const fileName = $('.file').val();
-      const fArr = fileName.split('\\');
-
-      $('.review-upload-value').removeClass('null-input-border');
-      $('.review-upload-value').val(fArr[fArr.length - 1]);
-    },
-    // 이미지 수정 제출 전 필수 조건 확인
-    before_submit_modify_user_img() {
-      // 파일 선택안하고 시도
-      if ($('.review-upload-value').val().length === 0) {
-        $('.review-upload-value').addClass('null-input-border');
-        return false;
-      }
-    },
-    /** 회원 삭제 AXIOS */
-    do_user_delete() {
-      if (this.user_delete_flag) {
-        // 로딩 화면
-        $('.popup-background:eq(1)').removeClass('blind');
-        $('#spinner-section').removeClass('blind');
-
-        this.user_delete_flag = false;
-
-        axios.post('http://localhost:8800/rence/secedeOK', {
-          user_no: $.cookie('user_no'),
-        }).then((res) => {
-          this.user_delete_flag = true;
-
-          // 로딩 화면 닫기
-          $('.popup-background:eq(1)').addClass('blind');
-          $('#spinner-section').addClass('blind');
-
-          // 회원탈퇴 성공
-          if (res.result === 1) {
-            // 성공 알림창
-            $('.popup-background:eq(1)').removeClass('blind');
-            $('#common-alert-popup').removeClass('blind');
-            $('.common-alert-txt').text('회원탈퇴되었습니다.');
-            $('#common-alert-btn').attr('is_reload', true);
-          } else {
-            $('.popup-background:eq(1)').removeClass('blind');
-            $('#common-alert-popup').removeClass('blind');
-            $('.common-alert-txt').text('예상치못한 오류로 회원탈퇴에 실패하였습니다.');
-          }
-        })
-          .catch(() => {
-            this.find_id_flag = true;
-
-            // 로딩 화면 닫기
-            $('.popup-background:eq(1)').addClass('blind');
-            $('#spinner-section').addClass('blind');
-
-            $('.popup-background:eq(1)').removeClass('blind');
-            $('#common-alert-popup').removeClass('blind');
-            $('.common-alert-txt').text('오류 발생으로 인해 처리에 실패하였습니다.');
-          });
-      }
-    },
-    /** 로그아웃 처리 함수 * */
-    do_logout() {
-      // 로딩 화면 닫기
-      $('.popup-background:eq(1)').removeClass('blind');
-      $('#spinner-section').removeClass('blind');
-
-      axios.get('/rence/user_logoutOK')
-        .then((res) => {
-          // 로딩 화면 닫기
-          $('.popup-background:eq(1)').addClass('blind');
-          $('#spinner-section').addClass('blind');
-
-          // 로그아웃 성공
-          if (res.data.result === 1) {
-            window.location.href = 'http://localhost:8081/';
-          } else {
-            // 로그아웃 실패
-            // 로딩 화면 닫기
-            $('.popup-background:eq(1)').addClass('blind');
-            $('#spinner-section').addClass('blind');
-
-            $('.popup-background:eq(1)').removeClass('blind');
-            $('#common-alert-popup').removeClass('blind');
-            $('.common-alert-txt').text('오류 발생으로 인해 로그아웃에 실패하였습니다');
-          }
-        })
-        .catch(() => {
-          // 로딩 화면 닫기
-          $('.popup-background:eq(1)').addClass('blind');
-          $('#spinner-section').addClass('blind');
-
-          $('.popup-background:eq(1)').removeClass('blind');
-          $('#common-alert-popup').removeClass('blind');
-          $('.common-alert-txt').text('오류 발생으로 인해 처리에 실패하였습니다.');
-        });
-    },
-    /** 아이디 찾기 함수 * */
+    /** 아이디 찾기 함수 */
     do_find_id() {
       if (this.find_id_flag) {
-        if ($('#find-id-email').val().trim().length > 0) {
+        if ($('#find-id-email').val().trim().length > 0 && $('#find-id-email').next('.warning-text').hasClass('blind')) {
           // 로딩 화면
           $('.popup-background:eq(1)').removeClass('blind');
           $('#spinner-section').removeClass('blind');
 
           this.find_id_flag = false;
 
-          this.$axios.post('/rence/find_id', {
-            user_email: $('#find-id-email').val().trim(),
-          })
+          const params = new URLSearchParams();
+          params.append('user_email', $('#find-id-email').val().trim());
+
+          axios.post('http://localhost:8800/rence/find_id', params)
             .then((res) => {
+              console.log(res.data.result);
               this.find_id_flag = true;
 
               // 로딩 화면 닫기
@@ -645,7 +555,7 @@ export default {
               $('#spinner-section').addClass('blind');
 
               // 아이디 찾기 성공
-              if (res.result === 1) {
+              if (res.data.result === '1') {
                 // INPUT 초기화
                 $('#find-id-email').val('');
 
@@ -683,61 +593,71 @@ export default {
         }
       }
     },
-    /** 비밀번호 찾기 함수 * */
+    /** 비밀번호 찾기 함수 */
     do_find_pw() {
       if ($('#find-pw-email').val().trim().length > 0 && $('#find-pw-id').val().trim().length > 0) {
-        if (this.find_pw_flag) {
-          // 로딩 화면
-          $('.popup-background:eq(1)').removeClass('blind');
-          $('#spinner-section').removeClass('blind');
+        if ($('#find-pw-email').next('.warning-text').hasClass('blind') && $('#find-pw-id').next('.warning-text').hasClass('blind')) {
+          if (this.find_pw_flag) {
+            // 로딩 화면
+            $('.popup-background:eq(1)').removeClass('blind');
+            $('#spinner-section').removeClass('blind');
 
-          this.find_pw_flag = false;
+            this.find_pw_flag = false;
 
-          axios.post('http://localhost:8800/rence/find_pw', {
-            user_email: $('#find-pw-email').val().trim(),
-            user_id: $('#find-pw-id').val().trim(),
-          })
-            .then((res) => {
-              this.find_pw_flag = true;
+            const params = new URLSearchParams();
+            params.append('user_email', $('#find-pw-email').val().trim());
+            params.append('user_id', $('#find-pw-id').val().trim());
 
-              // 로딩 화면 닫기
-              $('.popup-background:eq(1)').addClass('blind');
-              $('#spinner-section').addClass('blind');
+            axios.post('http://localhost:8800/rence/find_pw', params)
+              .then((res) => {
+                this.find_pw_flag = true;
 
-              // 비밀번호 찾기 성공
-              if (res.data.result === 1) {
-                // INPUT 초기화
-                $('.find-popup-input').val('');
+                // 로딩 화면 닫기
+                $('.popup-background:eq(1)').addClass('blind');
+                $('#spinner-section').addClass('blind');
 
-                // 경고 테두리 초기화
-                $('.find-popup-input').removeClass('null-input-border');
+                // 비밀번호 찾기 성공
+                if (res.data.result === '1') {
+                  // INPUT 초기화
+                  $('.find-popup-input').val('');
 
-                // 팝업 관련창 닫음
-                $('#find-pw-section').addClass('blind');
-                $('.popup-background:eq(0)').addClass('blind');
+                  // 경고 테두리 초기화
+                  $('.find-popup-input').removeClass('null-input-border');
 
-                // 성공 알림창
+                  // 팝업 관련창 닫음
+                  $('#find-pw-section').addClass('blind');
+                  $('.popup-background:eq(0)').addClass('blind');
+
+                  // 성공 알림창
+                  $('.popup-background:eq(1)').removeClass('blind');
+                  $('#common-alert-popup').removeClass('blind');
+                  $('.common-alert-txt').text('이메일로 비밀번호를 발송해드렸어요!');
+                } else {
+                  // 아이디 찾기 실패
+                  $('.popup-background:eq(1)').removeClass('blind');
+                  $('#common-alert-popup').removeClass('blind');
+                  $('.common-alert-txt').text('이메일 발송에 실패하였습니다.');
+                }
+              })
+              .catch(() => {
+                this.find_pw_flag = true;
+
+                // 로딩 화면 닫기
+                $('.popup-background:eq(1)').addClass('blind');
+                $('#spinner-section').addClass('blind');
+
                 $('.popup-background:eq(1)').removeClass('blind');
                 $('#common-alert-popup').removeClass('blind');
-                $('.common-alert-txt').text('이메일로 비밀번호를 발송해드렸어요!');
-              } else {
-                // 아이디 찾기 실패
-                $('.popup-background:eq(1)').removeClass('blind');
-                $('#common-alert-popup').removeClass('blind');
-                $('.common-alert-txt').text('이메일 발송에 실패하였습니다.');
-              }
-            })
-            .catch(() => {
-              this.find_pw_flag = true;
-
-              // 로딩 화면 닫기
-              $('.popup-background:eq(1)').addClass('blind');
-              $('#spinner-section').addClass('blind');
-
-              $('.popup-background:eq(1)').removeClass('blind');
-              $('#common-alert-popup').removeClass('blind');
-              $('.common-alert-txt').text('오류 발생으로 인해 처리에 실패하였습니다.');
-            });
+                $('.common-alert-txt').text('오류 발생으로 인해 처리에 실패하였습니다.');
+              });
+          }
+        } else {
+          if (!$('#find-pw-email').next('.warning-text').hasClass('blind')) {
+            $('#find-pw-email').addClass('null-input-border');
+          }
+          if (!$('#find-pw-id').next('.warning-text').hasClass('blind')) {
+            $('#find-pw-id').addClass('null-input-border');
+          }
         }
       } else {
         if ($('#find-pw-email').val().trim().length === 0) {
@@ -748,7 +668,40 @@ export default {
         }
       }
     },
-    /** 회원가입 - 정규표현식을 이용해 입력한 값 조건에 맞는지 확인 * */
+
+    /** ********************************** */
+    /** ************* JOIN *************** */
+    /** ********************************** */
+    /** 회원가입 팝업 창닫기 버튼 */
+    close_join_popup() {
+      // INPUT 초기화
+      $('.join-popup-input').val('');
+      $('.join-popup-input-short').val('');
+      $('.join-popup-input-short').removeClass('readOnly');
+      $('.join-popup-input-short').attr('readonly', false);
+
+      // 에러 메세지 초기화
+      $('.warning-text').addClass('blind');
+
+      // 경고 테두리 초기화
+      $('.join-popup-input').removeClass('null-input-border');
+      $('.join-popup-input-short').removeClass('null-input-border');
+
+      // 버튼 초기화
+      $('#check_id').prop('check', false);
+      $('#check_id').val('중복확인');
+      $('#check_email').prop('check', false);
+      $('#check_email').val('인증하기');
+      $('#check_email-code').prop('check', false);
+      $('#check_email-code').val('확인');
+
+      // 팝업 관련창 닫음
+      $('#join-section').addClass('blind');
+      $('.popup-background:eq(0)').addClass('blind');
+
+      clearInterval(this.time);
+    },
+    /** 회원가입 - 정규표현식을 이용해 입력한 값 조건에 맞는지 확인 */
     test_regx(param) {
       // 비밀번호 조건 확인
       if ($(param).attr('id') === 'join-pw') {
@@ -815,6 +768,477 @@ export default {
         }
       }
     },
+    /** 아이디 중복여부 확인하는 로직 */
+    do_check_id() {
+      if ($('#check_id').prop('check') === true) {
+        $('#check_id').prop('check', false);
+        $('#join-id').attr('readonly', false);
+        $('#join-id').removeClass('readOnly');
+        $('#check_id').val('중복확인');
+      } else if ($('#join-id').val().trim().length > 0) {
+        if ($('.warning-text:eq(2)').hasClass('blind') || $('.warning-text:eq(0)').text() === '이미 존재하는 아이디입니다.') {
+          if (this.check_id_flag) {
+            // 로딩 화면
+            $('.popup-background:eq(1)').removeClass('blind');
+            $('#spinner-section').removeClass('blind');
+
+            this.check_id_flag = false;
+
+            const params = new URLSearchParams();
+            params.append('user_id', $('#join-id').val().trim());
+
+            axios.post('http://localhost:8800/rence/user_idCheckOK', params)
+              .then((res) => {
+                this.check_id_flag = true;
+
+                // 로딩 화면 닫기
+                $('.popup-background:eq(1)').addClass('blind');
+                $('#spinner-section').addClass('blind');
+
+                // 아이디 중복 성공
+                if (res.data.result === '1') {
+                  $('#check_id').prop('check', true);
+                  $('#check_id').val('재입력');
+                  $('#join-id').attr('readonly', true);
+                  $('#join-id').addClass('readOnly');
+                } else {
+                  $('.warning-text:eq(2)').removeClass('blind');
+                  $('.warning-text:eq(2)').text('이미 존재하는 아이디입니다.');
+                }
+              })
+              .catch(() => {
+                this.check_id_flag = true;
+
+                // 로딩 화면 닫기
+                $('.popup-background:eq(1)').addClass('blind');
+                $('#spinner-section').addClass('blind');
+
+                $('.popup-background:eq(1)').removeClass('blind');
+                $('#common-alert-popup').removeClass('blind');
+                $('.common-alert-txt').text('오류 발생으로 인해 처리에 실패하였습니다.');
+              });
+          }
+        } else {
+          $('.popup-background:eq(1)').removeClass('blind');
+          $('#common-alert-popup').removeClass('blind');
+          $('.common-alert-txt').text('조건에 맞는 아이디를 입력하신 후 중복체크 해주세요.');
+        }
+      } else {
+        $('.popup-background:eq(1)').removeClass('blind');
+        $('#common-alert-popup').removeClass('blind');
+        $('.common-alert-txt').text('아이디를 입력하신 후 중복체크 해주세요.');
+      }
+    },
+    /** 이메일 중복여부 확인하는 로직 * */
+    do_check_email() {
+      if ($('#check_email').prop('check') !== true) {
+        if ($('#join-email').val().trim().length > 0) {
+          if ($('.warning-text:eq(0)').hasClass('blind') || $('.warning-text:eq(0)').text() === '이미 존재하는 이메일입니다.') {
+            if (this.check_email_flag) {
+              this.check_email_flag = false;
+
+              // 로딩 화면
+              $('.popup-background:eq(1)').removeClass('blind');
+              $('#spinner-section').removeClass('blind');
+
+              const params = new URLSearchParams();
+              params.append('user_email', $('#join-email').val().trim());
+
+              axios.post('http://localhost:8800/rence/user_auth', params)
+                .then((res) => {
+                  this.check_email_flag = true;
+
+                  // 로딩 화면 닫기
+                  $('.popup-background:eq(1)').addClass('blind');
+                  $('#spinner-section').addClass('blind');
+
+                  // 이메일 중복 성공
+                  if (res.data.authNum === '1') {
+                    $('#check_email').prop('check', true);
+                    $('#check_email').val('메일발송');
+
+                    this.timer();
+
+                    $('#join-email').attr('readonly', true);
+                    $('#join-email').addClass('readOnly');
+
+                    $('.popup-background:eq(1)').removeClass('blind');
+                    $('#common-alert-popup').removeClass('blind');
+                    $('.common-alert-txt').html('이메일로 인증번호를 발송하였습니다.<br> 2분 내로 인증번호 인증을 완료해주세요.<br> 2분 초과 시 이메일 재인증이 필요합니다!');
+                  } else if (res.data.authNum === '2') {
+                    $('.warning-text:eq(0)').removeClass('blind');
+                    $('.warning-text:eq(0)').text('이미 존재하는 이메일입니다.');
+                  } else if (res.data.authNum === '3') {
+                    $('.popup-background:eq(1)').removeClass('blind');
+                    $('#common-alert-popup').removeClass('blind');
+                    $('.common-alert-txt').html('해당 이메일은 인증번호 발송 후<br> 2분이 되지 않았습니다.<br> 잠시만 기다려주세요!');
+                  } else {
+                    $('.popup-background:eq(1)').removeClass('blind');
+                    $('#common-alert-popup').removeClass('blind');
+                    $('.common-alert-txt').html('오류 발생으로 인해<br> 이메일 인증번호 발송에 실패하였습니다.');
+                  }
+                }).catch(() => {
+                  this.check_email_flag = true;
+
+                  // 로딩 화면 닫기
+                  $('.popup-background:eq(1)').addClass('blind');
+                  $('#spinner-section').addClass('blind');
+
+                  $('.popup-background:eq(1)').removeClass('blind');
+                  $('#common-alert-popup').removeClass('blind');
+                  $('.common-alert-txt').html('오류 발생으로 인해<br> 처리에 실패하였습니다.');
+                });
+            }
+          } else {
+            $('.popup-background:eq(1)').removeClass('blind');
+            $('#common-alert-popup').removeClass('blind');
+            $('.common-alert-txt').text('조건에 맞는 이메일을 입력하신 후 중복체크 해주세요.');
+          }
+        } else {
+          $('.popup-background:eq(1)').removeClass('blind');
+          $('#common-alert-popup').removeClass('blind');
+          $('.common-alert-txt').text('이메일을 입력하신 후 중복체크 해주세요.');
+        }
+      }
+    },
+    /** 이메일 인증번호 일치 여부 확인하는 함수 * */
+    do_check_email_code() {
+      if ($('#check_email-code').prop('check') !== true) {
+        if ($('#join-email-code').val().trim().length > 0) {
+          if (this.code_flag) {
+					  this.code_flag = false;
+
+            // 로딩 화면
+            $('.popup-background:eq(1)').removeClass('blind');
+            $('#spinner-section').removeClass('blind');
+
+            const params = new URLSearchParams();
+            params.append('user_email', $('#join-email').val().trim());
+            params.append('email_code', $('#join-email-code').val().trim());
+
+            axios.post('http://localhost:8800/rence/user_auth', params)
+              .then((res) => {
+                console.log(res.data);
+                this.code_flag = true;
+
+                // 로딩 화면 닫기
+                $('.popup-background:eq(1)').addClass('blind');
+                $('#spinner-section').addClass('blind');
+
+                // 이메일 인증번호 확인 성공
+                if (res.data.result == '1') {
+								  this.timer('true');
+                  $('#check_email-code').prop('check', true);
+                  $('#check_email-code').val('인증완료');
+                  $('#join-email-code').attr('readonly', true);
+                  $('#join-email-code').addClass('readOnly');
+                } else {
+                  $('.popup-background:eq(1)').removeClass('blind');
+                  $('#common-alert-popup').removeClass('blind');
+                  $('.common-alert-txt').text('알맞지 않은 인증번호입니다.');
+                }
+              }).catch(() => {
+                this.code_flag = true;
+
+                // 로딩 화면 닫기
+                $('.popup-background:eq(1)').addClass('blind');
+                $('#spinner-section').addClass('blind');
+
+                $('.popup-background:eq(1)').removeClass('blind');
+                $('#common-alert-popup').removeClass('blind');
+                $('.common-alert-txt').text('오류 발생으로 인해 처리에 실패하였습니다.');
+              });
+          }
+        }
+      } else {
+        $('.popup-background:eq(1)').removeClass('blind');
+        $('#common-alert-popup').removeClass('blind');
+        $('.common-alert-txt').text('인증번호 입력하신 후 시도해주세요.');
+      }
+    },
+    /** 회원가입 로직 */
+    do_join() {
+      if (
+        $('#join-email').val().trim().length > 0
+        && $('#join-email-code').val().trim().length > 0
+        && $('#join-id').val().trim().length > 0
+        && $('#join-pw').val().trim().length > 0
+        && $('#join-re-pw').val().trim().length > 0
+        && $('#join-name').val().trim().length > 0
+        && $('#join-tel').val().trim().length > 0
+        && $('#join-birth').val().trim().length > 0) {
+        const arr = $('.warning-text');
+        let tmp = true;
+        for (let i = 0; i < arr.length; i++) {
+          if (!$(arr[i]).hasClass('blind')) {
+            tmp = false;
+            break;
+          }
+        }
+
+        if (tmp === true) {
+          if ($('#check_email').prop('check') === true) {
+            if ($('#check_email-code').prop('check') === true) {
+              if ($('#check_id').prop('check') === true) {
+                if (this.join_flag) {
+                  // 로딩 화면
+                  $('.popup-background:eq(1)').removeClass('blind');
+                  $('#spinner-section').removeClass('blind');
+
+                  const params = new URLSearchParams();
+                  params.append('user_id', $('#join-id').val().trim());
+                  params.append('user_pw', $('#join-pw').val().trim());
+                  params.append('user_email', $('#join-email').val().trim());
+                  params.append('user_name', $('#join-name').val().trim());
+                  params.append('user_tel', $('#join-tel').val().trim());
+                  params.append('user_birth', $('#join-birth').val().trim());
+
+                  this.join_flag = false;
+
+                  axios.post('http://localhost:8800/rence/joinOK', params)
+                    .then((res) => {
+                      this.join_flag = true;
+
+                      // 로딩 화면
+                      $('.popup-background:eq(1)').addClass('blind');
+                      $('#spinner-section').addClass('blind');
+
+                      // 회원가입 성공
+                      if (res.data.result === '1') {
+                      // INPUT 초기화
+                        $('.join-popup-input').val('');
+                        $('.join-popup-input-short').val('');
+                        $('.join-popup-input-short').removeClass('readOnly');
+                        $('.join-popup-input-short').attr('readonly', false);
+
+                        // 에러 메세지 초기화
+                        $('.warning-text').addClass('blind');
+
+                        // 경고 테두리 초기화
+                        $('.join-popup-input').removeClass('null-input-border');
+                        $('.join-popup-input-short').removeClass('null-input-border');
+
+                        // 버튼 초기화
+                        $('#check_id').prop('check', undefined);
+                        $('#check_id').val('중복확인');
+                        $('#check_email').prop('check', undefined);
+                        $('#check_email').val('인증하기');
+                        $('#check_email-code').prop('check', undefined);
+                        $('#check_email-code').val('확인');
+
+                        // 팝업 관련창 닫음
+                        $('#join-section').addClass('blind');
+                        $('.popup-background:eq(0)').addClass('blind');
+
+                        // 성공 알림창
+                        $('.popup-background:eq(1)').removeClass('blind');
+                        $('#common-alert-popup').removeClass('blind');
+                        $('.common-alert-txt').text('회원가입에 성공하였습니다.');
+                      } else {
+                        $('.popup-background:eq(1)').removeClass('blind');
+                        $('#common-alert-popup').removeClass('blind');
+                        $('.common-alert-txt').text('회원가입에 실패하였습니다.');
+                      }
+                    }).catch(() => {
+                      this.join_flag = true;
+
+                      // 로딩 화면
+                      $('.popup-background:eq(1)').addClass('blind');
+                      $('#spinner-section').addClass('blind');
+
+                      $('.popup-background:eq(1)').removeClass('blind');
+                      $('#common-alert-popup').removeClass('blind');
+                      $('.common-alert-txt').text('오류 발생으로 인해 회원가입 처리에 실패하였습니다.');
+                    });
+                } else {
+                  $('.popup-background:eq(1)').removeClass('blind');
+                  $('#common-alert-popup').removeClass('blind');
+                  $('.common-alert-txt').text('아이디 중복체크를 완료하세요.');
+                }
+              } else {
+                $('.popup-background:eq(1)').removeClass('blind');
+                $('#common-alert-popup').removeClass('blind');
+                $('.common-alert-txt').text('인증번호 확인을 완료하세요.');
+              }
+            } else {
+              $('.popup-background:eq(1)').removeClass('blind');
+              $('#common-alert-popup').removeClass('blind');
+              $('.common-alert-txt').text('이메일 인증을 완료하세요.');
+            }
+          }
+        } else {
+          if ($('#join-email').val().trim().length == 0) {
+            $('#join-email').addClass('null-input-border');
+          }
+          if ($('#join-email-code').val().trim().length == 0) {
+            $('#join-email-code').addClass('null-input-border');
+          }
+          if ($('#join-id').val().trim().length == 0) {
+            $('#join-id').addClass('null-input-border');
+          }
+          if ($('#join-pw').val().trim().length == 0) {
+            $('#join-pw').addClass('null-input-border');
+          }
+          if ($('#join-re-pw').val().trim().length == 0) {
+            $('#join-re-pw').addClass('null-input-border');
+          }
+          if ($('#join-name').val().trim().length == 0) {
+            $('#join-name').addClass('null-input-border');
+          }
+          if ($('#join-tel').val().trim().length == 0) {
+            $('#join-tel').addClass('null-input-border');
+          }
+          if ($('#join-birth').val().trim().length == 0) {
+            $('#join-birth').addClass('null-input-border');
+          }
+        }
+      }
+    },
+    /** 이메일 인증 번호 입력 시간 제한 타이머 */
+    timer(check) {
+      let minute = 1;
+      let seconds = 60;
+
+      if (check == 'true') {
+        clearInterval(this.time);
+        $('#check_email').val('인증완료');
+        return;
+      }
+
+      time = setInterval(() => {
+        seconds--;
+
+        if (seconds <= 9) $('#check_email').val(`0${minute} : ` + `0${seconds}`);
+        else $('#check_email').val(`0${minute} : ${seconds}`);
+
+        if (seconds == 0) {
+          if (minute != 0) {
+            --minute;
+            seconds = 60;
+          } else {
+            $('.popup-background:eq(1)').removeClass('blind');
+            $('#common-alert-popup').removeClass('blind');
+            $('.common-alert-txt').html('이메일 인증 시간을 초과했습니다.<br>다시 시도해주세요.');
+
+            $('#check_email').prop('check', false);
+            $('#check_email').val('인증하기');
+            $('#join-email').val('');
+            $('#join-email').attr('readonly', false);
+            $('#join-email').removeClass('readOnly');
+
+            $('#check_email-code').prop('check', false);
+            $('#check_email-code').val('확인');
+            $('#join-email-code').val('');
+            $('#join-email-code').attr('readonly', false);
+            $('#join-email-code').removeClass('readOnly');
+
+            clearInterval(this.time);
+          }
+        }
+      }, 1000);
+    },
+
+    /** ********************************** */
+    /** ************ MYPAGE ************** */
+    /** ********************************** */
+    /** 회원 탈퇴 팝업 창닫기 버튼 */
+    close_user_delete_popup() {
+      $('.popup-background:eq(0)').addClass('blind');
+      $('#user-delete-confirm-popup').addClass('blind');
+    },
+    /** 회원 삭제 AXIOS */
+    do_user_delete() {
+      if (this.user_delete_flag) {
+        // 로딩 화면
+        $('.popup-background:eq(1)').removeClass('blind');
+        $('#spinner-section').removeClass('blind');
+
+        this.user_delete_flag = false;
+
+        const params = new URLSearchParams();
+        params.append('user_no', this.$cookies.get('user_no'));
+
+        axios.post('http://localhost:8800/rence/secedeOK', params)
+          .then((res) => {
+            this.user_delete_flag = true;
+
+            // 로딩 화면 닫기
+            $('.popup-background:eq(1)').addClass('blind');
+            $('#spinner-section').addClass('blind');
+
+            // 회원탈퇴 성공
+            if (res.data.result === '1') {
+              this.$cookies.remove('user_no');
+              this.$cookies.remove('user_image');
+
+              // 성공 알림창
+              $('.popup-background:eq(1)').removeClass('blind');
+              $('#common-alert-popup').removeClass('blind');
+              $('.common-alert-txt').text('회원탈퇴되었습니다.');
+              $('#common-alert-btn').attr('is_reload', true);
+            } else {
+              $('.popup-background:eq(1)').removeClass('blind');
+              $('#common-alert-popup').removeClass('blind');
+              $('.common-alert-txt').text('예상치못한 오류로 회원탈퇴에 실패하였습니다.');
+            }
+          })
+          .catch(() => {
+            this.find_id_flag = true;
+
+            // 로딩 화면 닫기
+            $('.popup-background:eq(1)').addClass('blind');
+            $('#spinner-section').addClass('blind');
+
+            $('.popup-background:eq(1)').removeClass('blind');
+            $('#common-alert-popup').removeClass('blind');
+            $('.common-alert-txt').text('오류 발생으로 인해 처리에 실패하였습니다.');
+          });
+      }
+    },
+    /** 비밀번호 팝업 닫기 처리 함수 */
+    close_modify_pw_popup() {
+      // INPUT 초기화
+      $('.modify-popup-input').val('');
+      $('.modify-popup-input-short').val('');
+
+      // 경고 테두리 초기화
+      $('.modify-popup-input-short').removeClass('null-input-border');
+      $('.modify-popup-input').removeClass('null-input-border');
+
+      // 에러 메세지 초기화
+      $('.modify-error-txt').addClass('blind');
+
+      // 팝업 관련창 닫음
+      $('#modify-pw-section').addClass('blind');
+      $('.popup-background:eq(0)').addClass('blind');
+    },
+    /** 비밀번호 수정 팝업 닫기 * */
+    close_modify_img_popup() {
+      $('.review-upload-value').removeClass('null-input-border');
+      $('.review-upload-value').val('');
+      $('.popup-background:eq(0)').addClass('blind');
+      $('#modify-img-section').addClass('blind');
+    },
+    /** 프로필 이미지 버튼 클릭 -> 파일선택 SHOW */
+    show_upload_file() {
+      $('.file').click();
+    },
+    /** 파일선택 시 처리 로직 * */
+    select_user_img() {
+      const fileName = $('.file').val();
+      const fArr = fileName.split('\\');
+
+      $('.review-upload-value').removeClass('null-input-border');
+      $('.review-upload-value').val(fArr[fArr.length - 1]);
+    },
+    // 이미지 수정 제출 전 필수 조건 확인
+    before_submit_modify_user_img() {
+      // 파일 선택안하고 시도
+      if ($('.review-upload-value').val().length === 0) {
+        $('.review-upload-value').addClass('null-input-border');
+        return false;
+      }
+    },
     /** 비밀번호 수정 - 정규표현식을 이용해 입력한 값 조건에 맞는지 확인 * */
     check_modify_pw_regx(param) {
       if ($('#check-now-pw').prop('check')) {
@@ -866,33 +1290,35 @@ export default {
           $('.popup-background:eq(1)').removeClass('blind');
           $('#spinner-section').removeClass('blind');
 
-          axios.post('http://localhost:8800/rence/check_now_pw', {
-            user_no: $.cookie('user_no'),
-            user_pw: $('#modify-pw-now').val().trim(),
-          }).then((res) => {
-            // 로딩 화면 닫기
-            $('.popup-background:eq(1)').addClass('blind');
-            $('#spinner-section').addClass('blind');
+          const params = new URLSearchParams();
+          params.append('user_no', this.$cookies.get('user_no'));
+          params.append('user_pw', $('#modify-pw-now').val().trim());
 
-            // 비밀번호 일치 성공
-            if (res.result == 1) {
-              $('#check-now-pw').prop('check', true);
-              $('#modify-pw-now').attr('readonly', true);
-              $('#modify-pw-now').addClass('readOnly');
-            } else {
+          axios.post('http://localhost:8800/rence/check_now_pw', params)
+            .then((res) => {
+            // 로딩 화면 닫기
+              $('.popup-background:eq(1)').addClass('blind');
+              $('#spinner-section').addClass('blind');
+
+              // 비밀번호 일치 성공
+              if (res.data.result === '1') {
+                $('#check-now-pw').prop('check', true);
+                $('#modify-pw-now').attr('readonly', true);
+                $('#modify-pw-now').addClass('readOnly');
+              } else {
+                $('.popup-background:eq(1)').removeClass('blind');
+                $('#common-alert-popup').removeClass('blind');
+                $('.common-alert-txt').text('비밀번호가 일치하지않습니다.');
+              }
+            }).catch(() => {
+            // 로딩 화면 닫기
+              $('.popup-background:eq(1)').addClass('blind');
+              $('#spinner-section').addClass('blind');
+
               $('.popup-background:eq(1)').removeClass('blind');
               $('#common-alert-popup').removeClass('blind');
-              $('.common-alert-txt').text('비밀번호가 일치하지않습니다.');
-            }
-          }).catch(() => {
-            // 로딩 화면 닫기
-            $('.popup-background:eq(1)').addClass('blind');
-            $('#spinner-section').addClass('blind');
-
-            $('.popup-background:eq(1)').removeClass('blind');
-            $('#common-alert-popup').removeClass('blind');
-            $('.common-alert-txt').text('오류 발생으로 인해 처리에 실패하였습니다.');
-          });
+              $('.common-alert-txt').text('오류 발생으로 인해 처리에 실패하였습니다.');
+            });
         }
       } else {
         $('#modify-pw-now').addClass('null-input-border');
@@ -914,482 +1340,152 @@ export default {
 
             this.modify_pw_flag = false;
 
-            axios.post('http://localhost:8800/rence/user_pw_updateOK', {
-              user_no: $.cookie('user_no'),
-              user_pw: $('#modify-pw-renew').val().trim(),
-            }).then((res) => {
-              this.modify_pw_flag = true;
+            const params = new URLSearchParams();
+            params.append('user_no', this.$cookies.get('user_no'));
+            params.append('user_pw', $('#modify-pw-renew').val().trim());
 
-              // 로딩 화면 닫기
-              $('.popup-background:eq(1)').addClass('blind');
-              $('#spinner-section').addClass('blind');
+            axios.post('http://localhost:8800/rence/user_pw_updateOK', params)
+              .then((res) => {
+                this.modify_pw_flag = true;
 
-              // 비밀번호 변경 성공
-              if (res.result == 1) {
+                // 로딩 화면 닫기
+                $('.popup-background:eq(1)').addClass('blind');
+                $('#spinner-section').addClass('blind');
+
+                // 비밀번호 변경 성공
+                if (res.data.result === '1') {
                 // INPUT 초기화
-                $('.modify-popup-input').val('');
-                $('.modify-popup-input-short').val('');
+                  $('.modify-popup-input').val('');
+                  $('.modify-popup-input-short').val('');
 
-                // 경고 테두리 초기화
-                $('.modify-popup-input-short').removeClass('null-input-border');
-                $('.modify-popup-input').removeClass('null-input-border');
+                  // 경고 테두리 초기화
+                  $('.modify-popup-input-short').removeClass('null-input-border');
+                  $('.modify-popup-input').removeClass('null-input-border');
 
-                // 성공 알림창
+                  // 성공 알림창
+                  $('.popup-background:eq(1)').removeClass('blind');
+                  $('#common-alert-popup').removeClass('blind');
+                  $('.common-alert-txt').text('비밀번호가 변경되었습니다.');
+                } else {
+                  $('.popup-background:eq(1)').removeClass('blind');
+                  $('#common-alert-popup').removeClass('blind');
+                  $('.common-alert-txt').text('예상치못한 오류로 비밀번호 변경에 실패하였습니다.');
+                }
+              }).catch(() => {
+                this.modify_pw_flag = true;
+
+                // 로딩 화면 닫기
+                $('.popup-background:eq(1)').addClass('blind');
+                $('#spinner-section').addClass('blind');
+
                 $('.popup-background:eq(1)').removeClass('blind');
                 $('#common-alert-popup').removeClass('blind');
-                $('.common-alert-txt').text('비밀번호가 변경되었습니다.');
-              } else {
-                $('.popup-background:eq(1)').removeClass('blind');
-                $('#common-alert-popup').removeClass('blind');
-                $('.common-alert-txt').text('예상치못한 오류로 비밀번호 변경에 실패하였습니다.');
-              }
-            }).catch(() => {
-              this.modify_pw_flag = true;
-
-              // 로딩 화면 닫기
-              $('.popup-background:eq(1)').addClass('blind');
-              $('#spinner-section').addClass('blind');
-
-              $('.popup-background:eq(1)').removeClass('blind');
-              $('#common-alert-popup').removeClass('blind');
-              $('.common-alert-txt').text('오류 발생으로 인해 처리에 실패하였습니다.');
-            });
+                $('.common-alert-txt').text('오류 발생으로 인해 처리에 실패하였습니다.');
+              });
           }
         } else {
           $('#modify-pw-now').addClass('null-input-border');
         }
       }
     },
-    /** 아이디 중복여부 확인하는 로직 * */
-    do_check_id() {
-      if ($('#check_id').prop('check') === true) {
-        $('#check_id').prop('check', false);
-        $('#join-id').attr('readonly', false);
-        $('#join-id').removeClass('readOnly');
-        $('#check_id').val('중복확인');
-      } else if ($('#join-id').val().trim().length > 0) {
-        if ($('.warning-text:eq(2)').hasClass('blind') || $('.warning-text:eq(0)').text() === '이미 존재하는 아이디입니다.') {
-          if (this.check_id_flag) {
-            // 로딩 화면
-            $('.popup-background:eq(1)').removeClass('blind');
-            $('#spinner-section').removeClass('blind');
 
-            this.check_id_flag = false;
-
-            axios.post('http://localhost:8800/rence/user_idCheckOK', {
-              user_id: $('#join-id').val().trim(),
-            })
-              .then((res) => {
-                this.check_id_flag = true;
-
-                // 로딩 화면 닫기
-                $('.popup-background:eq(1)').addClass('blind');
-                $('#spinner-section').addClass('blind');
-
-                // 아이디 중복 성공
-                if (res.result === 1) {
-                  $('#check_id').prop('check', true);
-                  $('#check_id').val('재입력');
-                  $('#join-id').attr('readonly', true);
-                  $('#join-id').addClass('readOnly');
-                } else {
-                  $('.warning-text:eq(2)').removeClass('blind');
-                  $('.warning-text:eq(2)').text('이미 존재하는 아이디입니다.');
-                }
-              })
-              .catch(() => {
-                this.check_id_flag = true;
-
-                // 로딩 화면 닫기
-                $('.popup-background:eq(1)').addClass('blind');
-                $('#spinner-section').addClass('blind');
-
-                $('.popup-background:eq(1)').removeClass('blind');
-                $('#common-alert-popup').removeClass('blind');
-                $('.common-alert-txt').text('오류 발생으로 인해 처리에 실패하였습니다.');
-              });
-          }
-        } else {
-          $('.popup-background:eq(1)').removeClass('blind');
-          $('#common-alert-popup').removeClass('blind');
-          $('.common-alert-txt').text('조건에 맞는 아이디를 입력하신 후 중복체크 해주세요.');
-        }
-      } else {
-        $('.popup-background:eq(1)').removeClass('blind');
-        $('#common-alert-popup').removeClass('blind');
-        $('.common-alert-txt').text('아이디를 입력하신 후 중복체크 해주세요.');
-      }
+    /** ********************************** */
+    /** **** RESERVE DETAIL INFO PAGE **** */
+    /** ********************************** */
+    /** 환불 여부 묻는 팝업 닫기 */
+    close_refund_popup() {
+      $('#reserve-cancel-popup').addClass('blind');
+		  $('.popup-background:eq(0)').addClass('blind');
     },
-    /** 이메일 중복여부 확인하는 로직 * */
-    do_check_email() {
-      if ($('#check_email').prop('check') !== true) {
-        if ($('#join-email').val().trim().length > 0) {
-          if ($('.warning-text:eq(0)').hasClass('blind') || $('.warning-text:eq(0)').text() === '이미 존재하는 이메일입니다.') {
-            if (this.check_email_flag) {
-              this.check_email_flag = false;
-
-              // 로딩 화면
-              $('.popup-background:eq(1)').removeClass('blind');
-              $('#spinner-section').removeClass('blind');
-
-              axios.post('http://localhost:8800/rence/user_auth', {
-                user_email: $('#join-email').val().trim(),
-              }).then((res) => {
-                this.check_email_flag = true;
-
-                // 로딩 화면 닫기
-                $('.popup-background:eq(1)').addClass('blind');
-                $('#spinner-section').addClass('blind');
-
-                // 이메일 중복 성공
-                if (res.authNum === 1) {
-                  $('#check_email').prop('check', true);
-                  $('#check_email').val('메일발송');
-
-                  this.timer();
-
-                  $('#join-email').attr('readonly', true);
-                  $('#join-email').addClass('readOnly');
-
-                  $('.popup-background:eq(1)').removeClass('blind');
-                  $('#common-alert-popup').removeClass('blind');
-                  $('.common-alert-txt').html('이메일로 인증번호를 발송하였습니다.<br> 2분 내로 인증번호 인증을 완료해주세요.<br> 2분 초과 시 이메일 재인증이 필요합니다!');
-                } else if (res.authNum === 2) {
-                  $('.warning-text:eq(0)').removeClass('blind');
-                  $('.warning-text:eq(0)').text('이미 존재하는 이메일입니다.');
-                } else if (res.authNum === 3) {
-                  $('.popup-background:eq(1)').removeClass('blind');
-                  $('#common-alert-popup').removeClass('blind');
-                  $('.common-alert-txt').html('해당 이메일은 인증번호 발송 후<br> 2분이 되지 않았습니다.<br> 잠시만 기다려주세요!');
-                } else {
-                  $('.popup-background:eq(1)').removeClass('blind');
-                  $('#common-alert-popup').removeClass('blind');
-                  $('.common-alert-txt').text('오류 발생으로 인해 이메일 인증번호 발송에 실패하였습니다.');
-                }
-              }).catch(() => {
-                this.check_email_flag = true;
-
-                // 로딩 화면 닫기
-                $('.popup-background:eq(1)').addClass('blind');
-                $('#spinner-section').addClass('blind');
-
-                $('.popup-background:eq(1)').removeClass('blind');
-                $('#common-alert-popup').removeClass('blind');
-                $('.common-alert-txt').text('오류 발생으로 인해 처리에 실패하였습니다.');
-              });
-            }
-          } else {
-            $('.popup-background:eq(1)').removeClass('blind');
-            $('#common-alert-popup').removeClass('blind');
-            $('.common-alert-txt').text('조건에 맞는 이메일을 입력하신 후 중복체크 해주세요.');
-          }
-        } else {
-          $('.popup-background:eq(1)').removeClass('blind');
-          $('#common-alert-popup').removeClass('blind');
-          $('.common-alert-txt').text('이메일을 입력하신 후 중복체크 해주세요.');
-        }
-      }
+    /** 예약 취소 성공에 대한 결과 팝업 닫기 */
+    close_cancle_result_success_popup() {
+      $('#reserve-cancel-confirm-popup').addClass('blind');
+		 $('.popup-background:eq(0)').addClass('blind');
     },
-    /** 이메일 인증번호 일치 여부 확인하는 함수 * */
-    do_check_email_code() {
-      if ($('#check_email-code').prop('check') !== true) {
-        if ($('#join-email-code').val().trim().length > 0) {
-          if (this.code_flag) {
-					  this.code_flag = false;
-
-            // 로딩 화면
-            $('.popup-background:eq(1)').removeClass('blind');
-            $('#spinner-section').removeClass('blind');
-
-            axios.post('http://localhost:8800/rence/user_auth', {
-              user_email: $('#join-email').val().trim(),
-              email_code: $('#join-email-code').val().trim(),
-            }).then((res) => {
-              this.code_flag = true;
-
-              // 로딩 화면 닫기
-              $('.popup-background:eq(1)').addClass('blind');
-              $('#spinner-section').addClass('blind');
-
-              // 이메일 인증번호 확인 성공
-              if (res.result == 1) {
-								  this.timer('true');
-                $('#check_email-code').prop('check', true);
-                $('#check_email-code').val('인증완료');
-                $('#join-email-code').attr('readonly', true);
-                $('#join-email-code').addClass('readOnly');
-              } else {
-                $('.popup-background:eq(1)').removeClass('blind');
-                $('#common-alert-popup').removeClass('blind');
-                $('.common-alert-txt').text('알맞지 않은 인증번호입니다.');
-              }
-            }).catch(() => {
-              this.code_flag = true;
-
-              // 로딩 화면 닫기
-              $('.popup-background:eq(1)').addClass('blind');
-              $('#spinner-section').addClass('blind');
-
-              $('.popup-background:eq(1)').removeClass('blind');
-              $('#common-alert-popup').removeClass('blind');
-              $('.common-alert-txt').text('오류 발생으로 인해 처리에 실패하였습니다.');
-            });
-          }
-        }
-      } else {
-        $('.popup-background:eq(1)').removeClass('blind');
-        $('#common-alert-popup').removeClass('blind');
-        $('.common-alert-txt').text('인증번호 입력하신 후 시도해주세요.');
-      }
+    /** 예약 취소 실패에 대한 결과 팝업 닫기 */
+    close_cancle_result_fail_popup() {
+      $('#reserve-cancel-fail-popup').addClass('blind');
+		 $('.popup-background:eq(0)').addClass('blind');
     },
-
-    do_join() {
-      if (
-        $('#join-email').val().trim().length > 0
-        && $('#join-email-code').val().trim().length > 0
-        && $('#join-id').val().trim().length > 0
-        && $('#join-pw').val().trim().length > 0
-        && $('#join-re-pw').val().trim().length > 0
-        && $('#join-name').val().trim().length > 0
-        && $('#join-tel').val().trim().length > 0
-        && $('#join-birth').val().trim().length > 0) {
-        const arr = $('.warning-text');
-        let tmp = true;
-        // eslint-disable-next-line no-plusplus
-        for (let i = 0; i < arr.length; i++) {
-          if (!$(arr[i]).hasClass('blind')) {
-            tmp = false;
-            break;
-          }
-        }
-
-        if (tmp == true) {
-          if ($('#check_email').prop('check') === true) {
-            if ($('#check_email-code').prop('check') === true) {
-              if ($('#check_id').prop('check') === true) {
-							            if (this.join_flag) {
-	                            // 로딩 화면
-	                            $('.popup-background:eq(1)').removeClass('blind');
-	                            $('#spinner-section').removeClass('blind');
-
-								              this.join_flag = false;
-
-                  axios.post('http://localhost:8800/rence/joinOK', {
-                    user_id: $('#join-id').val().trim(),
-                    user_pw: $('#join-pw').val().trim(),
-                    user_email: $('#join-email').val().trim(),
-                    user_name: $('#join-name').val().trim(),
-                    user_tel: $('#join-tel').val().trim(),
-                    user_birth: $('#join-birth').val().trim(),
-                  }).then((res) => {
-                    this.join_flag = true;
-
-                    // 로딩 화면
-                    $('.popup-background:eq(1)').addClass('blind');
-                    $('#spinner-section').addClass('blind');
-
-                    // 회원가입 성공
-                    if (res.result === 1) {
-                      // INPUT 초기화
-                      $('.join-popup-input').val('');
-                      $('.join-popup-input-short').val('');
-                      $('.join-popup-input-short').removeClass('readOnly');
-                      $('.join-popup-input-short').attr('readonly', false);
-
-                      // 에러 메세지 초기화
-                      $('.warning-text').addClass('blind');
-
-                      // 경고 테두리 초기화
-                      $('.join-popup-input').removeClass('null-input-border');
-                      $('.join-popup-input-short').removeClass('null-input-border');
-
-                      // 버튼 초기화
-                      $('#check_id').prop('check', undefined);
-                      $('#check_id').val('중복확인');
-                      $('#check_email').prop('check', undefined);
-                      $('#check_email').val('인증하기');
-                      $('#check_email-code').prop('check', undefined);
-                      $('#check_email-code').val('확인');
-
-                      // 팝업 관련창 닫음
-                      $('#join-section').addClass('blind');
-                      $('.popup-background:eq(0)').addClass('blind');
-
-                      // 성공 알림창
-                      $('.popup-background:eq(1)').removeClass('blind');
-                      $('#common-alert-popup').removeClass('blind');
-                      $('.common-alert-txt').text('회원가입에 성공하였습니다.');
-                    } else {
-                      $('.popup-background:eq(1)').removeClass('blind');
-                      $('#common-alert-popup').removeClass('blind');
-                      $('.common-alert-txt').text('회원가입에 실패하였습니다.');
-                    }
-                  }).catch(() => {
-                    this.join_flag = true;
-
-                    // 로딩 화면
-                    $('.popup-background:eq(1)').addClass('blind');
-                    $('#spinner-section').addClass('blind');
-
-                    $('.popup-background:eq(1)').removeClass('blind');
-                    $('#common-alert-popup').removeClass('blind');
-                    $('.common-alert-txt').text('오류 발생으로 인해 회원가입 처리에 실패하였습니다.');
-                  });
-                } else {
-                  $('.popup-background:eq(1)').removeClass('blind');
-                  $('#common-alert-popup').removeClass('blind');
-                  $('.common-alert-txt').text('아이디 중복체크를 완료하세요.');
-                }
-              } else {
-                $('.popup-background:eq(1)').removeClass('blind');
-                $('#common-alert-popup').removeClass('blind');
-                $('.common-alert-txt').text('인증번호 확인을 완료하세요.');
-              }
-            } else {
-              $('.popup-background:eq(1)').removeClass('blind');
-              $('#common-alert-popup').removeClass('blind');
-              $('.common-alert-txt').text('이메일 인증을 완료하세요.');
-            }
-          }
-        } else {
-          if ($('#join-email').val().trim().length == 0) {
-            $('#join-email').addClass('null-input-border');
-          }
-          if ($('#join-email-code').val().trim().length == 0) {
-            $('#join-email-code').addClass('null-input-border');
-          }
-          if ($('#join-id').val().trim().length == 0) {
-            $('#join-id').addClass('null-input-border');
-          }
-          if ($('#join-pw').val().trim().length == 0) {
-            $('#join-pw').addClass('null-input-border');
-          }
-          if ($('#join-re-pw').val().trim().length == 0) {
-            $('#join-re-pw').addClass('null-input-border');
-          }
-          if ($('#join-name').val().trim().length == 0) {
-            $('#join-name').addClass('null-input-border');
-          }
-          if ($('#join-tel').val().trim().length == 0) {
-            $('#join-tel').addClass('null-input-border');
-          }
-          if ($('#join-birth').val().trim().length == 0) {
-            $('#join-birth').addClass('null-input-border');
-          }
-        }
-      }
-    },
-    timer(check) {
-      let minute = 1;
-      let seconds = 60;
-
-      if (check == 'true') {
-        clearInterval(this.time);
-        $('#check_email').val('인증완료');
-        return;
-      }
-
-      time = setInterval(() => {
-        seconds--;
-
-        if (seconds <= 9) $('#check_email').val(`0${minute} : ` + `0${seconds}`);
-        else $('#check_email').val(`0${minute} : ${seconds}`);
-
-        if (seconds == 0) {
-          if (minute != 0) {
-            --minute;
-            seconds = 60;
-          } else {
-            $('.popup-background:eq(1)').removeClass('blind');
-            $('#common-alert-popup').removeClass('blind');
-            $('.common-alert-txt').html('이메일 인증 시간을 초과했습니다.<br>다시 시도해주세요.');
-
-            $('#check_email').prop('check', false);
-            $('#check_email').val('인증하기');
-            $('#join-email').val('');
-            $('#join-email').attr('readonly', false);
-            $('#join-email').removeClass('readOnly');
-
-            $('#check_email-code').prop('check', false);
-            $('#check_email-code').val('확인');
-            $('#join-email-code').val('');
-            $('#join-email-code').attr('readonly', false);
-            $('#join-email-code').removeClass('readOnly');
-
-            clearInterval(this.time);
-          }
-        }
-      }, 1000);
-    },
+    /** 환불 처리 로직 */
     do_refund() {
       if (this.refund_flag) {
         this.refund_flag = false;
         const reserve_no = window.location.href.split('reserve_no=')[1];
-        const user_no = $.cookie('user_no');
+        const user_no = this.$cookies.get('user_no');
         const actual_payment = parseInt($('#actual_payment').attr('actual_payment').replace(',', ''));
 
         // 로딩 페이지 오픈
         $('.popup-background:eq(1)').removeClass('blind');
         $('#spinner-section').removeClass('blind');
 
-        axios.get('http://localhost:8800/rence/reserve_cancel', {
-          params: {
-            reserve_no,
-				    user_no,
-          },
-        }).then((res) => {
-          if (res.result === '1') {
-            const reserve_no = location.href.split('reserve_no=')[1].split('&')[0];
-            const cancel_amount = parseInt($('#actual_payment').attr('actual_payment').replace(',', ''));
+        const params = new URLSearchParams();
+        params.append('reserve_no', reserve_no);
+        params.append('user_no', user_no);
 
-            axios.get('http://localhost:8800/rence/payment_cancel', {
-              params: {
-                reserve_no,
-                cancel_amount,
-                reason: '예약 취소로 인한 결제 환불',
-              },
-            })
-              .then((res) => {
-                this.refund_flag = true;
-                // 로딩 화면 닫기
-                $('.popup-background:eq(1)').addClass('blind');
-                $('#spinner-section').addClass('blind');
+        axios.get('http://localhost:8800/rence/reserve_cancel', params)
+          .then((res) => {
+            if (res.data.result === '1') {
+              const reserve_no = location.href.split('reserve_no=')[1].split('&')[0];
+              const cancel_amount = parseInt($('#actual_payment').attr('actual_payment').replace(',', ''));
 
-                if (res.result === '1') {
-                  $('#reserve-cancel-popup').addClass('blind');
-                  $('#reserve-cancel-confirm-popup').removeClass('blind');
+              const params = new URLSearchParams();
+              params.append('reserve_no', reserve_no);
+              params.append('cancel_amount', cancel_amount);
+              params.append('reason', '예약 취소로 인한 결제 환불');
 
-                  location.href = 'http://localhost:8081/reserve_list';
-                }
-              })
-              .catch(() => {
-                this.refund_flag = true;
+              axios.get('http://localhost:8800/rence/payment_cancel', params)
+                .then((res) => {
+                  this.refund_flag = true;
+                  // 로딩 화면 닫기
+                  $('.popup-background:eq(1)').addClass('blind');
+                  $('#spinner-section').addClass('blind');
 
-                // 로딩 화면 닫기
-                $('.popup-background:eq(1)').addClass('blind');
-                $('#spinner-section').addClass('blind');
+                  if (res.data.result === '1') {
+                    $('#reserve-cancel-popup').addClass('blind');
+                    $('#reserve-cancel-confirm-popup').removeClass('blind');
 
-                $('.popup-background:eq(1)').removeClass('blind');
-                $('#common-alert-popup').removeClass('blind');
-                $('.common-alert-txt').text('오류 발생으로 인해 처리에 실패하였습니다.');
-              });
-          } else {
-            $('#reserve-cancel-popup').addClass('blind');
-            $('#reserve-cancel-fail-popup').removeClass('blind');
-          }
-        }).catch(() => {
-          this.refund_flag = true;
+                    location.href = 'http://localhost:8081/reserve_list';
+                  }
+                })
+                .catch(() => {
+                  this.refund_flag = true;
 
-          // 로딩 화면 닫기
-          $('.popup-background:eq(1)').addClass('blind');
-          $('#spinner-section').addClass('blind');
+                  // 로딩 화면 닫기
+                  $('.popup-background:eq(1)').addClass('blind');
+                  $('#spinner-section').addClass('blind');
 
-          $('.popup-background:eq(1)').removeClass('blind');
-          $('#common-alert-popup').removeClass('blind');
-          $('.common-alert-txt').text('오류 발생으로 인해 처리에 실패하였습니다.');
-        });
+                  $('.popup-background:eq(1)').removeClass('blind');
+                  $('#common-alert-popup').removeClass('blind');
+                  $('.common-alert-txt').text('오류 발생으로 인해 처리에 실패하였습니다.');
+                });
+            } else {
+              $('#reserve-cancel-popup').addClass('blind');
+              $('#reserve-cancel-fail-popup').removeClass('blind');
+            }
+          }).catch(() => {
+            this.refund_flag = true;
+
+            // 로딩 화면 닫기
+            $('.popup-background:eq(1)').addClass('blind');
+            $('#spinner-section').addClass('blind');
+
+            $('.popup-background:eq(1)').removeClass('blind');
+            $('#common-alert-popup').removeClass('blind');
+            $('.common-alert-txt').text('오류 발생으로 인해 처리에 실패하였습니다.');
+          });
       }
     },
+    /** ********************************** */
+    /** ******** MYPAGE - REVIEW ********* */
+    /** ********************************** */
+    /** 후기 삭제 팝업 - "아니오" 클릭 시, 발생하는 이벤트 */
+    close_r_delete_popup() {
+      $('#r-delete-btn').attr('idx', undefined);
+      $('#r-delete-popup').addClass('blind');
+      $('.popup-background:eq(0)').addClass('blind');
+    },
+    /** 후기 삭제 로직 */
     do_r_delete() {
       if (this.r_delete_flag) {
         this.r_delete_flag = false;
@@ -1401,7 +1497,7 @@ export default {
         $('.popup-background:eq(1)').removeClass('blind');
         $('#spinner-section').removeClass('blind');
 
-        axios.get(`http://localhost:8800/rence/delete_review?user_no=${$.cookie('user_no')}&review_no=${$('#r-delete-btn').attr('idx')}`)
+        axios.get(`http://localhost:8800/rence/delete_review?user_no=${this.$cookies.get('user_no')}&review_no=${$('#r-delete-btn').attr('idx')}`)
           .then((res) => {
             this.r_delete_flag = true;
 
@@ -1409,7 +1505,7 @@ export default {
             $('.popup-background:eq(1)').addClass('blind');
             $('#spinner-section').addClass('blind');
 
-            if (res.result === 1) {
+            if (res.data.result === '1') {
               $('.popup-background:eq(1)').removeClass('blind');
               $('#common-alert-popup').removeClass('blind');
               $('.common-alert-txt').text('후기가 삭제되었습니다.');
@@ -1419,7 +1515,9 @@ export default {
               $('#common-alert-popup').removeClass('blind');
               $('.common-alert-txt').text('후기 삭제에 실패하였습니다.');
             }
-          }).catch(() => {
+          })
+
+          .catch(() => {
             this.r_delete_flag = true;
 
             // 로딩 화면 닫기
@@ -1432,6 +1530,16 @@ export default {
           });
       }
     },
+
+    /** ********************************** */
+    /** ******** MYPAGE - QUESTION ******* */
+    /** ********************************** */
+    /** 댓글 컨펌 팝업 - 창닫기 버튼 */
+    close_q_delete_popup() {
+      $('#r-delete-popup').addClass('blind');
+      $('.popup-background:eq(0)').addClass('blind');
+    },
+    /** 문의 삭제 로직 */
     do_q_delete() {
       if (this.q_delete_flag) {
         this.q_delete_flag = false;
@@ -1443,7 +1551,7 @@ export default {
         $('.popup-background:eq(1)').removeClass('blind');
         $('#spinner-section').removeClass('blind');
 
-        axios.get(`http://localhost:8800/rence/delete_comment?user_no=${$.cookie('user_no')}&comment_no=${$('#q-delete-btn').attr('idx')}`)
+        axios.get(`http://localhost:8800/rence/delete_comment?user_no=${this.$cookies.get('user_no')}&comment_no=${$('#q-delete-btn').attr('idx')}`)
           .then((res) => {
             this.q_delete_flag = true;
 
@@ -1451,7 +1559,7 @@ export default {
             $('.popup-background:eq(1)').addClass('blind');
             $('#spinner-section').addClass('blind');
 
-            if (res.result === 1) {
+            if (res.data.result === '1') {
               $('.popup-background:eq(1)').removeClass('blind');
               $('#common-alert-popup').removeClass('blind');
               $('.common-alert-txt').text('댓글이 삭제되었습니다.');

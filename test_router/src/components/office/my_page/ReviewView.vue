@@ -96,13 +96,13 @@ export default {
     };
   },
   mounted() {
-    // axios.get('http://localhost:8800/rence/review_list?user_no=${$.cookie('user_no')}&page=1')
+    // axios.get('http://localhost:8800/rence/review_list?user_no=${this.$cookies.get('user_no')}&page=1')
     //   .then((res) => {
-    //     this.list = res.list;
-    //     this.maxPage = res.maxPage;
-    //     this.nowPage = res.nowPage;
-    //     this.totalPageCnt = res.totalPageCnt;
-    //     this.start = Math.ceil(res.nowPage/5.0);
+    //     this.list = res.data.list;
+    //     this.maxPage = res.data.maxPage;
+    //     this.nowPage = res.data.nowPage;
+    //     this.totalPageCnt = res.data.totalPageCnt;
+    //     this.start = Math.ceil(res.data.nowPage/5.0);
     //     this.start = 5 * (this.start - 1) + 1;
 
     //     this.forRange = [];
@@ -194,13 +194,13 @@ export default {
       $('.popup-background:eq(1)').removeClass('blind');
       $('#spinner-section').removeClass('blind');
 
-      axios.get(`http://localhost:8800/rence/review_list?user_no=${$.cookie('user_no')}&page=${$(param).attr('idx')}`)
+      axios.get(`http://localhost:8800/rence/review_list?user_no=${this.$cookies.get('user_no')}&page=${$(param).attr('idx')}`)
         .then((res) => {
-          this.list = res.list;
-          this.maxPage = res.maxPage;
-          this.nowPage = res.nowPage;
-          this.totalPageCnt = res.totalPageCnt;
-          this.start = Math.ceil(res.nowPage / 5.0);
+          this.list = res.data.list;
+          this.maxPage = res.data.maxPage;
+          this.nowPage = res.data.nowPage;
+          this.totalPageCnt = res.data.totalPageCnt;
+          this.start = Math.ceil(res.data.nowPage / 5.0);
           this.start = 5 * (this.start - 1) + 1;
 
           this.forRange = [];
