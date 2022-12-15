@@ -1,14 +1,23 @@
 /* ************** */
 /* @author 김예은 */
 /* ************** */
+
+@font-face {
+	font-family: 'OTWelcome';
+	src: url('https://cdn.jsdelivr.net/gh/projectnoonnu/noonfonts_2110@1.0/OTWelcomeRA.woff2') format('woff2');
+	font-style: normal;
+}
+
+* {
+	font-family: 'OTWelcome';
+	font-weight: 900;
+}
+
 .homeWrap {
 	width: 100%;
 	height: calc(100vh - 95px - 76px);
 	display: flex;
 	flex-direction: column;
-	* {
-		font-family: 'OTWelcome';
-	}
 }
 .homeTitle-wrap {
 	width: 73%;

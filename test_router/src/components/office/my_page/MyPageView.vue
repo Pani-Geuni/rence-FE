@@ -4,6 +4,12 @@
 <!-- eslint-disable space-before-blocks -->
 <!-- eslint-disable next-line default-case-->
 <!-- eslint-disable -->
+
+<!--
+ - @author 김예은
+ - @refactoring 김예은
+-->
+
 <template>
   <div class="my-page-wrap">
     <div class="my-page">
@@ -21,9 +27,9 @@
               <span class="pw-update-txt" @click="show_modify_pw_popup">비밀번호 수정</span>
             </section>
             <section class="info-etc-section">
-              <span>{{list.user_id}}</span> 
+              <span>{{list.user_id}}&nbsp;</span> 
               <span>•</span> 
-              <span>{{list.user_email}}</span>
+              <span>&nbsp;{{list.user_email}}</span>
             </section>
             <section class="info-etc-section info-etc-section-second">
               <span>{{list.user_tel}}</span> 
@@ -108,6 +114,7 @@ export default {
   data() {
     return {
       list: {
+        user_id: 'qjspdls',
         user_image: 'https://w.namu.la/s/25ed11d0094cf291c17504d60954ca573a2c16eb76d76cad443d926a1b4bf0a9604b9aff668756ca410717e0b93a3d680deb33ceb318a788f81eb72a5f65b4bad0b97dc2a4c73db06d21364e83ef87ac',
       },
     };
@@ -115,7 +122,7 @@ export default {
   mounted() {
     // axios.get('http://localhost:8800/rence/go_my_page')
     //   .then((res) => {
-    //     this.list = res.list;
+    //     this.list = res.data.list;
     //   })
     //   .catch(() => {
     //     $('.popup-background:eq(1)').removeClass('blind');

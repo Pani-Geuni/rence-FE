@@ -1,5 +1,11 @@
 <!-- eslint-disable vuejs-accessibility/form-control-has-label -->
 <!-- eslint-disable no-tabs -->
+
+<!--
+ - @author 김예은
+ - @refactoring 김예은
+-->
+
 <template>
   <div class="pageWrap">
     <HeaderView />
@@ -9,8 +15,43 @@
   <PopupView />
 </template>
 
-<style lang="scss" scoped>
-  @import '@/assets/CSS/common/common.scss';
+<style>
+.mx-datepicker {
+	width: 340px;
+	height: 48px;
+
+  box-sizing: border-box;
+  border: 2px solid #2EE49D;
+
+	padding: 7px 15px 7px 10px;
+	margin-top: 12px;
+	display: flex;
+	align-items: center;
+	border-radius: 8px;
+	cursor: pointer;
+}
+
+.mx-input {
+  display: inline-block;
+  box-sizing: border-box;
+  width: 317px;
+  height: 34px;
+  padding: 6px 30px;
+  padding-left: 10px;
+  font-size: 14px;
+  color: #555;
+  background-color: #fff;
+  border: 0px;
+}
+
+.mx-icon-calendar{
+  color:#2EE49D;
+}
+
+.mx-datepicker svg {
+    width: 1.4em;
+    height: 1.4em;
+}
 </style>
 
 <script>

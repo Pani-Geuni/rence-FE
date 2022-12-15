@@ -4,6 +4,12 @@
 <!-- eslint-disable space-before-blocks -->
 <!-- eslint-disable next-line default-case-->
 <!-- eslint-disable -->
+
+<!--
+ - @author 김예은
+ - @refactoring 김예은
+-->
+
 <template>
   <div class="mileage-list-wrap" th:fragment="content">
     <div class="reserve-list">
