@@ -8,6 +8,7 @@ import ReserveListView from '../components/office/my_page/ReserveListView.vue';
 
 import BeforeReserveInfoView from '../components/office/reserve/BeforeReserveInfoView.vue';
 import NowReserveInfoView from '../components/office/reserve/NowReserveInfoView.vue';
+import PaymentView from '../components/office/reserve/PaymentView.vue';
 
 import SpaceDetailView from '../components/office/space_detail/SpaceDetailView.vue';
 import OfficeSpaceDetailView from '../components/office/space_detail/OfficeSpaceDetailView.vue';
@@ -80,6 +81,11 @@ const routes = [
         path: 'space_office',
         name: 'OfficeSpaceDetailView',
         component: OfficeSpaceDetailView,
+      },
+      {
+        path: 'payment',
+        name: 'PaymentView',
+        component: PaymentView,
       },
     ],
   },

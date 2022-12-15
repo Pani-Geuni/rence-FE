@@ -117,7 +117,7 @@ export default {
     };
   },
   mounted() {
-    // axios.get('http://localhost:8800/rence/reserve_list?time_point=now&user_no=${$.cookie('user_no')}&page=1')
+    // axios.get('http://localhost:8800/rence/reserve_list?time_point=now&user_no=${this.$cookies.get('user_no')}&page=1')
     //   .then((res) => {
     //     this.type = res.data.type;
     //     this.cnt = res.data.cnt;
@@ -153,10 +153,10 @@ export default {
       const URL = '';
       if ($(param).attr('id') === 'timePoint-now') {
         $('.timePoint-value').attr('time-point', 'now');
-        URL = `http://localhost:8081/rence/reserve_list?time_point=now&user_no=${$.cookie('user_no')}&page=1`;
+        URL = `http://localhost:8081/rence/reserve_list?time_point=now&user_no=${this.$cookies.get('user_no')}&page=1`;
       } else if ($(param).attr('id') === 'timePoint-before') {
         $('.timePoint-value').attr('time-point', 'before');
-        URL = `http://localhost:8081/rence/reserve_list?time_point=before&user_no=${$.cookie('user_no')}&page=1`;
+        URL = `http://localhost:8081/rence/reserve_list?time_point=before&user_no=${this.$cookies.get('user_no')}&page=1`;
       }
 
       // 로딩 화면
@@ -169,14 +169,14 @@ export default {
           $('.popup-background:eq(1)').addClass('blind');
           $('#spinner-section').addClass('blind');
 
-          this.type = res.type;
-          this.cnt = res.cnt;
+          this.type = res.data.type;
+          this.cnt = res.data.cnt;
 
-          this.list = res.list;
-          this.maxPage = res.maxPage;
-          this.nowPage = res.nowPage;
-          this.totalPageCnt = res.totalPageCnt;
-          this.start = Math.ceil(res.nowPage / 5.0);
+          this.list = res.data.list;
+          this.maxPage = res.data.maxPage;
+          this.nowPage = res.data.nowPage;
+          this.totalPageCnt = res.data.totalPageCnt;
+          this.start = Math.ceil(res.data.nowPage / 5.0);
           this.start = 5 * (this.start - 1) + 1;
 
           this.forRange = [];
@@ -260,20 +260,20 @@ export default {
       $('.popup-background:eq(1)').removeClass('blind');
       $('#spinner-section').removeClass('blind');
 
-      axios.get(`http://localhost:8800/rence/reserve_list?time_point=${this.type}&user_no=${$.cookie('user_no')}&page=${$(param).attr('idx')}`)
+      axios.get(`http://localhost:8800/rence/reserve_list?time_point=${this.type}&user_no=${this.$cookies.get('user_no')}&page=${$(param).attr('idx')}`)
         .then((res) => {
           // 로딩 화면 닫기
           $('.popup-background:eq(1)').addClass('blind');
           $('#spinner-section').addClass('blind');
 
-          this.type = res.type;
-          this.cnt = res.cnt;
+          this.type = res.data.type;
+          this.cnt = res.data.cnt;
 
-          this.list = res.list;
-          this.maxPage = res.maxPage;
-          this.nowPage = res.nowPage;
-          this.totalPageCnt = res.totalPageCnt;
-          this.start = Math.ceil(res.nowPage / 5.0);
+          this.list = res.data.list;
+          this.maxPage = res.data.maxPage;
+          this.nowPage = res.data.nowPage;
+          this.totalPageCnt = res.data.totalPageCnt;
+          this.start = Math.ceil(res.data.nowPage / 5.0);
           this.start = 5 * (this.start - 1) + 1;
 
           this.forRange = [];

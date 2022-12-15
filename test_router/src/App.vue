@@ -21,3 +21,7 @@ export default {
   name: 'App',
 };
 </script>
+
+<style>
+  @import './assets/CSS/common/font.css';
+</style>

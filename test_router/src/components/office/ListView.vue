@@ -112,7 +112,6 @@ export default {
     } else if (this.$route.params.call.includes('search_list')) {
       this.url = `http://localhost:8800/common/search_list?${decodeURI(window.location.href).split('?')[1]}`;
     }
-    console.log(this.url);
 
     // axios.get(this.url)
     //   .then((res) => {
@@ -161,10 +160,10 @@ export default {
           $('.popup-background:eq(1)').addClass('blind');
           $('#spinner-section').addClass('blind');
 
-          this.list = res.list;
-          this.maxCnt = res.maxCnt;
-          this.nowCnt = res.nowCnt;
-          this.condition = res.condition;
+          this.list = res.data.list;
+          this.maxCnt = res.data.maxCnt;
+          this.nowCnt = res.data.nowCnt;
+          this.condition = res.data.condition;
 
           if (this.list.length !== 0) {
             $('.list-page-wrap').addClass('blind');
@@ -206,15 +205,15 @@ export default {
                 const now = $('#maxCnt').attr('nowCnt');
                 $('#maxCnt').attr('nowCnt', Number(now) + 1);
 
-                for (let i = 0; i < res.cnt; i++) {
+                for (let i = 0; i < res.data.cnt; i++) {
                   const box = $($('.list-box')[0]).clone();
-                  box.attr('idx', res.list[i].backoffice_no);
-                  box.find('.list-thumbnail').attr('src', res.list[i].backoffice_image);
-                  box.find('.box-info-c-name').text(res.list[i].company_name);
-                  box.find('.box-info-location').text(res.list[i].roadname_address);
-                  box.find('.box-tag').text(res.list[i].backoffice_tag);
-                  box.find('.box-room-min-price').text(`최소 ${res.list[i].min_room_price}`);
-                  box.find('.rating-num').text(res.list[i].avg_rating);
+                  box.attr('idx', res.data.list[i].backoffice_no);
+                  box.find('.list-thumbnail').attr('src', res.data.list[i].backoffice_image);
+                  box.find('.box-info-c-name').text(res.data.list[i].company_name);
+                  box.find('.box-info-location').text(res.data.list[i].roadname_address);
+                  box.find('.box-tag').text(res.data.list[i].backoffice_tag);
+                  box.find('.box-room-min-price').text(`최소 ${res.data.list[i].min_room_price}`);
+                  box.find('.rating-num').text(res.data.list[i].avg_rating);
 
                   $('.list-box-wrap').append(box);
                 }
@@ -235,43 +234,43 @@ export default {
 
             this.scroll_flag = false;
 
-            axios.get('http://localhost:8800/office/search_list_paging', {
-              params: {
-                type,
-                location,
-                searchWord,
-                page: Number(page) + 1,
-                condition,
-              },
-            }).then((res) => {
-              this.scroll_flag = true;
+            const params = new URLSearchParams();
+            params.append('type', type);
+            params.append('location', location);
+            params.append('searchWord', searchWord);
+            params.append('page', Number(page) + 1);
+            params.append('condition', condition);
 
-              // 로딩 화면 닫기
-              $('.popup-background:eq(1)').addClass('blind');
-              $('#spinner-section').addClass('blind');
+            axios.get('http://localhost:8800/office/search_list_paging', params)
+              .then((res) => {
+                this.scroll_flag = true;
 
-              const now = $('#maxCnt').attr('nowCnt');
-              $('#maxCnt').attr('nowCnt', Number(now) + 1);
+                // 로딩 화면 닫기
+                $('.popup-background:eq(1)').addClass('blind');
+                $('#spinner-section').addClass('blind');
 
-              for (let i = 0; i < res.cnt; i++) {
-                const box = $($('.list-box')[0]).clone();
-                box.attr('idx', res.list[i].backoffice_no);
-                box.find('.list-thumbnail').attr('src', res.list[i].backoffice_image);
-                box.find('.box-info-c-name').text(res.list[i].company_name);
-                box.find('.box-info-location').text(res.list[i].roadname_address);
-                box.find('.box-tag').text(res.list[i].backoffice_tag);
-                box.find('.box-room-min-price').text(`최소 ${res.list[i].min_room_price}`);
-                box.find('.rating-num').text(res.list[i].avg_rating);
+                const now = $('#maxCnt').attr('nowCnt');
+                $('#maxCnt').attr('nowCnt', Number(now) + 1);
 
-                $('.list-box-wrap').append(box);
-              }
-            }).catch(() => {
-              this.scroll_flag = true;
+                for (let i = 0; i < res.data.cnt; i++) {
+                  const box = $($('.list-box')[0]).clone();
+                  box.attr('idx', res.data.list[i].backoffice_no);
+                  box.find('.list-thumbnail').attr('src', res.data.list[i].backoffice_image);
+                  box.find('.box-info-c-name').text(res.data.list[i].company_name);
+                  box.find('.box-info-location').text(res.data.list[i].roadname_address);
+                  box.find('.box-tag').text(res.data.list[i].backoffice_tag);
+                  box.find('.box-room-min-price').text(`최소 ${res.data.list[i].min_room_price}`);
+                  box.find('.rating-num').text(res.data.list[i].avg_rating);
 
-              // 로딩 화면 닫기
-              $('.popup-background:eq(1)').addClass('blind');
-              $('#spinner-section').addClass('blind');
-            });
+                  $('.list-box-wrap').append(box);
+                }
+              }).catch(() => {
+                this.scroll_flag = true;
+
+                // 로딩 화면 닫기
+                $('.popup-background:eq(1)').addClass('blind');
+                $('#spinner-section').addClass('blind');
+              });
           }
         }
       }

@@ -2,14 +2,15 @@
 /* @author 김예은 */
 /* ****************/
 
+* {
+	font-family: 'MICEGothic';
+}
+
 .my-page-wrap {
 	width: 100%;
 	height: calc(100vh - 95px - 76px);
 	display: flex;
 	flex-direction: column;
-	* {
-		font-family: 'MICEGothic';
-	}
 }
 .my-page {
 	width: 100%;

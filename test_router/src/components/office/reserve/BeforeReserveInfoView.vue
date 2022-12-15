@@ -251,14 +251,16 @@ export default {
     return {
       list: '',
       review_flag: true,
+      reserveNo: '',
     };
   },
   mounted() {
-    const reserveNo = decodeURI(window.location.href.split('reserve_no=')[1]);
+    // eslint-disable-next-line prefer-destructuring
+    this.reserveNo = decodeURI(window.location.href).split('reserve_no=')[1];
 
     // axios.get(`http://localhost:8800/rence/reserved_info?reserve_no=${reserveNo}`)
     //   .then((res) => {
-    //     this.list = res;
+    //     this.list = res.data;
     //   })
     //   .catch(() => {
     //     $('.popup-background:eq(1)').removeClass('blind');
@@ -298,7 +300,7 @@ export default {
       }
       $('.review-length').text($(param).val().length);
     },
-    /** * 별점 클릭 이벤트 */
+    /** 별점 클릭 이벤트 */
     set_review_star(param) {
       // 별 초기화
       $('.y-star').addClass('blind');
@@ -332,57 +334,57 @@ export default {
             if ($('.g-star').hasClass('blind')) point++;
           }
 
-          axios.get('http://localhost:8081/rence/insert_review', {
-            params: {
-              user_no: $.cookie('user_no'),
-              backoffice_no: $(param).attr('backoffice_no'),
-              room_no: $(param).attr('room_no'),
-              review_point: point,
-              review_content: $('#review-write').val().trim(),
-            },
-          }).then((res) => {
-            this.review_flag = true;
+          const params = new URLSearchParams();
+          params.append('user_no', this.$cookies.get('user_no'));
+          params.append('backoffice_no', $(param).attr('backoffice_no'));
+          params.append('room_no', $(param).attr('room_no'));
+          params.append('review_point', point);
+          params.append('review_content', $('#review-write').val().trim());
 
-            // 로딩 화면 닫기
-            $('.popup-background:eq(0)').addClass('blind');
-            $('#spinner-section').addClass('blind');
+          axios.get('http://localhost:8081/rence/insert_review', params)
+            .then((res) => {
+              this.review_flag = true;
 
-            if (res.result == 1) {
+              // 로딩 화면 닫기
+              $('.popup-background:eq(0)').addClass('blind');
+              $('#spinner-section').addClass('blind');
+
+              if (res.data.result === 1) {
               // TEXTAREA 초기화
-              $('#review-write').val('');
+                $('#review-write').val('');
 
-              // 글자수 초기화
-              $('.review-length').text('0');
+                // 글자수 초기화
+                $('.review-length').text('0');
 
-              $('#review-write').removeClass('null-input-border');
+                $('#review-write').removeClass('null-input-border');
 
-              // 별점 초기화
-              $('.y-star').addClass('blind');
-              $('.g-star').removeClass('blind');
+                // 별점 초기화
+                $('.y-star').addClass('blind');
+                $('.g-star').removeClass('blind');
 
-              // 팝업 닫기
-              $('#review-popup').addClass('blind');
+                // 팝업 닫기
+                $('#review-popup').addClass('blind');
+
+                $('.popup-background:eq(1)').removeClass('blind');
+                $('#common-alert-popup').removeClass('blind');
+                $('.common-alert-txt').text('성공적으로 후기가 등록되었습니다.');
+                $('#common-alert-btn').attr('is_reload', true);
+              } else {
+                $('.popup-background:eq(1)').removeClass('blind');
+                $('#common-alert-popup').removeClass('blind');
+                $('.common-alert-txt').text('후기등록에 실패하였습니다.');
+              }
+            }).catch(() => {
+              this.review_flag = true;
+
+              // 로딩 화면 닫기
+              $('.popup-background:eq(0)').addClass('blind');
+              $('#spinner-section').addClass('blind');
 
               $('.popup-background:eq(1)').removeClass('blind');
               $('#common-alert-popup').removeClass('blind');
-              $('.common-alert-txt').text('성공적으로 후기가 등록되었습니다.');
-              $('#common-alert-btn').attr('is_reload', true);
-            } else {
-              $('.popup-background:eq(1)').removeClass('blind');
-              $('#common-alert-popup').removeClass('blind');
-              $('.common-alert-txt').text('후기등록에 실패하였습니다.');
-            }
-          }).catch(() => {
-            this.review_flag = true;
-
-            // 로딩 화면 닫기
-            $('.popup-background:eq(0)').addClass('blind');
-            $('#spinner-section').addClass('blind');
-
-            $('.popup-background:eq(1)').removeClass('blind');
-            $('#common-alert-popup').removeClass('blind');
-            $('.common-alert-txt').text('오류 발생으로 인해 처리에 실패하였습니다.');
-          });
+              $('.common-alert-txt').text('오류 발생으로 인해 처리에 실패하였습니다.');
+            });
         } else {
           if ($('#review-write').val().trim().length === 0) {
             $('#review-write').addClass('null-input-border');

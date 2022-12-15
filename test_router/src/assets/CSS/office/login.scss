@@ -2,6 +2,9 @@
 /* @author 김예은 */
 /* ************** */
 
+* {
+	font-family: "MICEGothic";
+}
 .popup-background {
 	width: 100%;
 	height: 100%;
@@ -11,9 +14,6 @@
 	align-items: center;
 	background-color: rgba(0, 0, 0, 0.5);
 	z-index: 100;
-	* {
-		font-family: "MICEGothic";
-	}
 }
 #login-section {
 	width: 440px;
@@ -194,10 +194,10 @@
 	}
 }
 #find-pw-section {
-	height: 400px;
+	height: auto;
 }
 #find-id-section {
-	height: 300px;
+	height: auto;
 }
 .find-guide-txt {
 	font-size: 13px;
@@ -223,7 +223,13 @@
 	font-weight: bold;
 }
 .email-wrap {
-	margin-bottom: 6px;
+	margin-bottom: 20px;
+	display: flex;
+	flex-direction: column;
+}
+.id-wrap{
+	display: flex;
+	flex-direction: column;
 }
 .find-popup-input {
 	height: 27px;
@@ -241,6 +247,7 @@
 	justify-content: center;
 	box-sizing: border-box;
 	padding-left: 10px;
+	margin-bottom: 37px;
 }
 .find-btn {
 	width: 280px;
