@@ -5,6 +5,7 @@
       <router-view></router-view>
     </div>
   </div>
+  <PopupView />
 </template>
 
 <style scoped>
@@ -15,11 +16,13 @@
 
 <script>
 import SidebarView from '@/components/backoffice/common/SidebarView.vue';
+import PopupView from '@/components/backoffice/dashboard/common/PopupView.vue';
 
 export default {
   name: 'LayoutDashboard',
   components: {
     SidebarView,
+    PopupView,
   },
 };
 

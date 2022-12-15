@@ -97,7 +97,7 @@ $(function () {
 	// 공간 관리 mini-nav
 	// ****************
 	$('#mini-nav-list').click(function () {
-		location.href = '/backofficedash/room?backoffice_no=' + $.cookie("backoffice_no") + "&page=1";
+		location.href = '/backoffice/dash/room?backoffice_no=' + $.cookie("backoffice_no") + "&page=1";
 	});
 
 	$('#mini-nav-qna').click(function () {
