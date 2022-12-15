@@ -7,11 +7,12 @@
   align-items: center;
   background-color: rgba(0, 0, 0, 0.5);
 
-  * {
-    font-family: "HallymGothic";
-    font-weight: 900;
-    letter-spacing: 0.2px;
-  }
+}
+
+.popup-background * {
+  font-family: "HallymGothic";
+  font-weight: 900;
+  letter-spacing: 0.2px;
 }
 
 #room-insert-section,
