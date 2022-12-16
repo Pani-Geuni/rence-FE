@@ -387,7 +387,7 @@
 </style>
 
 <script>
-import '@/assets/JS/backoffice/host_popup';
+// import '@/assets/JS/backoffice/host_popup';
 
 export default {
   name: 'PopupView',
