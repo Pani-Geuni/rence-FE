@@ -80,6 +80,7 @@
 
 <script>
 import $ from 'jquery';
+import axios from 'axios';
 
 export default {
   name: 'ReviewView',
@@ -130,11 +131,21 @@ export default {
     miniNavReview() {
       this.$router.push(`/backoffice/dash/review?backoffice_no=${this.babckoffice_no}&page=1`);
     },
+
+    getReviewList() {
+      const url = `http://localhost:8800/backoffice/dash/review?backoffice_no=${this.babckoffice_no}`;
+
+      axios.get(url).then((res) => {
+        console.log(res.data);
+        this.rv_vos = res.data.rv_vos;
+      });
+    },
   },
 
   mounted() {
     this.$nextTick(() => {
       this.miniNavActive(window.location.pathname);
+      this.getReviewList();
     });
   },
 };

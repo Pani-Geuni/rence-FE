@@ -44,7 +44,7 @@
 
           <div>
             <span id="room-price" class="room-price">{{ vos.room_price }}</span>
-            <span id="unit">[[${unit}]]</span>
+            <span id="unit">{{ unit }}</span>
           </div>
         </div>
         <!-- END item-body -->
@@ -88,6 +88,7 @@
 
 <script>
 import $ from 'jquery';
+import axios from 'axios';
 
 export default {
   name: 'RoomView',
@@ -141,11 +142,25 @@ export default {
     miniNavReview() {
       this.$router.push(`/backoffice/dash/review?backoffice_no=${this.babckoffice_no}&page=1`);
     },
+
+    getRoomList() {
+      const params = new URLSearchParams();
+      params.append('backoffice_no', this.babckoffice_no);
+      const url = `http://localhost:8800/backoffice/dash/room?backoffice_no=${this.babckoffice_no}`;
+
+      axios.get(url)
+        .then((res) => {
+          console.log(res.data);
+          this.rm_vos = res.data.rm_vos;
+          this.unit = res.data.unit;
+        });
+    },
   },
 
   mounted() {
     this.$nextTick(() => {
       this.miniNavActive(window.location.pathname);
+      this.getRoomList();
     });
   },
 };
