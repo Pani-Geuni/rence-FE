@@ -265,10 +265,12 @@ export default {
     //   .then((res) => {
     //     this.list = res.data;
     //     this.timer();
+
     //     $('.room_price').each(function (index, value) {
     //       const price = $(value).text();
     //       $(this).text(price.replace(/\B(?=(\d{3})+(?!\d))/g, ','));
     //     });
+
     //     $('#payment_all').text(
     //       $('#payment_all')
     //         .text()

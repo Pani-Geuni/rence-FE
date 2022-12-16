@@ -544,44 +544,45 @@ export default {
       this.initMap();
     }
 
-    const backofficeNo = decodeURI(window.location.href).split('?backoffice_no=')[1];
+    const backofficeNo = this.$route.params.parameters.split('backoffice_no=')[1];
 
-    // axios.get(`http://localhost:8800/office/space_introduce?backoffice_no=${backofficeNo}&introduce_menu=info`)
-    //   .then((res) => {
-    //     this.list = res.data;
+    axios.get(`http://localhost:8800/office/space_introduce?backoffice_no=${backofficeNo}&introduce_menu=info`)
+      .then((res) => {
+        this.list = res.data;
 
-    //     this.maxPage = res.data.maxPage;
-    //     this.nowPage = res.data.nowPage;
-    //     this.totalPageCnt = res.data.totalPageCnt;
-    //     this.start = Math.ceil(res.data.nowPage/5.0);
-    //     this.start = 5 * (this.start - 1) + 1;
+        console.log(res.data);
 
-    //     this.forRange = [];
-    //     for (let i = this.start; i <= this.maxPage; i++) {
-    //          this.forRange.push(i);
-    //     }
+        this.maxPage = res.data.maxPage;
+        this.nowPage = res.data.nowPage;
+        this.totalPageCnt = res.data.totalPageCnt;
+        this.start = Math.ceil(res.data.nowPage / 5.0);
+        this.start = 5 * (this.start - 1) + 1;
 
-    //     this.maxPage2 = res.data.maxPage2;
-    //     this.nowPage2 = res.data.nowPage2;
-    //     this.totalPageCnt2 = res.data.totalPageCnt2;
-    //     this.start2 = Math.ceil(res.data.nowPage2/5.0);
-    //     this.start2 = 5 * (this.start2 - 1) + 1;
+        this.forRange = [];
+        for (let i = this.start; i <= this.maxPage; i++) {
+          this.forRange.push(i);
+        }
 
-    //     this.forRange2 = [];
-    //     for (let i = this.start2; i <= this.maxPage2; i++) {
-    //          this.forRange2.push(i);
-    //     }
+        this.maxPage2 = res.data.maxPage2;
+        this.nowPage2 = res.data.nowPage2;
+        this.totalPageCnt2 = res.data.totalPageCnt2;
+        this.start2 = Math.ceil(res.data.nowPage2 / 5.0);
+        this.start2 = 5 * (this.start2 - 1) + 1;
 
-    //     if ($('.img').length === 1) {
-    //       $('.next').addClass('hide');
-    //     }
+        this.forRange2 = [];
+        for (let i = this.start2; i <= this.maxPage2; i++) {
+          this.forRange2.push(i);
+        }
 
-    //   })
-    //   .catch(() => {
-    //     $('.popup-background:eq(1)').removeClass('blind');
-    //     $('#common-alert-popup').removeClass('blind');
-    //     $('.common-alert-txt').text('오류 발생으로 인해 처리에 실패하였습니다.');
-    //   });
+        if ($('.img').length === 1) {
+          $('.next').addClass('hide');
+        }
+      })
+      .catch(() => {
+        $('.popup-background:eq(1)').removeClass('blind');
+        $('#common-alert-popup').removeClass('blind');
+        $('.common-alert-txt').text('오류 발생으로 인해 처리에 실패하였습니다.');
+      });
   },
   methods: {
     initMap() {
@@ -986,7 +987,7 @@ export default {
           $('#spinner-section').addClass('blind');
 
           if (res.data.result === '1') {
-            window.location.href = `http://localhost:8081/payment?reserve_no=${res.reserve_no}`;
+            window.location.href = `http://localhost:8081/payment/reserve_no=${res.reserve_no}`;
           }
         })
         .catch(() => {

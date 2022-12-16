@@ -5,16 +5,17 @@
 * {
 	font-family: 'OTWelcome';
 }
+
 .list-page-wrap {
 	width: 100%;
-	height: calc(100vh - 95px - 75px);
+	height: calc(100vh - 95px - 80px);
 	display: flex;
 	justify-content: center;
 	align-content: center;
 }
 .listPage-section {
 	width: 100%;
-	height: calc(100vh - 95px - 75px);
+	min-height: calc(100vh - 95px - 80px);
 	display: flex;
 	flex-direction: column;
 	align-items: center;
@@ -38,7 +39,6 @@
 	cursor: pointer;
 }
 .choice-sort-text {
-	font-family: 'OTWelcome';
 	font-size: 17px;
 	margin-right: 9px;
 }
@@ -55,8 +55,8 @@
 .sort-select-box {
 	width: 120px;
 	position: absolute;
-	top: 3px;
-	right: 0px;
+	top: 6px;
+	right: 11px;
 	box-shadow: 1px 1px 4px 1.5px #e4e4e4;
 	border-radius: 8px;
 	display: flex;
@@ -79,6 +79,14 @@
 .sort-select-list:nth-child(2),
 .sort-select-list:nth-child(3) {
 	border-bottom: 2px solid #e4e4e4;
+}
+.sort-select-list:nth-child(1){
+	border-top-left-radius: 8px;
+	border-top-right-radius: 8px;
+}
+.sort-select-list:nth-child(4){
+	border-bottom-left-radius: 8px;
+	border-bottom-right-radius: 8px;
 }
 .list-box-null-section {
 	width: 920px;
@@ -223,7 +231,6 @@
 	align-items: baseline;
 }
 .box-room-min-price {
-	font-family: 'OTWelcome';
 	font-size: 20px;
 	font-weight: bolder;
 	margin-right: 2px;

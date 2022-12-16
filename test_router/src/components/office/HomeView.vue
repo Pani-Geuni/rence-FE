@@ -21,7 +21,7 @@
 
     <div class="type-list-wrap">
         <div class="type-list type-desk">
-            <router-link :to="{ name: 'ListView', params: { call: 'list_page?type=desk&condition=date&page=1' }}">
+            <router-link :to="{ name: 'ListView', params: { call: 'list_page', parameters :  'type=desk&condition=date&page=1'}}">
                 <section class="type-img-section">
                     <img src="@/assets/IMG/home/desk.svg" alt="type-desk-img" class="type-img"/>
                 </section>
@@ -37,7 +37,7 @@
         </div>
 
         <div class="type-list type-meeting-room">
-            <router-link :to="{ name: 'ListView', params: { call: 'list_page?type=meeting_room&condition=date&page=1' }}">
+            <router-link :to="{ name: 'ListView', params: { call: 'list_page', parameters : 'type=meeting_room&condition=date&page=1' }}">
                 <section class="type-img-section">
                     <img src="@/assets/IMG/home/meeting-room.svg"
                      alt="type-metting-room-img" class="type-img" />
@@ -55,10 +55,9 @@
         </div>
 
         <div class="type-list type-office">
-            <router-link :to="{ name: 'ListView', params: { call: 'list_page?type=office&condition=date&page=1' }}">
+            <router-link :to="{ name: 'ListView', params: { call: 'list_page', parameters : 'type=office&condition=date&page=1' }}">
                 <section class="type-img-section">
-                    <img src="@/assets/IMG/home/office-building.svg"
-                    alt="type-office-img" class="type-img" />
+                    <img src="@/assets/IMG/home/office-building.svg" alt="type-office-img" class="type-img" />
                 </section>
                 <section class="type-title-section">
                     <span>오피스</span>

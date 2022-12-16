@@ -699,7 +699,7 @@ export default {
       $('#join-section').addClass('blind');
       $('.popup-background:eq(0)').addClass('blind');
 
-      clearInterval(this.time);
+      this.timer('close');
     },
     /** 회원가입 - 정규표현식을 이용해 입력한 값 조건에 맞는지 확인 */
     test_regx(param) {
@@ -916,7 +916,7 @@ export default {
             params.append('user_email', $('#join-email').val().trim());
             params.append('email_code', $('#join-email-code').val().trim());
 
-            axios.post('http://localhost:8800/rence/user_auth', params)
+            axios.post('http://localhost:8800/rence/user_authOK', params)
               .then((res) => {
                 console.log(res.data);
                 this.code_flag = true;
@@ -1099,13 +1099,18 @@ export default {
       let minute = 1;
       let seconds = 60;
 
-      if (check == 'true') {
+      if (check === 'true') {
         clearInterval(this.time);
         $('#check_email').val('인증완료');
         return;
       }
 
-      time = setInterval(() => {
+      if (check === 'close') {
+        clearInterval(this.time);
+        return;
+      }
+
+      this.time = setInterval(() => {
         seconds--;
 
         if (seconds <= 9) $('#check_email').val(`0${minute} : ` + `0${seconds}`);

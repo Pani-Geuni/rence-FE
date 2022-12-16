@@ -124,7 +124,7 @@ export default {
           typeTxt = 'desk';
           break;
         case '회의실':
-          typeTxt = 'meeting-room';
+          typeTxt = 'meeting_room';
           break;
         case '오피스':
           typeTxt = 'office';
@@ -169,7 +169,7 @@ export default {
           this.location = '';
         }
 
-        window.location.href = `http://localhost:8081/list/search_list?type=${this.type}&location=${this.location}&searchWord=${$('#input_searchBar').val().trim()}&condition=date&page=1`;
+        window.location.href = `http://localhost:8081/list/search_list/type=${this.type}&location=${this.location}&searchWord=${$('#input_searchBar').val().trim()}&condition=date&page=1`;
       } else {
         $('.popup-background:eq(1)').removeClass('blind');
         $('#common-alert-popup').removeClass('blind');
