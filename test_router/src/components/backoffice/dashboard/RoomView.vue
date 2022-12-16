@@ -1,20 +1,18 @@
+<!-- eslint-disable vuejs-accessibility/click-events-have-key-events -->
 <!-- eslint-disable max-len -->
 <template>
   <div class="titleSection">
     <h1>공간 관리</h1>
     <button id="btn-room-add" class="btn-room-add">추가</button>
     <ul class="mini-nav">
-      <!-- <li><p id="mini-nav-list" class="nav-item" id="room-list">리스트</p></li>
-      <li><p id="mini-nav-qna" class="nav-item" id="qna-list">문의</p></li>
-      <li><p id="mini-nav-review" class="nav-item" id="review-list">후기</p></li> -->
       <li>
-        <p id="mini-nav-list" class="nav-item">리스트</p>
+        <p @click="miniNavList" id="mini-nav-list" class="nav-item">리스트</p>
       </li>
       <li>
-        <p id="mini-nav-qna" class="nav-item">문의</p>
+        <p @click="miniNavQna" id="mini-nav-qna" class="nav-item">문의</p>
       </li>
       <li>
-        <p id="mini-nav-review" class="nav-item">후기</p>
+        <p @click="miniNavReview" id="mini-nav-review" class="nav-item">후기</p>
       </li>
     </ul>
     <!-- END mini-nav -->
@@ -46,7 +44,7 @@
 
           <div>
             <span id="room-price" class="room-price">{{ vos.room_price }}</span>
-            <span id="unit">[[${unit}]]</span>
+            <span id="unit">{{ unit }}</span>
           </div>
         </div>
         <!-- END item-body -->
@@ -84,21 +82,86 @@
   </section>
 </template>
 
-<style>
+<style lang="scss" scoped>
 @import '@/assets/CSS/dash-board/dash-space-list.scss';
 </style>
 
 <script>
+import $ from 'jquery';
+import axios from 'axios';
+
 export default {
   name: 'RoomView',
 
   data() {
     return {
+      babckoffice_no: this.$cookies.get('backoffice_no'),
       rm_vos: [],
       res: [],
       unit: '',
       path: 'room',
     };
+  },
+
+  watch: {
+    $route(to) {
+      $('#mini-nav-list').removeClass('active');
+      $('#mini-nav-qna').removeClass('active');
+      $('#mini-nav-review').removeClass('active');
+
+      this.miniNavActive(to.path);
+    },
+  },
+
+  methods: {
+    miniNavActive(locationPathname) {
+      switch (locationPathname) {
+        case '/backoffice/dash/room':
+          $('#mini-nav-list').addClass('active');
+          break;
+        case '/backoffice/dash/qna':
+          $('#mini-nav-qna').addClass('active');
+          break;
+        case '/backoffice/dash/review':
+          $('#mini-nav-review').addClass('active');
+          break;
+
+        default:
+          break;
+      }
+    },
+
+    miniNavList() {
+      this.$router.push(`/backoffice/dash/room?backoffice_no=${this.babckoffice_no}&page=1`);
+    },
+
+    miniNavQna() {
+      this.$router.push(`/backoffice/dash/qna?backoffice_no=${this.babckoffice_no}&page=1`);
+    },
+
+    miniNavReview() {
+      this.$router.push(`/backoffice/dash/review?backoffice_no=${this.babckoffice_no}&page=1`);
+    },
+
+    getRoomList() {
+      const params = new URLSearchParams();
+      params.append('backoffice_no', this.babckoffice_no);
+      const url = `http://localhost:8800/backoffice/dash/room?backoffice_no=${this.babckoffice_no}`;
+
+      axios.get(url)
+        .then((res) => {
+          console.log(res.data);
+          this.rm_vos = res.data.rm_vos;
+          this.unit = res.data.unit;
+        });
+    },
+  },
+
+  mounted() {
+    this.$nextTick(() => {
+      this.miniNavActive(window.location.pathname);
+      this.getRoomList();
+    });
   },
 };
 </script>

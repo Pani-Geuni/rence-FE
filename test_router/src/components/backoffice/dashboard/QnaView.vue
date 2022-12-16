@@ -1,3 +1,4 @@
+<!-- eslint-disable vuejs-accessibility/click-events-have-key-events -->
 <!-- eslint-disable max-len -->
 <template>
   <div class="titleSection">
@@ -5,13 +6,13 @@
     <button id="btn-room-add" class="btn-room-add">추가</button>
     <ul class="mini-nav">
       <li>
-        <p id="mini-nav-list" class="nav-item">리스트</p>
+        <p @click="miniNavList" id="mini-nav-list" class="nav-item">리스트</p>
       </li>
       <li>
-        <p id="mini-nav-qna" class="nav-item">문의</p>
+        <p @click="miniNavQna" id="mini-nav-qna" class="nav-item">문의</p>
       </li>
       <li>
-        <p id="mini-nav-review" class="nav-item">후기</p>
+        <p @click="miniNavReview" id="mini-nav-review" class="nav-item">후기</p>
       </li>
     </ul>
     <!-- END mini-nav -->
@@ -31,10 +32,8 @@
 
       <div class="ct-body-row qna" v-for="vos in q_vos" :key="vos">
         <div class="ct-body-cell qna">
-          <th:block th:switch="${vos.comment_state}">
-            <p class="qna-process true" th:case="T">처리</p>
-            <p class="qna-process false" th:case="F">미처리</p>
-          </th:block>
+          <p v-if="vos.comment_state === 'T'" class="qna-process true">처리</p>
+          <p v-if="vos.comment_state === 'F'" class="qna-process false">미처리</p>
         </div>
         <div class="ct-body-cell qna">
           <p>{{ vos.room_name }}</p>
@@ -79,11 +78,10 @@
   </div>
   <!-- END boardWrap qna -->
 
-
   <section class="paging-section" v-if="res.maxPage > 0">
     <div class="paging-wrap">
-      <span th:if="${res.maxPage} <= 5" class="paging-box before-page-btn hide"> &lt;&lt; </span>
-      <span th:unless="${res.maxPage} <= 5" class="paging-box before-page-btn"> &lt;&lt; </span>
+      <!-- <span th:if="${res.maxPage} <= 5" class="paging-box before-page-btn hide"> &lt;&lt; </span>
+      <span th:unless="${res.maxPage} > 5" class="paging-box before-page-btn"> &lt;&lt; </span> -->
 
       <!-- <th:block th:with="ceil=${#numbers.formatInteger(T(java.lang.Math).ceil((res.nowPage)/5.0),1)}">
           <th:block th:with="start=(5 * (${ceil} - 1) + 1)">
@@ -107,19 +105,72 @@
   </section>
 </template>
 
-<style>
+<style lang="scss" scoped>
 @import '@/assets/CSS/dash-board/dash-qna-list.scss';
 </style>
 
 <script>
+import $ from 'jquery';
+import axios from 'axios';
+
 export default {
   name: 'QnaView',
 
   data() {
     return {
+      babckoffice_no: this.$cookies.get('backoffice_no'),
       q_vos: [],
       res: [],
     };
+  },
+  methods: {
+    miniNavActive(locationPathname) {
+      switch (locationPathname) {
+        case '/backoffice/dash/room':
+          $('#mini-nav-list').addClass('active');
+          break;
+        case '/backoffice/dash/qna':
+          $('#mini-nav-qna').addClass('active');
+          break;
+        case '/backoffice/dash/review':
+          $('#mini-nav-review').addClass('active');
+          break;
+
+        default:
+          break;
+      }
+    },
+
+    miniNavList() {
+      this.$router.push(`/backoffice/dash/room?backoffice_no=${this.babckoffice_no}&page=1`);
+    },
+
+    miniNavQna() {
+      this.$router.push(`/backoffice/dash/qna?backoffice_no=${this.babckoffice_no}&page=1`);
+    },
+
+    miniNavReview() {
+      this.$router.push(`/backoffice/dash/review?backoffice_no=${this.babckoffice_no}&page=1`);
+    },
+
+    getQnaList() {
+      const params = new URLSearchParams();
+      params.append('backoffice_no', this.babckoffice_no);
+
+      axios.get(`http://localhost:8800/backoffice/dash/qna?backoffice_no=${this.babckoffice_no}`)
+        .then((res) => {
+          console.log(res.data);
+          this.q_vos = res.data.q_vos;
+        });
+    },
+  },
+
+  mounted() {
+    this.$nextTick(() => {
+      console.log(this.babckoffice_no);
+      this.miniNavActive(window.location.pathname);
+      this.getQnaList();
+    });
   },
 };
 </script>

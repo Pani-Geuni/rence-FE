@@ -1,19 +1,8 @@
 /**
  * @author : 전판근, 김예은
  */
-$(function () {
-	$('.logo-mku').click(function () {
-		location.href = '/backoffice/landing';
-	});
+$(() => {
 
-	$('#go-rence-home').click(function () {
-		location.href = '/';
-	});
-
-
-	// ****************************************
-	// Dash Board Side Menu 현재 페이지 active 설정
-	// ****************************************
 	// backoffice_main 일 때
 
 	switch ($(location).attr('pathname')) {
@@ -65,62 +54,18 @@ $(function () {
 	}
 
 
-	// *****************
-	// 좌측 공통 Side Menu
-	// *****************
-	$('#menu-home').click(function () {
-		location.href = '/backoffice/dash/main?backoffice_no=' + $.cookie("backoffice_no");
-	});
-
-	$('#menu-space').click(function () {
-		location.href = '/backoffice/dash/room?backoffice_no=' + $.cookie("backoffice_no") + "&page=1";
-	});
-
-	$('#menu-reserve').click(function () {
-		location.href = "/backoffice/dash/reserve?backoffice_no=" + $.cookie("backoffice_no") + "&reserve_state=all&page=1";
-	});
-
-	$('#menu-schedule').click(function () {
-		location.href = "/backoffice/dash/schedule?backoffice_no=" + $.cookie("backoffice_no") + "&page=1";
-	});
-
-	$('#menu-sales').click(function () {
-		location.href = '/backoffice/dash/day_sales?backoffice_no=' + $.cookie("backoffice_no") + "&sales_date=day&page=1";
-	});
-
-	$('#menu-settings').click(function () {
-		location.href = '/backoffice/dash/settings?backoffice_no=' + $.cookie("backoffice_no");
-	});
-
-
-	// ****************
-	// 공간 관리 mini-nav
-	// ****************
-	$('#mini-nav-list').click(function () {
-		location.href = '/backoffice/dash/room?backoffice_no=' + $.cookie("backoffice_no") + "&page=1";
-	});
-
-	$('#mini-nav-qna').click(function () {
-		location.href = '/backoffice/dash/qna?backoffice_no=' + $.cookie("backoffice_no") + "&page=1";
-	});
-
-	$('#mini-nav-review').click(function () {
-		location.href = '/backoffice/dash/review?backoffice_no=' + $.cookie("backoffice_no") + "&page=1";
-	});
-
-
 	// ****************
 	// 정산 관리 mini-nav
 	// ****************
-	$('#sales-mini-nav-day').click(function () {
-		location.href = '/backoffice/dash/day_sales?backoffice_no=' + $.cookie("backoffice_no") + "&sales_date=day&page=1";
+	$('#sales-mini-nav-day').click(() => {
+		location.href = `/backoffice/dash/day_sales?backoffice_no=${$.cookie('backoffice_no')}&sales_date=day&page=1`;
 	});
 
-	$('#sales-mini-nav-week').click(function () {
-		location.href = '/backoffice/dash/day_sales?backoffice_no=' + $.cookie("backoffice_no") + "&sales_date=week&page=1";
+	$('#sales-mini-nav-week').click(() => {
+		location.href = `/backoffice/dash/day_sales?backoffice_no=${$.cookie('backoffice_no')}&sales_date=week&page=1`;
 	});
 
-	$('#sales-mini-nav-month').click(function () {
-		location.href = '/backoffice/dash/day_sales?backoffice_no=' + $.cookie("backoffice_no") + "&sales_date=month&page=1";
+	$('#sales-mini-nav-month').click(() => {
+		location.href = `/backoffice/dash/day_sales?backoffice_no=${$.cookie('backoffice_no')}&sales_date=month&page=1`;
 	});
 });
