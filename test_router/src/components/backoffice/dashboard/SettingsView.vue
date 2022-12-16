@@ -1,3 +1,4 @@
+<!-- eslint-disable max-len -->
 <template>
   <div class="titleSection">
     <h1>환경 설정</h1>
@@ -43,21 +44,21 @@
     <div class="host-info-list">
       <div class="host-item">
         <p>사업체 태그</p>
-        <ul class="host-option-list" v-for="tag in backoffice_tag" :key="tag">
-          <li class="host-option-item">{{ tag }}</li>
+        <ul class="host-option-list">
+          <li class="host-option-item" v-for="tag in backoffice_tag" :key="tag">{{ tag }}</li>
         </ul>
       </div>
 
       <div class="host-item">
         <p>공간 옵션</p>
-        <ul class="host-option-list" v-for="option in backoffice_option" :key="option">
-          <li class="host-option-item">{{ option }}</li>
+        <ul class="host-option-list">
+          <li class="host-option-item" v-for="option in backoffice_option" :key="option">{{ option }}</li>
         </ul>
       </div>
       <div class="host-item">
         <p>주변 시설</p>
-        <ul class="host-option-list" v-for="around in backoffice_around" :key="around">
-          <li class="host-option-item">{{ around }}</li>
+        <ul class="host-option-list">
+          <li class="host-option-item" v-for="around in backoffice_around" :key="around">{{ around }}</li>
         </ul>
       </div>
       <div class="host-item">
@@ -74,21 +75,46 @@
   <!-- END btn-group-settings -->
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 @import '@/assets/CSS/dash-board/dash-settings.scss';
 </style>
 
 <script>
+import axios from 'axios';
+
 export default {
   name: 'SettingsView',
 
   data() {
     return {
+      backoffice_no: this.$cookies.get('backoffice_no'),
       vo: [],
       backoffice_tag: [],
       backoffice_option: [],
       backoffice_around: [],
     };
+  },
+
+  methods: {
+    getBackofficeInfo() {
+      const params = new URLSearchParams();
+      params.append('backoffice_no', this.backoffice_no);
+
+      const url = `http://localhost:8800/backoffice/dash/settings?${params}`;
+      axios.get(url).then((res) => {
+        console.log(res.data);
+        this.vo = res.data.vo;
+        this.backoffice_tag = res.data.backoffice_tag;
+        this.backoffice_option = res.data.backoffice_option;
+        this.backoffice_around = res.data.backoffice_around;
+      });
+    },
+  },
+
+  mounted() {
+    this.$nextTick(() => {
+      this.getBackofficeInfo();
+    });
   },
 };
 </script>

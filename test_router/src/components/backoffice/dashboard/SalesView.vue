@@ -163,6 +163,7 @@
 
 <script>
 import $ from 'jquery';
+import axios from 'axios';
 
 export default {
   name: 'SalesView',
@@ -204,21 +205,54 @@ export default {
     },
 
     miniNavDay() {
+      // 로딩 화면
+      $('.popup-background:eq(1)').removeClass('blind');
+      $('#spinner-section').removeClass('blind');
+
       this.$router.push(`/backoffice/dash/day_sales?backoffice_no=${this.backoffice_no}&sales_date=day&page=1`);
+
+      this.sales_date = 'day';
+      this.getSales();
     },
 
     miniNavWeek() {
       this.$router.push(`/backoffice/dash/day_sales?backoffice_no=${this.backoffice_no}&sales_date=week&page=1`);
+      this.sales_date = 'week';
+      console.log('week :', this.sales_date);
+      this.getSales();
     },
 
     miniNavMonth() {
       this.$router.push(`/backoffice/dash/day_sales?backoffice_no=${this.backoffice_no}&sales_date=month&page=1`);
+      this.sales_date = 'month';
+      this.getSales();
+    },
+
+    getSales() {
+      // 로딩 화면
+      $('.popup-background:eq(1)').removeClass('blind');
+      $('#spinner-section').removeClass('blind');
+
+      const params = new URLSearchParams();
+      params.append('backoffice_no', this.backoffice_no);
+      params.append('sales_date', this.sales_date);
+
+      const url = `http://localhost:8800/backoffice/dash/day_sales?${params}`;
+      axios.get(url).then((res) => {
+        // 로딩 화면
+        $('.popup-background:eq(1)').addClass('blind');
+        $('#spinner-section').addClass('blind');
+
+        this.svo = res.data.svo;
+        this.s_vos = res.data.s_vos;
+      });
     },
   },
 
   mounted() {
     this.$nextTick(() => {
       this.miniNavActive();
+      this.getSales();
     });
   },
 };
