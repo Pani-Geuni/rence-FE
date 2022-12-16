@@ -107,7 +107,7 @@
   </section>
 </template>
 
-<style>
+<style lang="scss" scoped>
 @import '@/assets/CSS/dash-board/dash-qna-list.scss';
 </style>
 

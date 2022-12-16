@@ -82,7 +82,7 @@
   </section>
 </template>
 
-<style>
+<style lang="scss" scoped>
 @import '@/assets/CSS/dash-board/dash-space-list.scss';
 </style>
 

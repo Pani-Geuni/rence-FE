@@ -1,3 +1,4 @@
+<!-- eslint-disable vuejs-accessibility/click-events-have-key-events -->
 <!-- eslint-disable max-len -->
 <template>
   <div class="titleSection">
@@ -7,20 +8,20 @@
   <div class="boardWrap sales">
     <div class="titleSection sales">
       <h3>
-        <th:block th:if="${sales_date}=='day'">일일</th:block>
-        <th:block th:if="${sales_date}=='week'">주간</th:block>
-        <th:block th:if="${sales_date}=='month'">월간</th:block>
+        <span v-if="sales_date === 'day'">일일</span>
+        <span v-if="sales_date === 'week'">주간</span>
+        <span v-if="sales_date === 'month'">월간</span>
         정산
       </h3>
       <ul class="sales-mini-nav">
 
-        <li id="sales-mini-nav-day" class="nav-item" th:classappend="${sales_date}=='day' ? 'active'">
+        <li @click="miniNavDay" id="sales-mini-nav-day" class="nav-item">
           <p>일일</p>
         </li>
-        <li id="sales-mini-nav-week" class="nav-item" th:classappend="${sales_date}=='week' ? 'active'">
+        <li @click="miniNavWeek" id="sales-mini-nav-week" class="nav-item">
           <p>주간</p>
         </li>
-        <li id="sales-mini-nav-month" class="nav-item" th:classappend="${sales_date}=='month' ? 'active'">
+        <li @click="miniNavMonth" id="sales-mini-nav-month" class="nav-item">
           <p>월간</p>
         </li>
       </ul>
@@ -31,15 +32,15 @@
     <div id="today-sales" class="sales-state">
       <div class="sales-item">
         <p>매출 순이익</p>
-        <span id="sales-income" class="sales-price">[[ ${svo.sales_income} ]]</span>
+        <span id="sales-income" class="sales-price">{{ svo.sales_income }}</span>
       </div>
       <div class="sales-item">
         <p>매출액</p>
-        <span id="sales-revenue" class="sales-price">[[ ${svo.sales_total} ]]</span>
+        <span id="sales-revenue" class="sales-price">{{ svo.sales_total }}</span>
       </div>
       <div class="sales-item">
         <p>취소 금액</p>
-        <span id="sales-cancel" class="sales-price">[[ ${svo.sales_cancel} ]]</span>
+        <span id="sales-cancel" class="sales-price">{{ svo.sales_cancel }}</span>
       </div>
     </div>
     <!-- END today-sales -->
@@ -47,30 +48,30 @@
     <div id="yesterday-sales" class="sales-state">
       <div class="sales-item">
         <p>
-          <th:block th:if="${sales_date=='day'}">전일</th:block>
-          <th:block th:if="${sales_date=='week'}">전주</th:block>
-          <th:block th:if="${sales_date=='month'}">전월</th:block>
+          <span v-if="sales_date === 'day'">전일</span>
+          <span v-if="sales_date === 'week'">전주</span>
+          <span v-if="sales_date === 'month'">전월</span>
           매출 총이익
         </p>
-        <span id="sales-income" class="sales-price">[[ ${svo.pre_sales_income} ]]</span>
+        <span id="sales-income" class="sales-price">{{ svo.pre_sales_income }}</span>
       </div>
       <div class="sales-item">
         <p>
-          <th:block th:if="${sales_date=='day'}">전일</th:block>
-          <th:block th:if="${sales_date=='week'}">전주</th:block>
-          <th:block th:if="${sales_date=='month'}">전월</th:block>
+          <span v-if="sales_date === 'day'">전일</span>
+          <span v-if="sales_date === 'week'">전주</span>
+          <span v-if="sales_date === 'month'">전월</span>
           매출액
         </p>
-        <span id="sales-revenue" class="sales-price">[[ ${svo.pre_sales_total} ]]</span>
+        <span id="sales-revenue" class="sales-price">{{ svo.pre_sales_total }}</span>
       </div>
       <div class="sales-item">
         <p>
-          <th:block th:if="${sales_date=='day'}">전일</th:block>
-          <th:block th:if="${sales_date=='week'}">전주</th:block>
-          <th:block th:if="${sales_date=='month'}">전월</th:block>
+          <span v-if="sales_date === 'day'">전일</span>
+          <span v-if="sales_date === 'week'">전주</span>
+          <span v-if="sales_date === 'month'">전월</span>
           취소 금액
         </p>
-        <span id="sales-cancel" class="sales-price">[[ ${svo.pre_sales_cancel} ]]</span>
+        <span id="sales-cancel" class="sales-price">{{ svo.pre_sales_cancel }}</span>
       </div>
     </div>
     <!-- END today-sales -->
@@ -78,7 +79,7 @@
     <div class="sales-state">
       <div class="sales-item">
         <p>매출 차이</p>
-        <span id="sales-diff" class="sales-price">[[ ${svo.sales_gap} ]]</span>
+        <span id="sales-diff" class="sales-price">{{ svo.sales_gap }}</span>
       </div>
     </div>
     <!--  -->
@@ -101,29 +102,25 @@
       </div>
       <!-- END ct-header -->
       <div class="ct-body sales-ct">
-        <th:block th:each="vos : ${s_vos}">
-          <div class="ct-body-row">
-            <div class="ct-body-cell sales">
-              [[ ${vos.reserve_sdate} ]] ~ <br />[[ ${vos.reserve_edate} ]]
-            </div>
-            <div class="ct-body-cell sales">[[${vos.room_name}]]</div>
-            <div class="ct-body-cell sales">
-              <p class="sales-price">[[${vos.actual_payment}]]</p>
-            </div>
-            <div class="ct-body-cell sales">
-              <span th:if="${vos.payment_state=='T'}">선결제</span>
-              <span th:if="${vos.payment_state=='F'}">후결제</span>
-            </div>
-            <div class="ct-body-cell sales">
-              <th:block th:switch="${vos.sales_state}">
-                <button class="ct-body-btn is_sales_btn" th:case="T" th:attr="end=true">완료</button>
-                <button class="ct-body-btn is_sales_btn" th:case="F"
-                  th:attr="end=false, payment_no=${vos.payment_no}, room_no=${vos.room_no}">미완료</button>
-              </th:block>
-            </div>
+        <div class="ct-body-row" v-for="vos in s_vos" :key="vos">
+          <div class="ct-body-cell sales">
+            {{ vos.reserve_sdate }} ~ <br />{{ vos.reserve_edate }}
           </div>
-          <!-- END ct-body-row -->
-        </th:block>
+          <div class="ct-body-cell sales">{{ vos.room_name }}</div>
+          <div class="ct-body-cell sales">
+            <p class="sales-price">{{ vos.actual_payment }}</p>
+          </div>
+          <div class="ct-body-cell sales">
+            <span v-if="vos.payment_state === 'T'">선결제</span>
+            <span v-if="vos.payment_state === 'F'">후결제</span>
+          </div>
+          <div class="ct-body-cell sales">
+            <button class="ct-body-btn is_sales_btn" v-if="vos.sales_state === 'T'" :end=true>완료</button>
+            <button class=" ct-body-btn is_sales_btn" v-if="vos.sales_state === 'F'" :end=false
+              :payment_no="vos.payment_no" :room_no="vos.room_no">미완료</button>
+          </div>
+        </div>
+        <!-- END ct-body-row -->
       </div>
       <!-- END ct-body -->
     </div>
@@ -131,7 +128,7 @@
   </div>
   <!-- END boardWrap sales-list -->
 
-  <th:block th:if="${res.maxPage} > 0">
+  <!-- <th:block th:if="${res.maxPage} > 0">
     <section class="paging-section">
       <div class="paging-wrap">
         <span th:if="${res.maxPage} <= 5" class="paging-box before-page-btn hide"> &lt;&lt; </span>
@@ -142,9 +139,9 @@
             <div class="paging-num-wrap paging-wrap">
               <th:block th:each="num : ${#numbers.sequence(start, res.maxPage)}">
                 <span th:if="${num} == ${res.nowPage}" th:attr="idx=${num}"
-                  class="paging-box paging-num choice">[[${num}]]</span>
+                  class="paging-box paging-num choice">{{ num }}</span>
                 <span th:if="${num} != ${res.nowPage}" th:attr="idx=${num}"
-                  class="paging-box paging-num un-choice">[[${num}]]</span>
+                  class="paging-box paging-num un-choice">{{ num }}</span>
               </th:block>
             </div>
           </th:block>
@@ -157,15 +154,72 @@
         <input type="hidden" id="totalPageCnt" th:value="${res.totalPageCnt}">
       </div>
     </section>
-  </th:block>
+  </th:block> -->
 </template>
 
-<style scoped>
+<style lang="scss" scoped>
 @import '@/assets/CSS/dash-board/dash-sales-list.scss';
 </style>
 
 <script>
+import $ from 'jquery';
+
 export default {
   name: 'SalesView',
+
+  data() {
+    return {
+      backoffice_no: this.$cookies.get('backoffice_no'),
+      sales_date: this.$route.query.sales_date,
+      svo: [],
+      s_vos: [],
+      // vos: [],
+    };
+  },
+
+  watch: {
+    $route() {
+      $('#sales-mini-nav-day').removeClass('active');
+      $('#sales-mini-nav-week').removeClass('active');
+      $('#sales-mini-nav-month').removeClass('active');
+      this.miniNavActive();
+    },
+  },
+
+  methods: {
+    miniNavActive() {
+      switch (this.$route.query.sales_date) {
+        case 'day':
+          $('#sales-mini-nav-day').addClass('active');
+          break;
+        case 'week':
+          $('#sales-mini-nav-week').addClass('active');
+          break;
+        case 'month':
+          $('#sales-mini-nav-month').addClass('active');
+          break;
+        default:
+          break;
+      }
+    },
+
+    miniNavDay() {
+      this.$router.push(`/backoffice/dash/day_sales?backoffice_no=${this.backoffice_no}&sales_date=day&page=1`);
+    },
+
+    miniNavWeek() {
+      this.$router.push(`/backoffice/dash/day_sales?backoffice_no=${this.backoffice_no}&sales_date=week&page=1`);
+    },
+
+    miniNavMonth() {
+      this.$router.push(`/backoffice/dash/day_sales?backoffice_no=${this.backoffice_no}&sales_date=month&page=1`);
+    },
+  },
+
+  mounted() {
+    this.$nextTick(() => {
+      this.miniNavActive();
+    });
+  },
 };
 </script>

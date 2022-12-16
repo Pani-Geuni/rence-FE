@@ -139,12 +139,13 @@
   <!-- END boardWrap -->
 </template>
 
-<style>
+<style lang="scss" scoped>
 
 </style>
 
 <script>
 import axios from 'axios';
+
 export default {
   name: 'DashBoardMainView',
   data() {
