@@ -28,10 +28,10 @@
               </p>
             </div>
             <div class="ct-body-cell main">
-              <p th:text="${vos.room_name}"></p>
+              <p v-text="vos.room_name"></p>
             </div>
             <div class="ct-body-cell main">
-              <p th:text="${vos.user_name}"></p>
+              <p v-text="vos.user_name"></p>
             </div>
             <div class="ct-body-cell main">
               <p class="reserve-price">{{ vos.actual_payment }}</p>
@@ -170,6 +170,10 @@ export default {
 
       axios.get(url).then((res) => {
         console.log(res.data);
+        this.r_vos = res.data.r_vos;
+        this.c_vos = res.data.c_vos;
+        this.svo = res.data.svo;
+        this.rmvo = res.data.rmvo;
       });
     },
   },
