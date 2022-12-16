@@ -1,3 +1,4 @@
+<!-- eslint-disable max-len -->
 <template>
   <div class="titleSection">
     <h1>정산</h1>
@@ -12,9 +13,6 @@
         정산
       </h3>
       <ul class="sales-mini-nav">
-        <!-- <li id="sales-mini-nav-day" class="nav-item <th:block th:if="${sales_date=='day'}">active</th:block>"><p>일일</p></li>
-          <li id="sales-mini-nav-week" class="nav-item <th:block th:if="${sales_date=='week'}">active</th:block>"><p>주간</p></li>
-          <li id="sales-mini-nav-month" class="nav-item <th:block th:if="${sales_date=='month'}">active</th:block>"><p>월간</p></li> -->
 
         <li id="sales-mini-nav-day" class="nav-item" th:classappend="${sales_date}=='day' ? 'active'">
           <p>일일</p>
@@ -161,7 +159,6 @@
     </section>
   </th:block>
 </template>
-
 
 <style scoped>
 @import '@/assets/CSS/dash-board/dash-sales-list.scss';

@@ -294,7 +294,7 @@
       <section class="dayoff-calendar-title">
         <h1 id="month"></h1>
         <span class="calendar-close-btn">
-          <img src="/static/IMG/dash-board/ico-close.svg" alt="닫기 버튼" />
+          <img src="@/assets/IMG/dash-board/ico-close.svg" alt="닫기 버튼" />
         </span>
       </section>
       <!-- END dayoff-calendar-title -->
@@ -326,7 +326,7 @@
   <div class="popup-background blind">
     <!-- START SPINNER SECTION -->
     <div id="spinner-section" class="blind">
-      <img src="/static/IMG/common/spinner.gif" class="spinner-img">
+      <img src="@/assets/IMG/common/spinner.gif" alt="spinner" class="spinner-img">
     </div>
     <!-- END SPINNER SECTION -->
 

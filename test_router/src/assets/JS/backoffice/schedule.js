@@ -2,8 +2,8 @@
  * @author : 전판근, 김예은, 최진실
  */
 
-$(function() {
-	$("#common-alert-btn").click(function() {
+$(function () {
+	$("#common-alert-btn").click(function () {
 		$(".popup-background:eq(1)").addClass("blind");
 		$("#common-alert-popup").addClass("blind");
 
@@ -13,12 +13,12 @@ $(function() {
 		}
 	});
 
-	$("input:radio[name='set_schedule']:eq(0)").click(function() {
+	$("input:radio[name='set_schedule']:eq(0)").click(function () {
 		$(".off-type-warning:eq(0)").removeClass('blind');
 		$(".off-type-warning:eq(1)").addClass('blind');
 	})
 
-	$("input:radio[name='set_schedule']:eq(1)").click(function() {
+	$("input:radio[name='set_schedule']:eq(1)").click(function () {
 		$(".off-type-warning:eq(0)").addClass('blind');
 		$(".off-type-warning:eq(1)").removeClass('blind');
 	})
@@ -39,18 +39,18 @@ $(function() {
 		oneLine: true,
 	});
 
-	$(".type-border-txt.time-input:eq(0)").change(function() {
+	$(".type-border-txt.time-input:eq(0)").change(function () {
 		$("input:checkbox[name='select-room']").prop('checked', false);
 	})
 
-	$(".type-border-txt.time-input:eq(1)").change(function() {
+	$(".type-border-txt.time-input:eq(1)").change(function () {
 		$("input:checkbox[name='select-room']").prop('checked', false);
 	})
 
 	// *************
 	// 전체 선택 체크박스
 	// *************
-	$('#select-all-room').click(function() {
+	$('#select-all-room').click(function () {
 		if ($(this).is(':checked')) {
 			$(this).attr('checked', true);
 		} else {
@@ -58,9 +58,9 @@ $(function() {
 		}
 	});
 
-	$('#select-all-room').change(function() {
+	$('#select-all-room').change(function () {
 		if ($(this).is(':checked')) {
-			$("input:checkbox[name='select-room']").each(function(index) {
+			$("input:checkbox[name='select-room']").each(function (index) {
 				if ($(this).is(':disabled')) {
 					console.log(index)
 					$(this).prop('checked', false);
@@ -78,7 +78,7 @@ $(function() {
 	// ********************
 	// 일정 적용 가능 공간 리스트
 	// ********************
-	$(".btn-schedule-research").click(function() {
+	$(".btn-schedule-research").click(function () {
 
 		if ($("input:radio[name='set_schedule']").is(':checked')) {
 			if ($(".time-input:eq(0)").val() != '' && $(".time-input:eq(1)").val() != '') {
@@ -117,7 +117,7 @@ $(function() {
 							page: 1
 						},
 
-						success: function(res) {
+						success: function (res) {
 							//로딩 화면 닫기
 							$(".popup-background:eq(1)").addClass("blind");
 							$("#spinner-section").addClass("blind");
@@ -190,7 +190,7 @@ $(function() {
 
 							}
 						},
-						error: function() {
+						error: function () {
 						}
 					});
 				}
@@ -205,7 +205,7 @@ $(function() {
 
 	var scroll_flag = true;
 	// 스케줄 - 스크롤을 이용한 페이징
-	$(".schedule-ct").scroll(function() {
+	$(".schedule-ct").scroll(function () {
 		if (Math.ceil($(this).scrollTop() + $(this).innerHeight()) >= $(this).prop('scrollHeight')) {
 			if ($(".ct-body-row").length - 1 < Number($("#maxCnt").attr("maxCnt")) && scroll_flag) {
 				//로딩 화면
@@ -241,7 +241,7 @@ $(function() {
 						off_type: off_type,
 						page: Number(page) + 1
 					},
-					success: function(res) {
+					success: function (res) {
 						scroll_flag = true;
 
 						//로딩 화면 닫기
@@ -294,7 +294,7 @@ $(function() {
 							$(".schedule-ct").append(row);
 						}
 					},
-					error: function() {
+					error: function () {
 						scroll_flag = true;
 
 						//로딩 화면 닫기
@@ -308,7 +308,7 @@ $(function() {
 
 	var scroll_flag2 = true;
 	// 예약자 - 스크롤을 이용한 페이징
-	$(".reservation-ct").scroll(function() {
+	$(".reservation-ct").scroll(function () {
 		if (Math.ceil($(this).scrollTop() + $(this).innerHeight()) >= $(this).prop('scrollHeight')) {
 			if ($(".ct-body-row").length < Number($("#maxCnt").attr("maxCnt")) && scroll_flag2) {
 				//로딩 화면
@@ -342,7 +342,7 @@ $(function() {
 						off_type: off_type,
 						page: Number(page) + 1
 					},
-					success: function(res) {
+					success: function (res) {
 						scroll_flag2 = true;
 
 						//로딩 화면 닫기
@@ -367,7 +367,7 @@ $(function() {
 							$(".reservation-ct").append(row);
 						}
 					},
-					error: function() {
+					error: function () {
 						scroll_flag2 = true;
 
 						//로딩 화면 닫기
@@ -381,7 +381,7 @@ $(function() {
 
 
 	// 일정에 따른 예약자 상세 보기 버튼 클릭 이벤트
-	$(".ct-body").on('click', '.reserve_cnt', function() {
+	$(".ct-body").on('click', '.reserve_cnt', function () {
 		let query = location.search;
 		let param = new URLSearchParams(query);
 		let backoffice_no = param.get('backoffice_no');
@@ -421,7 +421,7 @@ $(function() {
 
 	// 일정 설정
 	var check_room = "";
-	$(document).on('click', "#schedule-confirm-btn", function() {
+	$(document).on('click', "#schedule-confirm-btn", function () {
 		console.log("in");
 		check_room = $("input[type=checkbox]:checked").parents(".ct-body-row");
 		if (check_room.length != 0) {
@@ -457,7 +457,7 @@ $(function() {
 							not_etime: not_etime,
 							off_type: off_type,
 						},
-						success: function(res) {
+						success: function (res) {
 							if (res.result == 1) {
 								flag = 1;
 
@@ -466,7 +466,7 @@ $(function() {
 							}
 
 						},
-						error: function() {
+						error: function () {
 							flag = 0;
 						}
 					});
@@ -481,7 +481,7 @@ $(function() {
 					$(".common-alert-txt").text("일정이 설정되었습니다.");
 
 					// 리스트 새로고침
-					$("#common-alert-btn").click(function() {
+					$("#common-alert-btn").click(function () {
 						$(".btn-schedule-research").trigger("click");
 					});
 				}
@@ -504,26 +504,26 @@ $(function() {
 	})
 
 	// 팝업
-	$("#radio-check-closeBtn").click(function() {
+	$("#radio-check-closeBtn").click(function () {
 		$("#radio-check-popup").addClass("blind");
 		$(".popup-background:eq(0)").addClass("blind");
 	});
 
-	$("#time-input-closeBtn").click(function() {
+	$("#time-input-closeBtn").click(function () {
 		$("#time-input-popup").addClass("blind");
 		$(".popup-background:eq(0)").addClass("blind");
 	});
 
-	$("#no-reservation-closeBtn").click(function() {
+	$("#no-reservation-closeBtn").click(function () {
 		$("#no-reservation-popup").addClass("blind");
 		$(".popup-background:eq(0)").addClass("blind");
 	});
-	
-	
+
+
 	// ************************
 	// 예약자 리스트 전체 선택 체크박스
 	// ************************
-	$('#select-all-reservation').click(function() {
+	$('#select-all-reservation').click(function () {
 		if ($(this).is(':checked')) {
 			$(this).attr('checked', true);
 		} else {
@@ -531,7 +531,7 @@ $(function() {
 		}
 	});
 
-	$('#select-all-reservation').change(function() {
+	$('#select-all-reservation').change(function () {
 		if ($(this).is(':checked')) {
 			$("input:checkbox[name='reserve_no']").prop('checked', true);
 		} else {
@@ -542,7 +542,7 @@ $(function() {
 
 	var check_arr = "";
 	// 예약 취소 버튼 클릭 -> 취소 팝업 SHOW
-	$("#btn-reserve-cancel").on("click", function() {
+	$("#btn-reserve-cancel").on("click", function () {
 		check_arr = $("input[type=checkbox]:checked").parents(".ct-body-row");
 
 		if (check_arr.length == 0) {
@@ -571,7 +571,7 @@ $(function() {
 	});
 
 	// 예약 취소 팝업 - 취소 버튼 클릭 -> 취소 로직 처리
-	$("#reserve-delete-btn").click(function() {
+	$("#reserve-delete-btn").click(function () {
 		// START FOR문
 		for (var i = 0; i < check_arr.length; i++) {
 			var stop_flag = false;
@@ -599,12 +599,12 @@ $(function() {
 					reserve_stime: reserve_stime,
 					reserve_etime: reserve_etime
 				},
-				success: function(res) {
+				success: function (res) {
 					if (res.result != 1) {
 						stop_flag = true;
 					}
 				},
-				error: function() {
+				error: function () {
 					stop_flag = true;
 				}
 			});
@@ -612,13 +612,13 @@ $(function() {
 			if (stop_flag) {
 				break;
 			}
-			
+
 		}
 		// END FOR문
-		
+
 		$(".popup-background:eq(0)").addClass("blind");
 		$("#reserve-delete-popup").addClass("blind");
-		
+
 		if (stop_flag) {
 			$(".popup-background:eq(1)").removeClass("blind");
 			$("#common-alert-popup").removeClass("blind");
@@ -628,7 +628,7 @@ $(function() {
 			//로딩 화면 닫기
 			$(".popup-background:eq(1)").addClass("blind");
 			$("#spinner-section").addClass("blind");
-			
+
 			$(".popup-background:eq(1)").removeClass("blind");
 			$("#common-alert-popup").removeClass("blind");
 			$(".common-alert-txt").text("예약이 취소되었습니다.");
@@ -637,7 +637,7 @@ $(function() {
 	});
 
 	// 예약 취소 팝업 - 닫기 버튼 클릭 -> 예약 취소 여부 묻는 팝업 닫기
-	$("#reserve-delete-closeBtn").click(function() {
+	$("#reserve-delete-closeBtn").click(function () {
 		$(".popup-background:eq(0)").addClass("blind");
 		$("#reserve-delete-popup").addClass("blind");
 		$("#reserve-delete-btn").attr("reserve_no", "");
@@ -646,7 +646,7 @@ $(function() {
 
 	// 휴무 일정 캘린더 팝업
 	// 휴무 일정 캘린더 팝업
-	$("#btn-dayoff-calendar").click(function() {
+	$("#btn-dayoff-calendar").click(function () {
 		let backoffice_no = $.cookie('backoffice_no');
 		let month = '';
 
@@ -660,14 +660,14 @@ $(function() {
 			data: {
 				backoffice_no: backoffice_no
 			},
-			success: function(res) {
+			success: function (res) {
 				$(".popup-background:eq(0)").removeClass("blind");
 				$(".dayoff-calendar-wrap").removeClass("blind");
 
 				//로딩 화면 닫기
 				$(".popup-background:eq(1)").addClass("blind");
 				$("#spinner-section").addClass("blind");
-				
+
 				month = res.month + "월";
 				$("#month").text(month);
 
@@ -716,20 +716,20 @@ $(function() {
 
 
 			},
-			error: function() {
+			error: function () {
 			}
 		})
 	});
 
 	// 휴무 일정 캘린더 닫기 버튼
-	$(".calendar-close-btn").click(function() {
+	$(".calendar-close-btn").click(function () {
 		$(".popup-background:eq(0)").addClass("blind");
 		$(".dayoff-calendar-wrap").addClass("blind");
 	})
 
 	let schedule_no = '';
 	// 휴무 취소 버튼 - 휴무 취소 확인 팝업 노출
-	$(document).on('click', ".dayoff-cancel-btn", function() {
+	$(document).on('click', ".dayoff-cancel-btn", function () {
 		$(".popup-background:eq(1)").removeClass("blind");
 		$("#dayoff-cancel-popup").removeClass("blind");
 
@@ -737,13 +737,13 @@ $(function() {
 	})
 
 	// 휴무 취소 확인 팝업 - 닫기
-	$("#dayoff-cancel-confirm-closeBtn").click(function() {
+	$("#dayoff-cancel-confirm-closeBtn").click(function () {
 		$(".popup-background:eq(1)").addClass("blind");
 		$("#dayoff-cancel-popup").addClass("blind");
 	})
 
 	// 휴무 취소 확인 팝업 - 휴무 취소
-	$("#dayoff-cancel-confirm-btn").click(function() {
+	$("#dayoff-cancel-confirm-btn").click(function () {
 		//로딩 화면 열기
 		$(".popup-background:eq(1)").removeClass("blind");
 		$("#spinner-section").removeClass("blind");
@@ -760,15 +760,15 @@ $(function() {
 				schedule_no: schedule_no
 			},
 
-			success: function(res) {
+			success: function (res) {
 				if (res.result == "1") {
 					// 로딩 닫기
 					$(".popup-background:eq(1)").addClass("blind");
 					$("#spinner-section").addClass("blind");
-					
+
 					$(".popup-background:eq(1)").removeClass("blind");
 					$("#dayoff-cancel-confirmOK-popup").removeClass("blind");
-					
+
 					if (res.cnt > 0) {
 						let empty_item = $($(".dayoff-list-item")[0]).clone();
 						$(".dayoff-list").empty();
@@ -801,7 +801,7 @@ $(function() {
 								time_duration = stime + " ~ " + etime;
 								dayoff_list_item.find(".badge").text("브레이크 타임");
 							}
-							
+
 							dayoff_list_item.find(".dayoff-list-item-date").text(date_duration);
 							dayoff_list_item.find(".dayoff-list-item-time").text(time_duration);
 							dayoff_list_item.find(".dayoff-cancel-btn").attr("schedule_no", res.vos[i].schedule_no);
@@ -816,23 +816,23 @@ $(function() {
 					// 로딩 닫기
 					$(".popup-background:eq(1)").addClass("blind");
 					$("#spinner-section").addClass("blind");
-					
+
 					$(".popup-background:eq(1)").removeClass("blind");
 					$("#dayoff-cancel-fail-popup").removeClass("blind");
 				}
-			},error: function() {
+			}, error: function () {
 			}
 
 		});
 
 	})
 
-	$("#dayoff-cancel-confirmOK-btn").click(function() {
+	$("#dayoff-cancel-confirmOK-btn").click(function () {
 		$("#dayoff-cancel-confirmOK-popup").addClass("blind");
 		$(".popup-background:eq(1)").addClass("blind");
 	});
 
-	$("#dayoff-cancel-fail-btn").click(function() {
+	$("#dayoff-cancel-fail-btn").click(function () {
 		$("#dayoff-cancel-fail-popup").addClass("blind");
 		$(".popup-background:eq(1)").addClass("blind");
 	});
