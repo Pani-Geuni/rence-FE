@@ -1,3 +1,5 @@
+<!-- eslint-disable max-len -->
+<!-- eslint-disable vuejs-accessibility/click-events-have-key-events -->
 <!-- eslint-disable vuejs-accessibility/form-control-has-label -->
 <!-- eslint-disable max-len -->
 <template>
@@ -15,7 +17,7 @@
             <span>예약자</span>
           </div>
           <div class="sb_2">
-            <input type="text" placeholder="검색어를 입력하세요." id="input_searchBar" />
+            <input @keyup.enter="reserveSearch" type="text" placeholder="검색어를 입력하세요." id="input_searchBar" />
           </div>
 
           <!-- CUSTOM SELECT -->
@@ -34,12 +36,12 @@
       </div>
 
       <ul class="reserve-filter-list">
-        <li id="reserve-all" class="reserve-item" th:classappend="${reserve_state}=='all' ? 'active'">전체</li>
-        <li id="reserve-ing" class="reserve-item" th:classappend="${reserve_state}=='in_use' ? 'active'">예약중
+        <li @click="selectMiniNav" id="reserve-all" class="reserve-item">전체</li>
+        <li @click="selectMiniNav" id="reserve-ing" class="reserve-item">예약중
         </li>
-        <li id="reserve-cancel" class="reserve-item" th:classappend="${reserve_state}=='cancel' ? 'active'">취소
+        <li @click="selectMiniNav" id="reserve-cancel" class="reserve-item">취소
         </li>
-        <li id="reserve-end" class="reserve-item" th:classappend="${reserve_state}=='end' ? 'active'">종료</li>
+        <li @click="selectMiniNav" id="reserve-end" class="reserve-item">종료</li>
       </ul>
     </section>
     <!-- END reserve-header -->
@@ -132,14 +134,126 @@
 </style>
 
 <script>
+import $ from 'jquery';
+import axios from 'axios';
+
 export default {
   name: 'ReserveView',
 
   data() {
     return {
+      backoffice_no: this.$route.query.backoffice_no,
+      reserve_state: 'all',
       r_vos: [],
       res: [],
     };
+  },
+
+  watch: {
+    $route() {
+      $('#reserve-all').removeClass('active');
+      $('#reserve-ing').removeClass('active');
+      $('#reserve-cancel').removeClass('active');
+      $('#reserve-end').removeClass('active');
+
+      this.miniNavActive(this.reserve_state);
+    },
+  },
+
+  methods: {
+
+    miniNavActive(reserveState) {
+      console.log('miniNavActive :', reserveState);
+
+      switch (reserveState) {
+        case 'all':
+          $('#reserve-all').addClass('active');
+          break;
+        case 'in_use':
+          $('#reserve-ing').addClass('active');
+          break;
+        case 'cancel':
+          $('#reserve-cancel').addClass('active');
+          break;
+        case 'end':
+          $('#reserve-end').addClass('active');
+          break;
+        default:
+          break;
+      }
+    },
+
+    selectMiniNav(e) {
+      const targetId = e.target.id;
+      switch (targetId) {
+        case 'reserve-all':
+          this.reserve_state = 'all';
+          $('#reserve-all').addClass('active');
+          break;
+
+        case 'reserve-ing':
+          this.reserve_state = 'in_use';
+          break;
+        case 'reserve-cancel':
+          this.reserve_state = 'cancel';
+          break;
+        case 'reserve-end':
+          this.reserve_state = 'end';
+          break;
+
+        default:
+          break;
+      }
+
+      this.$router.push(`/backoffice/dash/reserve?backoffice_no=${this.backoffice_no}&reserve_state=${this.reserve_state}&page=1`);
+
+      this.$nextTick(() => {
+        this.getReserveList();
+      });
+    },
+
+    reserveSearch(e) {
+      console.log(e.target.value);
+      console.log(this.reserve_state);
+
+      const searchword = e.target.value;
+
+      // 로딩 화면
+      $('.popup-background:eq(1)').removeClass('blind');
+      $('#spinner-section').removeClass('blind');
+
+      const params = new URLSearchParams();
+      params.append('backoffice_no', this.backoffice_no);
+      params.append('searchword', searchword);
+      params.append('reserve_state', this.reserve_state);
+
+      const url = `http://localhost:8800/backoffice/dash/search_reserve?${params}`;
+      axios.get(url).then((res) => {
+        $('.popup-background:eq(1)').addClass('blind');
+        $('#spinner-section').addClass('blind');
+        console.log(res.data);
+        this.r_vos = res.data.r_vos;
+      });
+    },
+
+    getReserveList() {
+      const params = new URLSearchParams();
+      params.append('backoffice_no', this.backoffice_no);
+      params.append('reserve_state', this.reserve_state);
+      const url = `http://localhost:8800/backoffice/dash/reserve?${params}`;
+
+      axios.get(url).then((res) => {
+        console.log(res.data);
+        this.r_vos = res.data.r_vos;
+      });
+    },
+  },
+
+  mounted() {
+    this.$nextTick(() => {
+      this.miniNavActive(this.reserve_state);
+      this.getReserveList();
+    });
   },
 };
 </script>
