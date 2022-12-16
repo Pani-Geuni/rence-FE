@@ -13,7 +13,7 @@
 
 <template>
   <!-- NULL SECTION -->
-  <div class="list-page-wrap">
+  <div class="list-page-wrap blind" >
     <section class="list-box-null-section">
       <div class="null-first-section">
         <span class="advice-txt">해당 검색어에 관한 공간이 없습니다.</span>
@@ -29,7 +29,7 @@
   </div>
 
   <!-- NOT NULL SECTION -->
-  <section class="listPage-section blind">
+  <section class="listPage-section blind" >
     <div class="sort-wrap">
       <div class="sort" @click="sort_select">
         <span class="choice-sort-text" v-if="condition === 'date'">최신순</span>
@@ -49,12 +49,12 @@
     </div>
 
     <div class="listPage-wrap" @scroll="list_paging($event.target)">
-      <input type="hidden" v-bind:maxCnt="maxCnt" v-bind:nowCnt="nowCnt" id="maxCnt" />
+      <input type="hidden" :maxCnt="this.maxCnt" :nowCnt="this.nowCnt" id="maxCnt" />
       <div class="list-box-wrap">
           <!-- START LIST BOX -->
           <div class="list-box" @click="go_space_detail_page($event.target)" v-for="obj in list" :key="obj" :idx="obj.backoffice_no" >
             <section>
-              <img v-bind:src="obj.backoffice_image" alt="default-space-img" class="list-thumbnail" />
+              <img :src="obj.backoffice_image" alt="default-space-img" class="list-thumbnail" />
             </section>
             <section class="list-box-info">
               <ul>
@@ -69,11 +69,11 @@
                 <li class="box-price-rating-wrap">
                   <div class="box-room-min-price-wrap">
                     <span class="box-room-min-price">최소 {{obj.min_room_price}}</span>
-                    <span class="price-unit" v-if="obj.backoffice_type  == 'office'">원/개월</span>
-                    <span class="price-unit" v-if="obj.backoffice_type  != 'office'">원/시간</span>
+                    <span class="price-unit" v-if="obj.backoffice_type  === 'office'">원/개월</span>
+                    <span class="price-unit" v-if="obj.backoffice_type  !== 'office'">원/시간</span>
                   </div>
                   <div class="box-room-rating">
-                    <img src="@/assets/IMG/common/star.svg" alt="box-star" class="box-star" />
+                    <img src="@/assets/IMG/common/star.svg" alt="box-star" class="box-star" />&nbsp;
                     <span class="rating-num">{{obj.avg_rating}}</span>
                   </div>
                 </li>
@@ -84,11 +84,12 @@
       </div>
     </div>
   </section>
+
 </template>
 
 <style>
   @import '@/assets/CSS/office/list-page.scss';
-  </style>
+</style>
 
 <script>
 import axios from 'axios';
@@ -107,29 +108,34 @@ export default {
     };
   },
   mounted() {
-    if (this.$route.params.call.includes('list_page')) {
-      this.url = `http://localhost:8800/office/list_page?${this.$route.params.call.split('?')[1]}`;
-    } else if (this.$route.params.call.includes('search_list')) {
-      this.url = `http://localhost:8800/common/search_list?${decodeURI(window.location.href).split('?')[1]}`;
+    if (this.$route.params.call === 'list_page') {
+      this.url = `http://localhost:8800/office/list_page?${this.$route.params.parameters}`;
+    } else if (this.$route.params.call === 'search_list') {
+      this.url = `http://localhost:8800/common/search_list?${this.$route.params.parameters}`;
     }
 
-    // axios.get(this.url)
-    //   .then((res) => {
-    //     this.list = res.data.list;
-    //     this.maxCnt = res.data.maxCnt;
-    //     this.nowCnt = res.data.nowCnt;
-    //     this.condition = res.data.condition;
+    axios.get(this.url)
+      .then((res) => {
+        this.list = res.data.list;
+        this.maxCnt = res.data.maxCnt;
+        this.nowCnt = res.data.nowCnt;
+        this.condition = res.data.condition;
 
-    //     if (this.list.length !== 0) {
-    //       $('.list-page-wrap').addClass('blind');
-    //       $('.listPage-section').removeClass('blind');
-    //     }
-    //   })
-    //   .catch(() => {
-    //     $('.popup-background:eq(1)').removeClass('blind');
-    //     $('#common-alert-popup').removeClass('blind');
-    //     $('.common-alert-txt').text('오류 발생으로 인해 처리에 실패하였습니다.');
-    //   });
+        console.log(res.data);
+
+        if (this.list.length !== 0) {
+          $('.list-page-wrap').addClass('blind');
+          $('.listPage-section').removeClass('blind');
+        } else if (this.list.length === 0) {
+          $('.list-page-wrap').removeClass('blind');
+          $('.listPage-section').addClass('blind');
+        }
+      })
+      .catch(() => {
+        $('.popup-background:eq(1)').removeClass('blind');
+        $('#common-alert-popup').removeClass('blind');
+        $('.common-alert-txt').text('오류 발생으로 인해 처리에 실패하였습니다.');
+      });
   },
   methods: {
     // 정렬 셀렉트 클릭 시 커스텀 셀렉트 SHOW
@@ -138,47 +144,25 @@ export default {
     },
     // 정렬 조건 클릭 시 데이터 요청
     sort(param) {
-      const type = '';
-      const url = '';
-      const URL = '';
+      let type = '';
+      let location = '';
+      let searchWord = '';
 
-      if (window.location.href.includes('list_page')) {
-        type = decodeURI(window.location.href).split('?type=')[1].split('&')[0];
-        URL = `http://localhost:8800/office/list_page?type=${type}&condition=${$(param).attr('condition')}&page=1`;
-      } else {
-        url = decodeURI(window.location.href).split('&condition=')[0].split('list/')[1];
-        URL = `${url}&condition=${$(this).attr('condition')}&page=1`;
-      }
+      $('.sort-select-box-wrap').addClass('blind');
 
       // 로딩 화면
       $('.popup-background:eq(1)').removeClass('blind');
       $('#spinner-section').removeClass('blind');
 
-      axios.get(URL)
-        .then((res) => {
-          // 로딩 화면 닫기
-          $('.popup-background:eq(1)').addClass('blind');
-          $('#spinner-section').addClass('blind');
-
-          this.list = res.data.list;
-          this.maxCnt = res.data.maxCnt;
-          this.nowCnt = res.data.nowCnt;
-          this.condition = res.data.condition;
-
-          if (this.list.length !== 0) {
-            $('.list-page-wrap').addClass('blind');
-            $('.listPage-section').removeClass('blind');
-          }
-        })
-        .catch(() => {
-          // 로딩 화면 닫기
-          $('.popup-background:eq(1)').addClass('blind');
-          $('#spinner-section').addClass('blind');
-
-          $('.popup-background:eq(1)').removeClass('blind');
-          $('#common-alert-popup').removeClass('blind');
-          $('.common-alert-txt').text('오류 발생으로 인해 처리에 실패하였습니다.');
-        });
+      type = this.$route.params.parameters.split('type=')[1].split('&')[0];
+      if (this.$route.params.call === 'list_page') {
+        URL = `http://localhost:8800/office/${this.$route.params.call}?type=${type}&condition=${$(param).attr('condition')}&page=1`;
+        window.location.href = `http://localhost:8081/list/list_page/type=${type}&condition=${$(param).attr('condition')}&page=1`;
+      } else {
+        location = this.$route.params.parameters.split('location=')[1].split('&')[0];
+        searchWord = this.$route.params.parameters.split('searchWord=')[1].split('&')[0];
+        window.location.href = `http://localhost:8081/list/search_list/type=${type}&location=${location}&searchWord=${searchWord}&condition=${$(param).attr('condition')}&page=1`;
+      }
     },
     list_paging(param) {
       if (Math.ceil($(param).scrollTop() + $(param).innerHeight()) >= $(param).prop('scrollHeight')) {
@@ -188,15 +172,29 @@ export default {
           $('#spinner-section').removeClass('blind');
 
           if (window.location.href.includes('list_page')) {
-            const type = window.location.href.split('type=')[1].split('&')[0];
-            const condition = window.location.href.split('condition=')[1].split('&')[0];
-            const page = $('#maxCnt').attr('nowCnt');
+            const type = this.$route.params.parameters.split('type=')[1].split('&')[0];
+            const condition = this.$route.params.parameters.split('condition=')[1].split('&')[0];
+            const page = Number($('#maxCnt').attr('nowCnt'));
+            const next = page + 1;
+
+            const params = new URLSearchParams();
+            params.append('type', type);
+            params.append('condition', condition);
+            params.append('page', page);
 
             this.scroll_flag = false;
 
-            axios.get(`http://localhost:8800/office/list_paging&type=${type}&page=${Number(page) + 1}&condition=${condition}`)
+            axios.get('http://localhost:8800/office/list_paging', {
+              params: {
+                type,
+                condition,
+                page: next,
+              },
+            })
               .then((res) => {
                 this.scroll_flag = true;
+
+                console.log(res.data);
 
                 // 로딩 화면 닫기
                 $('.popup-background:eq(1)').addClass('blind');
@@ -226,24 +224,30 @@ export default {
                 $('#spinner-section').addClass('blind');
               });
           } else {
-            const type = window.location.href.split('type=')[1].split('&')[0];
-            const location = window.location.href.split('location=')[1].split('&')[0];
-            const searchWord = window.location.href.split('searchWord=')[1].split('&')[0];
-            const condition = window.location.href.split('condition=')[1].split('&')[0];
-            const page = $('#maxCnt').attr('nowCnt');
+            const type = this.$route.params.parameters.split('type=')[1].split('&')[0];
+            const location = this.$route.params.parameters.split('location=')[1].split('&')[0];
+            const searchWord = this.$route.params.parameters.split('searchWord=')[1].split('&')[0];
+            const condition = this.$route.params.parameters.split('condition=')[1].split('&')[0];
+            const page = Number($('#maxCnt').attr('nowCnt'));
+            const next = page + 1;
 
             this.scroll_flag = false;
 
-            const params = new URLSearchParams();
-            params.append('type', type);
-            params.append('location', location);
-            params.append('searchWord', searchWord);
-            params.append('page', Number(page) + 1);
-            params.append('condition', condition);
+            console.log('in');
 
-            axios.get('http://localhost:8800/office/search_list_paging', params)
+            axios.get('http://localhost:8800/office/search_list_paging', {
+              params: {
+                type,
+                location,
+                searchWord,
+                condition,
+                page: next,
+              },
+            })
               .then((res) => {
                 this.scroll_flag = true;
+
+                console.log(res.data);
 
                 // 로딩 화면 닫기
                 $('.popup-background:eq(1)').addClass('blind');
@@ -276,12 +280,14 @@ export default {
       }
     },
     go_space_detail_page(param) {
-      const backofficeNo = $(param).attr('idx');
-      const type = decodeURI(window.location.href).split('?type=')[1].split('&')[0];
+      const backofficeNo = $(param).parents('.list-box').attr('idx');
+      const type = this.$route.params.parameters.split('type=')[1].split('&')[0];
 
-      if (type !== 'office') { window.open(`http://localhost:8081/space?backoffice_no=${backofficeNo}`); }
+      console.log(type);
+
+      if (type !== 'office') { window.open(`http://localhost:8081/space/backoffice_no=${backofficeNo}`); }
       // 오피스용 공간 소개 페이지로 이동
-      else { window.open(`http://localhost:8081/space_office?backoffice_no=${backofficeNo}`); }
+      else { window.open(`http://localhost:8081/space_office/backoffice_no=${backofficeNo}`); }
     },
   },
 };

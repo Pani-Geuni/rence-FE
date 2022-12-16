@@ -33,7 +33,7 @@ const routes = [
         component: HomeView,
       },
       {
-        path: 'list/:call', // 전달할 변수명 지정 :/변수명
+        path: 'list/:call/:parameters', // 전달할 변수명 지정 :/변수명
         name: 'ListView',
         component: ListView,
       },
@@ -73,17 +73,17 @@ const routes = [
         component: QuestionView,
       },
       {
-        path: 'space',
+        path: 'space/:parameters',
         name: 'SpaceDetailView',
         component: SpaceDetailView,
       },
       {
-        path: 'space_office',
+        path: 'space_office/:parameters',
         name: 'OfficeSpaceDetailView',
         component: OfficeSpaceDetailView,
       },
       {
-        path: 'payment',
+        path: 'payment/:parameters',
         name: 'PaymentView',
         component: PaymentView,
       },
