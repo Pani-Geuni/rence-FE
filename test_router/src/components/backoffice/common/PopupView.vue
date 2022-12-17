@@ -43,7 +43,7 @@
         </div>
       </section>
       <section class="find-popup-btn-section">
-        <input type="button" id="find-pw-btn" class="find-btn" value="비밀번호 찾기" />
+        <input @click="findPassword" type="button" id="find-pw-btn" class="find-btn" value="비밀번호 찾기" />
         <input @click="closeFindPw" type="button" id="find-pw-close" class="find-pw-close" value="창닫기" />
       </section>
     </div>
@@ -108,6 +108,7 @@ export default {
     return {
       backoffice_no: this.$cookies.get('backoffice_no'),
       host_image: this.$cookies.get('host_image'),
+      find_pw_flag: true,
     };
   },
 
@@ -161,8 +162,8 @@ export default {
             if (res.data.result === '1') {
               console.log('res.data : ', res.data);
               // console.log(this.backoffice_no);
-              this.$cookies.set('backoffice_no', res.data.backoffice_no);
-              this.$cookies.set('host_image', res.data.host_image);
+              // this.$cookies.set('backoffice_no', res.data.backoffice_no);
+              // this.$cookies.set('host_image', res.data.host_image);
               // this.$storage.setStorageSync('backoffice_id', res.data.backoffice_id);
 
               this.$router.push(`/backoffice/dash/main?backoffice_no=${this.$cookies.get('backoffice_no')}`);
@@ -218,6 +219,71 @@ export default {
     clickFindInput() {
       if ($(this).hasClass('null-input-border')) {
         $(this).removeClass('null-input-border');
+      }
+    },
+
+    findPassword() {
+      if ($('#find-pw-email').val().trim().length === 0) {
+        $('#find-pw-email').addClass('null-input-border');
+      }
+      if ($('#find-pw-backoffice-code').val().trim().length === 0) {
+        $('#find-pw-backoffice-code').addClass('null-input-border');
+      }
+
+      if ($('#find-pw-email').val().trim().length > 0 && $('#find-pw-backoffice-code').val().trim().length > 0) {
+        if (this.find_pw_flag) {
+          this.find_pw_flag = false;
+          console.log('backoffice_id :', $('#find-pw-backoffice-code').val().trim());
+          console.log('backoffice_email :', $('#find-pw-email').val().trim());
+
+          // 로딩 화면
+          $('.popup-background:eq(1)').removeClass('blind');
+          $('#spinner-section').removeClass('blind');
+
+          const params = new URLSearchParams();
+          params.append('backoffice_id', $('#find-pw-backoffice-code').val().trim());
+          params.append('backoffice_email', $('#find-pw-email').val().trim());
+
+          const url = `http://localhost:8800/backoffice/reset_pw?${params}`;
+          axios.get(url).then((res) => {
+            this.find_pw_flag = true;
+
+            console.log(res.data);
+            $('.popup-background:eq(1)').addClass('blind');
+            $('#spinner-section').addClass('blind');
+
+            if (res.data.result === '1') {
+              // INPUT 초기화
+              $('#find-pw-email').val('');
+              $('#find-pw-backoffice-code').val('');
+
+              $('#find-pw-email').removeClass('null-input-border');
+              $('#find-pw-backoffice-code').removeClass('null-input-border');
+
+              // 팝업 관련창 닫음
+              $('.popup-background:eq(0)').addClass('blind');
+              $('#find-pw-section').addClass('blind');
+
+              $('.popup-background:eq(1)').removeClass('blind');
+              $('#common-alert-popup').removeClass('blind');
+              $('.common-alert-txt').text('이메일로 비밀번호를 발송해드렸어요!');
+            } else {
+              $('.popup-background:eq(1)').removeClass('blind');
+              $('#common-alert-popup').removeClass('blind');
+              $('.common-alert-txt').text('해당 정보로 가입된 호스트가 없습니다.');
+            }
+          }).catch(() => {
+            this.find_pw_flag = true;
+
+            // 로딩 화면 닫기
+            $('.popup-background:eq(1)').addClass('blind');
+            $('#spinner-section').addClass('blind');
+
+            $('.popup-background:eq(1)').removeClass('blind');
+            $('#common-alert-popup').removeClass('blind');
+            $('.common-alert-txt').text('오류 발생으로 인해 처리에 실패하였습니다.');
+          });
+        }
       }
     },
 
