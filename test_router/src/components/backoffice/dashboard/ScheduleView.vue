@@ -1,3 +1,4 @@
+<!-- eslint-disable vuejs-accessibility/click-events-have-key-events -->
 <!-- eslint-disable vuejs-accessibility/label-has-for -->
 <!-- eslint-disable max-len -->
 <!-- eslint-disable vuejs-accessibility/form-control-has-label -->
@@ -60,7 +61,7 @@
         <div class="select-room-section-title">
           <h3>적용 공간 선택</h3>
           <div class="select-all-section">
-            <label for="select-all-room">전체선택</label>
+            <label @click="selectAllCheckbox" for="select-all-room">전체선택</label>
             <input type="checkbox" id="select-all-room" />
             <input type="hidden" id="maxCnt" />
           </div>
@@ -107,6 +108,8 @@
           </div>
           <!-- END ct-body-row -->
         </div>
+        <input type='button' id='schedule-confirm-btn' class='schedule-confirm-btn' value='일정 설정'
+          v-if="sc_vos_cnt > 0" />
       </div>
       <!-- END select-room-section -->
     </div>
@@ -120,6 +123,7 @@
 </style>
 
 <script>
+import $ from 'jquery';
 import axios from 'axios';
 import 'v-calendar/dist/style.css';
 
@@ -136,10 +140,15 @@ export default {
         mask: 'YYYY-MM-DD HH:mm:00',
       },
       sc_vos: [],
+      sc_vos_cnt: 0,
     };
   },
 
   methods: {
+
+    selectAllCheckbox() {
+      console.log('hi');
+    },
 
     getScheduleList() {
       const params = new URLSearchParams();
@@ -163,12 +172,19 @@ export default {
       params.append('not_etime', eDateTime[1]);
       params.append('off_type', this.set_schedule);
 
-      const url = `http://localhost:8800/backoffice/dash/schedule_research?${params}&page=1`;
-      axios.get(url).then((res) => {
-        console.log(res.data);
+      if (this.set_schedule === '') {
+        $('.popup-background:eq(1)').removeClass('blind');
+        $('#common-alert-popup').removeClass('blind');
+        $('.common-alert-txt').text('일정 설정 타입을 선택해 주세요.');
+      } else {
+        const url = `http://localhost:8800/backoffice/dash/schedule_research?${params}&page=1`;
+        axios.get(url).then((res) => {
+          console.log(res.data);
 
-        this.sc_vos = res.data.sc_vos;
-      });
+          this.sc_vos = res.data.sc_vos;
+          this.sc_vos_cnt = res.data.cnt;
+        });
+      }
     },
   },
 

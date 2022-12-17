@@ -3,15 +3,6 @@
  */
 
 $(function () {
-	$("#common-alert-btn").click(function () {
-		$(".popup-background:eq(1)").addClass("blind");
-		$("#common-alert-popup").addClass("blind");
-
-		if ($(this).attr("is_reload") == "true") {
-			location.reload();
-			$(this).attr("is_reload", false);
-		}
-	});
 
 	$("input:radio[name='set_schedule']:eq(0)").click(function () {
 		$(".off-type-warning:eq(0)").removeClass('blind');
