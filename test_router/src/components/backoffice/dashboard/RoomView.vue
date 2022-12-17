@@ -3,7 +3,7 @@
 <template>
   <div class="titleSection">
     <h1>공간 관리</h1>
-    <button id="btn-room-add" class="btn-room-add">추가</button>
+    <button @click="addRoom" id="btn-room-add" class="btn-room-add">추가</button>
     <ul class="mini-nav">
       <li>
         <p @click="miniNavList" id="mini-nav-list" class="nav-item">리스트</p>
@@ -95,7 +95,8 @@ export default {
 
   data() {
     return {
-      babckoffice_no: this.$cookies.get('backoffice_no'),
+      backoffice_no: this.$cookies.get('backoffice_no'),
+      // room_type: [],
       rm_vos: [],
       res: [],
       unit: '',
@@ -145,16 +146,21 @@ export default {
 
     getRoomList() {
       const params = new URLSearchParams();
-      params.append('backoffice_no', this.babckoffice_no);
-      const url = `http://localhost:8800/backoffice/dash/room?backoffice_no=${this.babckoffice_no}`;
+      params.append('backoffice_no', this.backoffice_no);
+      const url = `http://localhost:8800/backoffice/dash/room?backoffice_no=${this.backoffice_no}&page=1`;
 
       axios.get(url)
         .then((res) => {
-          console.log(res.data);
           this.rm_vos = res.data.rm_vos;
           this.unit = res.data.unit;
         });
     },
+
+    addRoom() {
+      $('.popup-background:eq(0)').removeClass('blind');
+      $('#room-insert-section').removeClass('blind');
+    },
+
   },
 
   mounted() {
