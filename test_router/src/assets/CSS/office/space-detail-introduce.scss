@@ -167,6 +167,8 @@
 	font-size: 15.5px;
 	white-space: pre-line;
 	margin-bottom: 20px;
+	padding-bottom: 0px;
+  border-bottom: 0px;
 }
 .option-wrap {
 	border-top: 2px solid #e4e4e4;
@@ -667,6 +669,8 @@
 	display: flex;
 	justify-content: space-between;
 	border-radius: 8px;
+}
+.type-border:hover {
 	cursor: pointer;
 }
 .open-select {

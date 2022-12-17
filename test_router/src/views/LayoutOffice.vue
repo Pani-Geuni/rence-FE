@@ -17,13 +17,13 @@
 
 <style>
 .mx-datepicker {
-	width: 340px;
-	height: 48px;
+	width: 359px;
+	height: 40px;
 
   box-sizing: border-box;
   border: 2px solid #2EE49D;
 
-	padding: 7px 15px 7px 10px;
+	padding: 3px 10px 3px 10px;
 	margin-top: 12px;
 	display: flex;
 	align-items: center;
@@ -34,7 +34,7 @@
 .mx-input {
   display: inline-block;
   box-sizing: border-box;
-  width: 317px;
+  width: 339px;
   height: 34px;
   padding: 6px 30px;
   padding-left: 10px;
@@ -42,6 +42,7 @@
   color: #555;
   background-color: #fff;
   border: 0px;
+  box-shadow: none;
 }
 
 .mx-icon-calendar{
