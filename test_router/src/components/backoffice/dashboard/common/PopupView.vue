@@ -1,3 +1,4 @@
+<!-- eslint-disable vuejs-accessibility/heading-has-content -->
 <!-- eslint-disable max-len -->
 <!-- eslint-disable vuejs-accessibility/form-control-has-label -->
 <template>
@@ -318,7 +319,6 @@
       </section>
     </div>
     <!-- END dayoff-calendar-wrap -->
-
 
   </div>
   <!-- END popup-background blind -->
