@@ -1,3 +1,4 @@
+<!-- eslint-disable vuejs-accessibility/click-events-have-key-events -->
 <!-- eslint-disable vuejs-accessibility/label-has-for -->
 <!-- eslint-disable max-len -->
 <!-- eslint-disable vuejs-accessibility/form-control-has-label -->
@@ -81,9 +82,13 @@
             <div class="hashTag-group">
               <input type="hidden" value="" name="backoffice_tag" id="real-input-tag" v-on:keydown.enter.prevent />
             </div>
-            <input type="text" id="backoffice_tag" placeholder="사업체의 태그를 입력해 주세요 (최대 10글자)" maxlength=10
-              v-on:keydown.enter.prevent />
-            <ul id="tag-list">
+            <input type="text" v-model="tagValue" id="backoffice_tag" placeholder="사업체의 태그를 입력해 주세요 (최대 10글자)"
+              maxlength=10 @keyup.enter="createHashTag" @keyup.space="createHashTag" v-on:click.stop />
+            <ul id="tag-list" v-if="margin_tag_list.length !== 0">
+              <li class='tag-item' v-for="tag in margin_tag_list" :key="tag">{{ tag
+              }}
+                <span @click="deleteTag" class='del-btn' :tag="tag" :idx="counter">x</span>
+              </li>
             </ul>
           </div>
         </div>
@@ -533,7 +538,7 @@
 import $ from 'jquery';
 import '@vuepic/vue-datepicker/src/VueDatePicker/style/main.scss';
 import { ref } from 'vue';
-import '@/assets/JS/backoffice/host_insert';
+// import '@/assets/JS/backoffice/host_insert';
 import axios from 'axios';
 
 export default {
@@ -597,6 +602,12 @@ export default {
       roadname_address: '',
       number_address: '',
       detail_address: '',
+
+      tagValue: '',
+      tag: {},
+      counter: 0,
+      margin_tag_list: [],
+      backoffice_tag: '',
 
       backoffice_type: [],
       backoffice_info: '',
@@ -753,11 +764,83 @@ export default {
             $('.popup-background:eq(1)').removeClass('blind');
             $('#common-alert-popup').removeClass('blind');
             $('.common-alert-txt').text('오류 발생으로 인해 처리에 실패하였습니다.');
-          })
+          });
         } else {
           $('#auth_code').addClass('null-input-border');
         }
       }
+    },
+
+    addTag(value) {
+      this.tag[this.counter] = value;
+      this.counter += 1;
+    },
+
+    marginTag() {
+      this.margin_tag_list = [];
+
+      return Object.values(this.tag).filter((word) => word !== '');
+    },
+
+    toStringTag(list) {
+      this.backoffice_tag = '';
+
+      // eslint-disable-next-line no-plusplus
+      for (let i = 0; i < list.length; i++) {
+        if (i !== (list.length - 1)) {
+          this.backoffice_tag += (`${list[i]},`);
+        } else {
+          this.backoffice_tag += list[i];
+        }
+      }
+
+      $('#real-input-tag').val(this.backoffice_tag);
+    },
+
+    createHashTag(e) {
+      const targetTag = e.target.value;
+
+      if ((targetTag !== '' || targetTag !== ' ') && targetTag.length !== 0) {
+        const result = Object.values(this.tag).filter((word) => word === targetTag);
+
+        // 해시태그 중복 확인
+        if (result.length === 0 && this.margin_tag_list.length < 5) {
+          this.addTag(targetTag.trim());
+          this.margin_tag_list = this.marginTag();
+          this.toStringTag(this.margin_tag_list);
+          this.tagValue = '';
+        } else if (this.margin_tag_list.length >= 5) {
+          $('.popup-background:eq(1)').removeClass('blind');
+          $('#common-alert-popup').removeClass('blind');
+          $('.common-alert-txt').text('해시태그는 최대 5개 입니다.');
+          this.tagValue = '';
+        } else if (this.margin_tag_list.includes(targetTag)) {
+          $('.popup-background:eq(1)').removeClass('blind');
+          $('#common-alert-popup').removeClass('blind');
+          $('.common-alert-txt').text('중복된 해시태그 입니다.');
+          this.tagValue = '';
+        }
+      }
+      e.preventDefault();
+    },
+
+    deleteTag(e) {
+      // const index = e.target.getAttribute('idx');
+      const index = e.target.getAttribute('tag');
+      for (let i = 0; i < this.margin_tag_list.length; i++) {
+        if (index === this.margin_tag_list[i]) {
+          const key = Object.keys(this.tag).filter((key) => this.tag[key] === index)[0];
+          delete this.tag[key];
+        }
+      }
+      // console.log('index :', index);
+
+      // this.tag.splice(index, 1);
+      console.log(this.tag);
+      // this.tag[index] = '';
+      this.margin_tag_list = this.marginTag();
+      this.toStringTag(this.margin_tag_list);
+      // console.log(this.tag.indexOf(index));
     },
 
     timer(check) {
