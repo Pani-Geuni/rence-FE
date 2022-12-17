@@ -27,8 +27,8 @@
             {{ vos.room_name }}
           </p>
           <div class="item-buttons">
-            <button class="btn-room-edit" th:attr="idx=${vos.room_no}">수정</button>
-            <button class="btn-room-delete" th:attr="idx=${vos.room_no}">삭제</button>
+            <button class="btn-room-edit" :idx="vos.room_no">수정</button>
+            <button @click="deleteRoom" class="btn-room-delete" :idx="vos.room_no">삭제</button>
           </div>
           <!-- END item-buttons -->
         </div>
@@ -159,6 +159,12 @@ export default {
     addRoom() {
       $('.popup-background:eq(0)').removeClass('blind');
       $('#room-insert-section').removeClass('blind');
+    },
+
+    deleteRoom(e) {
+      $('.popup-background:eq(0)').removeClass('blind');
+      $('#space-delete-popup').removeClass('blind');
+      $('#delete-space-btn').attr('idx', e.target.getAttribute('idx'));
     },
 
   },

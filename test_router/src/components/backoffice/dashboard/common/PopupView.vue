@@ -115,8 +115,8 @@
         </span>
       </section>
       <section class="confirm-btn-section">
-        <div id="delete-space-btn" class="confirm-yesBtn">삭제</div>
-        <div id="delete-closeBtn" class="confirm-noBtn">닫기</div>
+        <div @click="delete_room" id="delete-space-btn" class="confirm-yesBtn">삭제</div>
+        <div @click="closeDeletePopup" id="delete-closeBtn" class="confirm-noBtn">닫기</div>
       </section>
     </div>
     <!-- END DELETE FONFIRM POPUP -->
@@ -402,12 +402,20 @@ export default {
       kor_room_type: [],
 
       insert_room_flag: true,
+      delete_room_flag: true,
+
       room_name: '',
       edit_room_type: '',
       input_price_name: '',
     };
   },
   methods: {
+    closeCommonAlert() {
+      $('.popup-background:eq(1)').addClass('blind');
+      $('#common-alert-popup').addClass('blind');
+      this.$router.go();
+    },
+
     closeSuccessAlert() {
       $('.popup-background:eq(0)').addClass('blind');
       $('#insert-success-alert-popup').addClass('blind');
@@ -514,6 +522,61 @@ export default {
           $('#room-type-select').addClass('null-input-border');
         }
       }
+    },
+
+    delete_room(e) {
+      // eslint-disable-next-line camelcase
+      const room_no = e.target.getAttribute('idx');
+
+      if (this.delete_room_flag) {
+        this.delete_room_flag = false;
+
+        // 로딩 화면
+        $('.popup-background:eq(1)').removeClass('blind');
+        $('#spinner-section').removeClass('blind');
+
+        const params = new URLSearchParams();
+        params.append('backoffice_no', this.backoffice_no);
+        params.append('room_no', room_no);
+
+        axios.post('http://localhost:8800/backoffice/dash/deleteOK_room', params)
+          .then((res) => {
+            // 로딩 화면 닫기
+            $('.popup-background:eq(1)').addClass('blind');
+            $('#spinner-section').addClass('blind');
+
+            $('.popup-background:eq(0)').addClass('blind');
+            $('#host-delete-popup').addClass('blind');
+            $('#delete-space-btn').attr('idx', '');
+
+            if (res.data.result === '1') {
+              $('.popup-background:eq(1)').removeClass('blind');
+              $('#common-alert-popup').removeClass('blind');
+              $('.common-alert-txt').text('삭제가 완료되었습니다.');
+              $('#common-alert-btn').attr('is_reload', true);
+            } else {
+              $('.popup-background:eq(1)').removeClass('blind');
+              $('#common-alert-popup').removeClass('blind');
+              $('.common-alert-txt').text('삭제에 실패하였습니다.');
+            }
+          }).catch(() => {
+            this.delete_room_flag = true;
+
+            // 로딩 화면 닫기
+            $('.popup-background:eq(1)').addClass('blind');
+            $('#spinner-section').addClass('blind');
+
+            $('.popup-background:eq(1)').removeClass('blind');
+            $('#common-alert-popup').removeClass('blind');
+            $('.common-alert-txt').text('오류 발생으로 인해 처리에 실패하였습니다.');
+          });
+      }
+    },
+
+    closeDeletePopup() {
+      $('.popup-background:eq(0)').addClass('blind');
+      $('#space-delete-popup').addClass('blind');
+      $('#delete-space-btn').attr('idx', '');
     },
 
     // *********
