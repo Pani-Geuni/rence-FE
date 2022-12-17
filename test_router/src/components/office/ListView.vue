@@ -121,8 +121,6 @@ export default {
         this.nowCnt = res.data.nowCnt;
         this.condition = res.data.condition;
 
-        console.log(res.data);
-
         if (this.list.length !== 0) {
           $('.list-page-wrap').addClass('blind');
           $('.listPage-section').removeClass('blind');
@@ -194,8 +192,6 @@ export default {
               .then((res) => {
                 this.scroll_flag = true;
 
-                console.log(res.data);
-
                 // 로딩 화면 닫기
                 $('.popup-background:eq(1)').addClass('blind');
                 $('#spinner-section').addClass('blind');
@@ -203,18 +199,7 @@ export default {
                 const now = $('#maxCnt').attr('nowCnt');
                 $('#maxCnt').attr('nowCnt', Number(now) + 1);
 
-                for (let i = 0; i < res.data.cnt; i++) {
-                  const box = $($('.list-box')[0]).clone();
-                  box.attr('idx', res.data.list[i].backoffice_no);
-                  box.find('.list-thumbnail').attr('src', res.data.list[i].backoffice_image);
-                  box.find('.box-info-c-name').text(res.data.list[i].company_name);
-                  box.find('.box-info-location').text(res.data.list[i].roadname_address);
-                  box.find('.box-tag').text(res.data.list[i].backoffice_tag);
-                  box.find('.box-room-min-price').text(`최소 ${res.data.list[i].min_room_price}`);
-                  box.find('.rating-num').text(res.data.list[i].avg_rating);
-
-                  $('.list-box-wrap').append(box);
-                }
+                this.list = this.list.concat(res.data.list);
               })
               .catch(() => {
                 this.scroll_flag = true;
@@ -233,8 +218,6 @@ export default {
 
             this.scroll_flag = false;
 
-            console.log('in');
-
             axios.get('http://localhost:8800/office/search_list_paging', {
               params: {
                 type,
@@ -247,8 +230,6 @@ export default {
               .then((res) => {
                 this.scroll_flag = true;
 
-                console.log(res.data);
-
                 // 로딩 화면 닫기
                 $('.popup-background:eq(1)').addClass('blind');
                 $('#spinner-section').addClass('blind');
@@ -256,18 +237,7 @@ export default {
                 const now = $('#maxCnt').attr('nowCnt');
                 $('#maxCnt').attr('nowCnt', Number(now) + 1);
 
-                for (let i = 0; i < res.data.cnt; i++) {
-                  const box = $($('.list-box')[0]).clone();
-                  box.attr('idx', res.data.list[i].backoffice_no);
-                  box.find('.list-thumbnail').attr('src', res.data.list[i].backoffice_image);
-                  box.find('.box-info-c-name').text(res.data.list[i].company_name);
-                  box.find('.box-info-location').text(res.data.list[i].roadname_address);
-                  box.find('.box-tag').text(res.data.list[i].backoffice_tag);
-                  box.find('.box-room-min-price').text(`최소 ${res.data.list[i].min_room_price}`);
-                  box.find('.rating-num').text(res.data.list[i].avg_rating);
-
-                  $('.list-box-wrap').append(box);
-                }
+                this.list = this.list.concat(res.data.list);
               }).catch(() => {
                 this.scroll_flag = true;
 
@@ -279,11 +249,19 @@ export default {
         }
       }
     },
-    go_space_detail_page(param) {
+    emit_space_detail_page(param) {
       const backofficeNo = $(param).parents('.list-box').attr('idx');
       const type = this.$route.params.parameters.split('type=')[1].split('&')[0];
 
-      console.log(type);
+      if (type !== 'office') { window.open(`http://localhost:8081/space/backoffice_no=${backofficeNo}`); }
+      // 오피스용 공간 소개 페이지로 이동
+      else { window.open(`http://localhost:8081/space_office/backoffice_no=${backofficeNo}`); }
+
+      this.$emit('click', param.parents('.list-box').attr('idx'));
+    },
+    go_space_detail_page(param) {
+      const backofficeNo = $(param).parents('.list-box').attr('idx');
+      const type = this.$route.params.parameters.split('type=')[1].split('&')[0];
 
       if (type !== 'office') { window.open(`http://localhost:8081/space/backoffice_no=${backofficeNo}`); }
       // 오피스용 공간 소개 페이지로 이동

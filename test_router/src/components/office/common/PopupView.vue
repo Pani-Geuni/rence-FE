@@ -636,7 +636,7 @@ export default {
                   // 아이디 찾기 실패
                   $('.popup-background:eq(1)').removeClass('blind');
                   $('#common-alert-popup').removeClass('blind');
-                  $('.common-alert-txt').text('이메일 발송에 실패하였습니다.');
+                  $('.common-alert-txt').text('존재하지 않는 사용자입니다.');
                 }
               })
               .catch(() => {
@@ -977,10 +977,10 @@ export default {
         }
 
         if (tmp === true) {
-          if ($('#check_email').prop('check') === true) {
-            if ($('#check_email-code').prop('check') === true) {
-              if ($('#check_id').prop('check') === true) {
-                if (this.join_flag) {
+          if (this.join_flag) {
+            if ($('#check_email').prop('check') === true) {
+              if ($('#check_email-code').prop('check') === true) {
+                if ($('#check_id').prop('check') === true) {
                   // 로딩 화면
                   $('.popup-background:eq(1)').removeClass('blind');
                   $('#spinner-section').removeClass('blind');

@@ -15,7 +15,7 @@
 -->
 
 <template>
-  <section class="space-detail-introduce-section" th:fragment="content">
+  <section v-if="load === true" class="space-detail-introduce-section">
 		<div class="space-detail-introduce-wrap">
 			<section class="space-detail-title-section">
 				<span class="space-detail-company-name">
@@ -50,7 +50,7 @@
 
 					<div class="button-container">
 						<span class="prev button-size hide" @click="set_prev_image">&lt;</span>
-						<span class="next button-size" @click="set_next_image">></span>
+						<span :class="{'next button-size' : list.img_list.length > 1, 'next button-size hide' : list.img_list.length <= 1}" @click="set_next_image">></span>
 					</div>
 				</div>
 			</section>
@@ -59,9 +59,9 @@
 				<section class="un-fixed-section">
 					<section class="menu-tab-section">
 						<ul class="menu-tab">
-							<li @click="choice_menu($event.target)" class="menu click-menu" menu="info">공간 소개</li>
-							<li @click="choice_menu($event.target)" class="menu" menu="qna">문의</li>
-							<li @click="choice_menu($event.target)" class="menu" menu="review">후기</li>
+							<li @click="choice_menu($event.currentTarget)" class="menu click-menu" menu="info">공간 소개</li>
+							<li @click="choice_menu($event.currentTarget)" class="menu" menu="qna">문의</li>
+							<li @click="choice_menu($event.currentTarget)" class="menu" menu="review">후기</li>
 						</ul>
 					</section>
 
@@ -71,7 +71,7 @@
 							{{list.ovo.backoffice_info}}
 						</div>
 
-						<div class="option-wrap">
+						<div v-if="list.option_list.length > 0" class="option-wrap">
 							<label class="section-title"> 옵션 </label>
 							<ul class="option-list-wrap">
 								<li v-for="option_item in list.option_list" :key="option_item" class="option-list">
@@ -80,7 +80,7 @@
 							</ul>
 						</div>
 
-						<div class="around-info-wrap">
+						<div v-if="list.around_option_list.length > 0" class="around-info-wrap">
 							<label class="section-title"> 주변 시설 </label>
 							<ul class="option-list-wrap">
                 <li v-for="around_item in list.around_option_list" :key="around_item" class="option-list">{{around_item}}</li>
@@ -99,7 +99,7 @@
 					<div id="question-wrap" class="question-wrap blind">
 						<section class="question-wrap-title">
 							<section class="question-left">
-								<span class="big-title">문의</span> <span class="small-title">{{list.cvos_cnt}}개</span>
+								<span class="big-title">문의</span> <span class="small-title">{{list.cvdto_cnt}}개</span>
 							</section>
 							<section id="question-create-btn" class="question-right">
 								<span>문의하기</span>
@@ -129,7 +129,7 @@
 									</div>
 
 									<ul class="question-popup-select blind">
-											<li @click="click_q_select_li($event.target)" v-for="vos in list.rvos" :key="vos" class="question-popup-select-li" :idx="vos.room_no">
+											<li @click="click_q_select_li($event.currentTarget)" v-for="vos in list.rvos" :key="vos" class="question-popup-select-li" :idx="vos.room_no">
 												{{vos.room_name}}
 											</li>
 									</ul>
@@ -151,7 +151,7 @@
 						<section class="quest-list-section">
 							<input type="hidden" id="is_login" :value="list.is_login" />
 							<ul class="quest-list-wrap">
-                <block v-for="cvo in list.cvos" :key="cvo">
+                <block v-for="cvo in list.cvdto" :key="cvo">
 									<li class="quest-list">
                     <section v-if="list.is_login !== null && cvo.is_secret === 'T' && list.is_login === cvo.user_id">
                       <img :src="cvo.user_image" alt="write-user-img" class="write-user-img" />
@@ -221,7 +221,7 @@
 
 												<li class="quest-content-list quest-content-date">
 													{{cvo.comment_date}}
-                          <span v-if="cvo.answer_date !== null" class="answer_toggle" @click="show_answer($event.target)">답변 보기</span>
+                          <span v-if="cvo.answer_date !== null" class="answer_toggle" @click="show_answer($event.currentTarget)">답변 보기</span>
 												</li>
 											</ul>
 										</section>
@@ -254,7 +254,7 @@
                   <span @click="prev_page" :class="{'paging-box before-page-btn hide': maxPage <= 5, 'paging-box before-page-btn' : maxPage > 5}"> &lt;&lt; </span>
                   
                   <div class="paging-num-wrap paging-wrap">
-                    <span @click="do_select_page($event.target)" v-for="num in forRange" :key="num" :idx="num" :class="{'paging-box paging-num choice': num === nowPage, 'paging-box paging-num un-choice' :num !== nowPage}">
+                    <span @click="space_detail_q_paging($event.currentTarget)" v-for="num in forRange" :key="num" :idx="num" :class="{'paging-box paging-num choice': num === nowPage, 'paging-box paging-num un-choice' :num !== nowPage}">
                       {{num}}
                     </span>
                   </div>
@@ -307,7 +307,7 @@
                   <span @click="prev_page" :class="{'paging-box before-page-btn hide': maxPage2 <= 5, 'paging-box before-page-btn' : maxPage2 > 5}"> &lt;&lt; </span>
                   
                   <div class="paging-num-wrap paging-wrap">
-                    <span @click="do_select_page($event.target)" v-for="num in forRange2" :key="num" :idx="num" :class="{'paging-box paging-num choice': num === nowPage2, 'paging-box paging-num un-choice' :num !== nowPage2}">
+                    <span @click="space_detail_r_paging($event.currentTarget)" v-for="num in forRange2" :key="num" :idx="num" :class="{'paging-box paging-num choice': num === nowPage2, 'paging-box paging-num un-choice' :num !== nowPage2}">
                       {{num}}
                     </span>
                   </div>
@@ -410,7 +410,7 @@
 
 						<!-- CUSTOM SELECT SECTION -->
 						<ul class="custom-select-type blind">
-							<li @click="choice_reserve_type($event.target)" v-for="rvo in list.rvos" :key="rvo" class="custom-select-type-list">
+							<li @click="choice_reserve_type($event.currentTarget)" v-for="rvo in list.rvos" :key="rvo" class="custom-select-type-list">
                 <span class="room-name" :room_no="rvo.room_no" :room_type="rvo.room_type">
                   {{rvo.room_name}} ({{rvo.room_type}})
                 </span>
@@ -431,7 +431,7 @@
 								체크인 시간
 							</label>
 							<div class="time-select-wrap">
-                <date-picker v-model:value="time0" @change="set_time"></date-picker>
+                <date-picker v-model:value="time0" @change="set_date"></date-picker>
 								<!-- <input type="text" class="type-border-txt time-input" placeholder="날짜/시간 추가" readonly /> -->
 								<img src="@/assets/IMG/office/full-dropdown.svg" alt="full-dropdown" class="full-dropdown" />
 							</div>
@@ -443,7 +443,7 @@
 								<img src="@/assets/IMG/office/full-dropdown.svg" alt="full-dropdown" class="full-dropdown" />
 
 								<div class="month-select-wrap blind">
-									<ul class="month-select"> //!
+									<ul class="month-select">
 										<li @click="choice_reserve_month($event.target)" class="month-select-li" month="1">1개월</li>
 										<li @click="choice_reserve_month($event.target)" class="month-select-li" month="2">2개월</li>
 										<li @click="choice_reserve_month($event.target)" class="month-select-li" month="3">3개월</li>
@@ -519,37 +519,25 @@ export default {
       time0: null,
       time: '',
       question_flag: true,
+      load: false,
       now: '',
       checkout: '',
     };
   },
   mounted() {
-    if (!window.kakao || !window.kakap.map) {
-      // Kakao Map
-      const script = document.createElement('script');
-      script.src = '//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=3b12e82dc4c8922a38cfd990bfa0afbd&libraries=services';
-
-      /* global kakao */
-      script.addEventListener('load', () => {
-        console.log('loaded', kakao);
-        kakao.maps.load(this.initMap);
-      });
-
-      document.head.appendChild(script);
-    } else {
-      this.initMap();
-    }
-
     const backofficeNo = this.$route.params.parameters.split('backoffice_no=')[1];
 
-    axios.get(`http://localhost:8800/office/space_introduce_office?backoffice_no=${backofficeNo}&introduce_menu=info`)
+    // 로딩 화면
+    $('.popup-background:eq(1)').removeClass('blind');
+    $('#spinner-section').removeClass('blind');
+
+    axios.get(`http://localhost:8800/office/space_introduce_office?backoffice_no=${backofficeNo}&introduce_menu=info&page=1`)
       .then((res) => {
         this.list = res.data;
-
-        this.maxPage = res.data.maxPage;
-        this.nowPage = res.data.nowPage;
-        this.totalPageCnt = res.data.totalPageCnt;
-        this.start = Math.ceil(res.data.nowPage / 5.0);
+        this.maxPage = res.data.res.maxPage;
+        this.nowPage = res.data.res.nowPage;
+        this.totalPageCnt = res.data.res.totalPageCnt;
+        this.start = Math.ceil(res.data.res.nowPage / 5.0);
         this.start = 5 * (this.start - 1) + 1;
 
         this.forRange = [];
@@ -557,10 +545,10 @@ export default {
           this.forRange.push(i);
         }
 
-        this.maxPage2 = res.data.maxPage2;
-        this.nowPage2 = res.data.nowPage2;
-        this.totalPageCnt2 = res.data.totalPageCnt2;
-        this.start2 = Math.ceil(res.data.nowPage2 / 5.0);
+        this.maxPage2 = res.data.res.maxPage2;
+        this.nowPage2 = res.data.res.nowPage2;
+        this.totalPageCnt2 = res.data.res.totalPageCnt2;
+        this.start2 = Math.ceil(res.data.res.nowPage2 / 5.0);
         this.start2 = 5 * (this.start2 - 1) + 1;
 
         this.forRange2 = [];
@@ -568,11 +556,32 @@ export default {
           this.forRange2.push(i);
         }
 
-        if ($('.img').length === 1) {
-          $('.next').addClass('hide');
+        if (!window.kakao || !window.kakap.map) {
+          // Kakao Map
+          const script = document.createElement('script');
+          script.src = '//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=3b12e82dc4c8922a38cfd990bfa0afbd&libraries=services';
+
+          /* global kakao */
+          script.addEventListener('load', () => {
+            kakao.maps.load(this.initMap);
+          });
+
+          document.head.appendChild(script);
+        } else {
+          this.initMap();
         }
+
+        this.load = true;
+
+        // 로딩 화면
+        $('.popup-background:eq(1)').addClass('blind');
+        $('#spinner-section').addClass('blind');
       })
       .catch(() => {
+        // 로딩 화면
+        $('.popup-background:eq(1)').addClass('blind');
+        $('#spinner-section').addClass('blind');
+
         $('.popup-background:eq(1)').removeClass('blind');
         $('#common-alert-popup').removeClass('blind');
         $('.common-alert-txt').text('오류 발생으로 인해 처리에 실패하였습니다.');
@@ -626,20 +635,6 @@ export default {
       });
     },
     set_next_image() {
-      if (this.test !== 1) {
-        this.position -= 960;
-        $('.container').css('transform', `translateX(-${this.position}px)`);
-        this.test -= 1;
-
-        if (this.test === $('.img').length - 1) {
-          $('.next').removeClass('hide');
-        }
-        if (this.test === 1) {
-          $('.prev').addClass('hide');
-        }
-      }
-    },
-    set_prev_image() {
       if (this.test < $('.img').length) {
         this.position += 960;
         $('.container').css('transform', `translateX(-${this.position}px)`);
@@ -650,6 +645,20 @@ export default {
         }
         if (this.test === 2) {
           $('.prev').removeClass('hide');
+        }
+      }
+    },
+    set_prev_image() {
+      if (this.test !== 1) {
+        this.position -= 960;
+        $('.container').css('transform', `translateX(-${this.position}px)`);
+        this.test -= 1;
+
+        if (this.test === $('.img').length - 1) {
+          $('.next').removeClass('hide');
+        }
+        if (this.test === 1) {
+          $('.prev').addClass('hide');
         }
       }
     },
@@ -828,6 +837,32 @@ export default {
       }
     },
     /** 예약 타입 리스트 클릭 */
+    choice_reserve_type(param) {
+      this.time0 = null;
+      this.time = null;
+
+      $('#office_check_available').removeClass('blind');
+      $('#office_go_reserve').addClass('blind');
+      $('.type-border-txt.month-select-txt').text('개월수');
+
+      this.now = '';
+      this.checkout = '';
+
+      $('.duration').addClass('blind');
+
+      $('#type-choice-value').text($(param).children('.room-name').text());
+      $('#type-choice-value').prop('check', true);
+
+      const attr_room_no = $(param).children('.room-name').attr('room_no');
+      $('#type-choice-value').attr('room_no', attr_room_no);
+
+      const attr_room_type = $(param).children('.room-name').attr('room_type');
+      $('#type-choice-value').attr('room_type', attr_room_type);
+
+      $('.custom-select-type').addClass('blind');
+      $('.type-border').removeClass('open-select');
+    },
+    /** 예약 개월수 리스트 클릭 */
     choice_reserve_month(param) {
       $('.month-select-txt').text($(this).text());
       $('.month-select-txt').prop('check', true);
@@ -845,7 +880,7 @@ export default {
     },
     /** 개월 수 셀렉트 클릭 시 -> 커스텀 셀렉트 SHOW */
     show_month_select() {
-      if ($('.time-input').val() !== '') {
+      if (this.time === null) {
         $('.month-select-wrap').toggleClass('blind');
       } else {
         $('.fixed-popup').removeClass('blind');
@@ -1119,7 +1154,8 @@ export default {
         $('.review-paging').find('.paging-num-wrap').append(sampleSpan);
       }
     },
-    space_detail_paging() {},
+    space_detail_q_paging() {},
+    space_detail_r_paging() {},
   }, // END methods()
 };
 </script>
