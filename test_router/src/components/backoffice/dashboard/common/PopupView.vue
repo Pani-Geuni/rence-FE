@@ -31,8 +31,8 @@
       <section class="room-popup-input-section">
         <div class="room-input-wrap">
           <p>공간 이름</p>
-          <input type="text" v-model="room_name" name="room_name" id="input-room-name" class="room-input"
-            placeholder="공간 이름을 입력해 주세요" />
+          <input @click="resetWarning" type="text" v-model="room_name" name="room_name" id="input-room-name"
+            class="room-input" placeholder="공간 이름을 입력해 주세요" />
         </div>
         <div class="room-input-wrap">
           <p>공간 타입</p>
@@ -79,10 +79,12 @@
         <div class="room-input-wrap">
           <p>공간 타입</p>
           <div class="room-type-select" id="m-room-type-select">
-            <button name="room_type" id="m-edit-room-type-label" class="room-type-label">타입을 선택해
+            <button @click="editRoomTypeLabel" name="room_type" id="m-edit-room-type-label" class="room-type-label">타입을
+              선택해
               주세요</button>
             <ul class="edit-type-select-list blind">
-              <li class="edit-type-select-item blind">데스크</li>
+              <li @click="clickEditTypeSelectItem" class="edit-type-select-item" v-for="roomType in kor_room_type"
+                :key="roomType" :roomType="roomType">{{ roomType }}</li>
             </ul>
           </div>
           <!-- END room-type-select -->
@@ -99,8 +101,8 @@
       </section>
       <!-- room-popup-input-section -->
       <div class="select-btn-group">
-        <button @click="closeInsertRoomPopup" id="btn-edit-cancel" class="select-btn">닫기</button>
-        <button id="btn-edit" class="select-btn">변경</button>
+        <button @click="closeEditPopup" id="btn-edit-cancel" class="select-btn">닫기</button>
+        <button @click="editRoom" id="btn-edit" class="select-btn">변경</button>
       </div>
       <!-- END select-btn-group -->
     </div>
@@ -150,7 +152,7 @@
       <section class="alert-txt-section">
         <span>공간이 성공적으로 변경 되었습니다.</span>
       </section>
-      <section id="edit-success-alert-btn" class="alert-btn-section">
+      <section @click="closeEditSuccessAlert" id="edit-success-alert-btn" class="alert-btn-section">
         <span>확인</span>
       </section>
     </div>
@@ -402,13 +404,18 @@ export default {
       kor_room_type: [],
 
       insert_room_flag: true,
+      update_room_flag: true,
       delete_room_flag: true,
 
       room_name: '',
       edit_room_type: '',
+      m_edit_room_type: '',
       input_price_name: '',
+      m_input_price_name: '',
+      room_no: '',
     };
   },
+
   methods: {
     closeCommonAlert() {
       $('.popup-background:eq(1)').addClass('blind');
@@ -422,6 +429,12 @@ export default {
       this.$router.go();
     },
 
+    closeEditSuccessAlert() {
+      $('.popup-background:eq(0)').addClass('blind');
+      $('#edit-success-alert-popup').addClass('blind');
+      this.$router.go();
+    },
+
     getRoomType() {
       // const url = `http://localhost:8800/backoffice/dash/insert_room?${params}`;
       axios.get('http://localhost:8800/backoffice/dash/insert_room', {
@@ -430,6 +443,7 @@ export default {
         },
       }).then((res) => {
         this.room_type = res.data.room_type;
+        // eslint-disable-next-line no-plusplus
         for (let i = 0; i < this.room_type.length; i++) {
           if (this.room_type[i] === 'desk') {
             this.kor_room_type.push('데스크');
@@ -520,6 +534,95 @@ export default {
         }
         if (this.edit_room_type === 0) {
           $('#room-type-select').addClass('null-input-border');
+        }
+      }
+    },
+
+    closeEditPopup() {
+      // input 초기화
+      $('#m-edit_room_type').val('');
+      $('#m-input-room-name').val('');
+      $('#m-input-price-name').val('');
+      $('#m-edit-room-type-label').text('타입을 선택해주세요.');
+
+      $('#m-edit-room-type-label').css('color', '#808080');
+
+      // 경고 테두리 초기화
+      $('#m-input-room-name').removeClass('null-input-border');
+      $('#m-input-price-name').removeClass('null-input-border');
+      $('#m-room-type-select').removeClass('null-input-border');
+
+      const sample = $('.edit-type-select-item:eq(0)').clone();
+      $('.edit-type-select-list').empty().append(sample);
+
+      $('.r-input-warning:eq(1)').addClass('blind');
+
+      $('.edit-type-select-list').addClass('blind');
+      $('#room-edit-section').addClass('blind');
+      $('.popup-background:eq(0)').addClass('blind');
+
+      this.room_name = '';
+    },
+
+    resetWarning() {
+      $(this).removeClass('null-input-border');
+    },
+
+    editRoomTypeLabel() {
+      $('#m-room-type-select').removeClass('null-input-border');
+      $('.edit-type-select-list').toggleClass('blind');
+    },
+
+    clickEditTypeSelectItem(e) {
+      const type = e.target.getAttribute('roomType');
+      console.log(type);
+
+      if (type === '데스크') this.m_edit_room_type = 'desk';
+      else if (type === '미팅룸(4인)') this.m_edit_room_type = 'meeting_04';
+      else if (type === '미팅룸(6인)') this.m_edit_room_type = 'meeting_06';
+      else if (type === '미팅룸(10인)') this.m_edit_room_type = 'meeting_10';
+      else if (type === '오피스') this.m_edit_room_type = 'office';
+
+      if (type === '오피스') {
+        $('.room-input-wrap:eq(5)').removeClass('blind');
+      } else {
+        $('#m-input-price-name').val('');
+        $('.room-input-wrap:eq(5)').addClass('blind');
+      }
+
+      $('#m-edit-room-type-label').text(type);
+      $('#m-edit-room-type-label').css('color', '#000000');
+      $('.edit-type-select-list').addClass('blind');
+    },
+
+    editRoom(e) {
+      this.room_no = e.target.getAttribute('idx');
+      this.room_name = $('#m-input-room-name').val().trim();
+      this.m_edit_room_type = $('#m-edit-room-type-label').val().trim();
+
+      console.log(this.room_name);
+
+      if (this.room_name !== '' && this.m_edit_room_type !== '') {
+        if (this.m_edit_room_type === 'office') {
+          if (this.m_input_price_name !== '') {
+            if (this.update_room_flag) {
+              this.update();
+            }
+          } else {
+            $('#m-input-price-name').addClass('null-input-border');
+          }
+        } else if (this.update_room_flag) {
+          this.update();
+        }
+      } else {
+        if (this.room_name === '') {
+          $('#m-input-room-name').addClass('null-input-border');
+        }
+        if (this.m_input_price_name === '') {
+          $('#m-input-price-name').addClass('null-input-border');
+        }
+        if (this.m_edit_room_type === '') {
+          $('#m-room-type-select').addClass('null-input-border');
         }
       }
     },
@@ -638,6 +741,74 @@ export default {
         $('#common-alert-popup').removeClass('blind');
         $('.common-alert-txt').text('오류 발생으로 인해 처리에 실패하였습니다.');
       });
+    },
+
+    update() {
+      this.update_room_flag = false;
+
+      // 로딩 화면
+      $('.popup-background:eq(1)').removeClass('blind');
+      $('#spinner-section').removeClass('blind');
+
+      const params = new URLSearchParams();
+      params.append('backoffice_no', this.backoffice_no);
+      params.append('room_no', this.room_no);
+      params.append('room_name', this.room_name);
+      params.append('room_type', this.m_edit_room_type);
+      params.append('room_price', this.m_input_price_name);
+
+      axios.post('http://localhost:8800/backoffice/dash/updateOK_room', params)
+        .then((res) => {
+          this.update_room_flag = true;
+
+          // 로딩 화면 닫기
+          $('.popup-background:eq(1)').addClass('blind');
+          $('#spinner-section').addClass('blind');
+
+          // 변경 성공
+          if (res.data.result === '1') {
+            // input 초기화
+            $('#m-edit_room_type').val('');
+            $('#m-input-room-name').val('');
+            $('#m-input-price-name').val('');
+            $('#m-edit-room-type-label').text('타입을 선택해주세요.');
+
+            $('#m-edit-room-type-label').css('color', '#808080');
+
+            // 경고 테두리 초기화
+            $('#m-input-room-name').removeClass('null-input-border');
+            $('#m-input-price-name').removeClass('null-input-border');
+            $('#m-room-type-select').removeClass('null-input-border');
+
+            $('#room-edit-section').addClass('blind');
+            $('.popup-background:eq(0)').addClass('blind');
+
+            const sample = $('.edit-type-select-item:eq(0)').clone();
+            $('.edit-type-select-list').empty().append(sample);
+
+            $('.popup-background:eq(1)').removeClass('blind');
+            $('#common-alert-popup').removeClass('blind');
+            $('.common-alert-txt').text('수정이 완료되었습니다.');
+            $('#common-alert-btn').attr('is_reload', true);
+          } else {
+            $('.popup-background:eq(1)').removeClass('blind');
+            $('#common-alert-popup').removeClass('blind');
+            $('.common-alert-txt').text('수정에 실패하였습니다.');
+          }
+
+          this.room_name = '';
+          this.room_no = '';
+        }).catch(() => {
+          this.update_room_flag = true;
+
+          // 로딩 화면 닫기
+          $('.popup-background:eq(1)').addClass('blind');
+          $('#spinner-section').addClass('blind');
+
+          $('.popup-background:eq(1)').removeClass('blind');
+          $('#common-alert-popup').removeClass('blind');
+          $('.common-alert-txt').text('오류 발생으로 인해 처리에 실패하였습니다.');
+        });
     },
   },
 
