@@ -27,7 +27,7 @@
             {{ vos.room_name }}
           </p>
           <div class="item-buttons">
-            <button class="btn-room-edit" :idx="vos.room_no">수정</button>
+            <button @click="editRoom" class="btn-room-edit" :idx="vos.room_no">수정</button>
             <button @click="deleteRoom" class="btn-room-delete" :idx="vos.room_no">삭제</button>
           </div>
           <!-- END item-buttons -->
@@ -159,6 +159,56 @@ export default {
     addRoom() {
       $('.popup-background:eq(0)').removeClass('blind');
       $('#room-insert-section').removeClass('blind');
+    },
+
+    editRoom(e) {
+      // 로딩 화면
+      $('.popup-background:eq(1)').removeClass('blind');
+      $('#spinner-section').removeClass('blind');
+
+      axios.get('http://localhost:8800/backoffice/dash/update_room', {
+        params: {
+          backoffice_no: this.backoffice_no,
+          room_no: e.target.getAttribute('idx'),
+        },
+      }).then((res) => {
+        // 로딩 화면 닫기
+        $('.popup-background:eq(1)').addClass('blind');
+        $('#spinner-section').addClass('blind');
+
+        $('.popup-background:eq(0)').removeClass('blind');
+        $('#room-edit-section').removeClass('blind');
+        $('#btn-edit').attr('idx', res.data.rmvo.room_no);
+
+        $('#m-edit_room_type').val(res.data.rmvo.room_type);
+        $('#m-input-room-name').val(res.data.rmvo.room_name);
+        $('#m-input-price-name').val(res.data.rmvo.room_price);
+
+        let typeName = '';
+        if (res.data.rmvo.room_type === 'desk') typeName = '데스크';
+        else if (res.data.rmvo.room_type === 'meeting_04') typeName = '미팅룸(4인)';
+        else if (res.data.rmvo.room_type === 'meeting_06') typeName = '미팅룸(6인)';
+        else if (res.data.rmvo.room_type === 'meeting_10') typeName = '미팅룸(10인)';
+        else if (res.data.rmvo.room_type === 'office') typeName = '오피스';
+
+        if (typeName === '오피스') {
+          $('.room-input-wrap:eq(5)').removeClass('blind');
+        } else {
+          $('#m-input-price-name').val('');
+          $('.room-input-wrap:eq(5)').addClass('blind');
+        }
+
+        $('#m-edit-room-type-label').val(res.data.rmvo.room_type);
+        $('#m-edit-room-type-label').text(typeName);
+      }).catch(() => {
+        // 로딩 화면 닫기
+        $('.popup-background:eq(1)').addClass('blind');
+        $('#spinner-section').addClass('blind');
+
+        $('.popup-background:eq(1)').removeClass('blind');
+        $('#common-alert-popup').removeClass('blind');
+        $('.common-alert-txt').text('오류 발생으로 인해 처리에 실패하였습니다.');
+      });
     },
 
     deleteRoom(e) {
