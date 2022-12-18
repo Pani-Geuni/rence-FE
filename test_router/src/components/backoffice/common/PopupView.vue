@@ -161,10 +161,10 @@ export default {
           .then((res) => {
             if (res.data.result === '1') {
               console.log('res.data : ', res.data);
-              // console.log(this.backoffice_no);
-              // this.$cookies.set('backoffice_no', res.data.backoffice_no);
-              // this.$cookies.set('host_image', res.data.host_image);
-              // this.$storage.setStorageSync('backoffice_id', res.data.backoffice_id);
+              console.log(this.backoffice_no);
+              this.$cookies.set('backoffice_no', res.data.backoffice_no);
+              this.$cookies.set('host_image', res.data.host_image);
+              this.$storage.setStorageSync('backoffice_id', res.data.backoffice_id);
 
               this.$router.push(`/backoffice/dash/main?backoffice_no=${this.$cookies.get('backoffice_no')}`);
             } else {
