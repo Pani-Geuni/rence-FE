@@ -11,7 +11,7 @@
 -->
 
 <template>
-  <div class="my-page-wrap">
+  <div class="my-page-wrap" v-if="load === true">
     <div class="my-page">
       <section class="profile-section">
         <div class="profile">
@@ -113,22 +113,33 @@ export default {
   name: 'MyPageView',
   data() {
     return {
-      list: {
-        user_id: 'qjspdls',
-        user_image: 'https://w.namu.la/s/25ed11d0094cf291c17504d60954ca573a2c16eb76d76cad443d926a1b4bf0a9604b9aff668756ca410717e0b93a3d680deb33ceb318a788f81eb72a5f65b4bad0b97dc2a4c73db06d21364e83ef87ac',
-      },
+      list: '',
+      load: false,
     };
   },
   mounted() {
-    // axios.get('http://localhost:8800/rence/go_my_page')
-    //   .then((res) => {
-    //     this.list = res.data.list;
-    //   })
-    //   .catch(() => {
-    //     $('.popup-background:eq(1)').removeClass('blind');
-    //     $('#common-alert-popup').removeClass('blind');
-    //     $('.common-alert-txt').text('오류 발생으로 인해 처리에 실패하였습니다.');
-    //   });
+    // 로딩 화면
+    $('.popup-background:eq(1)').removeClass('blind');
+    $('#spinner-section').removeClass('blind');
+
+    axios.get('http://localhost:8800/rence/go_my_page')
+      .then((res) => {
+        this.list = res.data.list;
+        this.load = true;
+
+        // 로딩 화면
+        $('.popup-background:eq(1)').addClass('blind');
+        $('#spinner-section').addClass('blind');
+      })
+      .catch(() => {
+        // 로딩 화면
+        $('.popup-background:eq(1)').addClass('blind');
+        $('#spinner-section').addClass('blind');
+
+        $('.popup-background:eq(1)').removeClass('blind');
+        $('#common-alert-popup').removeClass('blind');
+        $('.common-alert-txt').text('오류 발생으로 인해 처리에 실패하였습니다.');
+      });
   },
   methods: {
     show_user_delete_popup() {

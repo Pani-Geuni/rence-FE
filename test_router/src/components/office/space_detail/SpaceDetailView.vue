@@ -221,12 +221,12 @@
 
 												<li class="quest-content-list quest-content-date">
 													{{cvo.comment_date}}
-                          <span v-if="cvo.answer_date !== null" class="answer_toggle" @click="show_answer($event.currentTarget)">답변 보기</span>
+                          <span v-if="cvo.answer_date !== 'x'" class="answer_toggle" @click="show_answer($event.currentTarget)">답변 보기</span>
 												</li>
 											</ul>
 										</section>
 									</li>
-                  <li v-if="cvo.answer_date !== null" class="answer-list blind">
+                  <li v-if="cvo.answer_date !== 'x'" class="answer-list blind">
                     <div class="answer_arrow_img">
                       <img src="/static/IMG/space-introduce/answer_arrow.svg">
                     </div>
@@ -237,8 +237,8 @@
                       <section class="answer-content-section">
                         <ul class="answer-content-wrap">
                           <li class="answer-content-list answer-content-writer">HOST</li>
-                          <li class="answer-content-list answer-content">{{list.cvo.answer_content}}</li>
-                          <li class="answer-content-list answer-content-date">{{list.cvo.answer_date}}</li>
+                          <li class="answer-content-list answer-content">{{cvo.answer_content}}</li>
+                          <li class="answer-content-list answer-content-date">{{cvo.answer_date}}</li>
                         </ul>
                       </section>
                     </div>
@@ -301,20 +301,20 @@
 						</section>
 
             <!-- START PAGING -->
-            <section :class="{'paging-section': maxPage2 > 0, 'paging-section blind': maxPage2 === 0}">
+            <section :class="{'paging-section review-paging': this.maxPage2 > 0, 'paging-section review-paging blind': this.maxPage2 === 0}">
               <section class="paging-section">
                 <div class="paging-wrap">
-                  <span @click="prev_page" :class="{'paging-box before-page-btn hide': maxPage2 <= 5, 'paging-box before-page-btn' : maxPage2 > 5}"> &lt;&lt; </span>
+                  <span @click="prev_page" :class="{'paging-box before-page-btn hide': this.maxPage2 <= 5, 'paging-box before-page-btn' : this.maxPage2 > 5}"> &lt;&lt; </span>
                   
                   <div class="paging-num-wrap paging-wrap">
-                    <span @click="space_detail_r_paging($event.currentTarget)" v-for="num in forRange2" :key="num" :idx="num" :class="{'paging-box paging-num choice': num === nowPage2, 'paging-box paging-num un-choice' :num !== nowPage2}">
+                    <span @click="space_detail_r_paging($event.currentTarget)" v-for="num in this.forRange2" :key="num" :idx="num" :class="{'paging-box paging-num choice': num === this.nowPage2, 'paging-box paging-num un-choice' :num !== this.nowPage2}">
                       {{num}}
                     </span>
                   </div>
                   
-                  <span @click="next_page" v-if="totalPageCnt2 > 5 && maxPage2 < totalPageCnt2" class="paging-box next-page-btn">>></span>
+                  <span @click="next_page" v-if="this.totalPageCnt2 > 5 && this.maxPage2 < this.totalPageCnt2" class="paging-box next-page-btn">>></span>
                   <span v-else class="paging-box next-page-btn hide">>></span>
-                  <input type="hidden" id="totalPageCnt2" :value="totalPageCnt2">
+                  <input type="hidden" id="totalPageCnt2" :value="this.totalPageCnt2">
                 </div>
               </section>
             </section>
@@ -424,11 +424,7 @@
 							<label class="fixed-section-label">
 								예약 날짜
 							</label>
-							<!-- <div class="time-select-wrap"> -->
                 <date-picker v-model:value="time0" @change="set_date"></date-picker>
-								<!-- <input @pick="reserve_timePicker" type="text" class="type-border-txt time-input" placeholder="날짜 추가" readonly /> -->
-								<!-- <img src="@/assets/IMG/office/full-dropdown.svg" alt="full-dropdown" class="full-dropdown" /> -->
-							<!-- </div> -->
 						</section>
 					</section>
 
@@ -502,16 +498,16 @@ export default {
     return {
       map: null,
       list: '',
-      maxPage: 10,
-      nowPage: 6,
-      totalPageCnt: 11,
-      start: 6,
-      forRange: [6, 7, 8, 9, 10],
-      maxPage2: 10,
-      nowPage2: 6,
-      totalPageCnt2: 11,
-      start2: 6,
-      forRange2: [6, 7, 8, 9, 10],
+      maxPage: '',
+      nowPage: '',
+      totalPageCnt: '',
+      start: '',
+      forRange: '',
+      maxPage2: '',
+      nowPage2: '',
+      totalPageCnt2: '',
+      start2: '',
+      forRange2: '',
       test: 1,
       position: 0,
       // 예약 선택 시간 boundary
@@ -537,6 +533,8 @@ export default {
 
     axios.get(`http://localhost:8800/office/space_introduce?backoffice_no=${backofficeNo}&introduce_menu=info&page=1`)
       .then((res) => {
+        console.log(res.data);
+
         this.list = res.data;
         this.maxPage = res.data.res.maxPage;
         this.nowPage = res.data.res.nowPage;
@@ -560,19 +558,21 @@ export default {
           this.forRange2.push(i);
         }
 
-        if (!window.kakao || !window.kakap.map) {
-          // Kakao Map
-          const script = document.createElement('script');
-          script.src = '//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=3b12e82dc4c8922a38cfd990bfa0afbd&libraries=services';
+        if (this.list.length > 0) {
+          if (!window.kakao || !window.kakap.map) {
+            // Kakao Map
+            const script = document.createElement('script');
+            script.src = '//dapi.kakao.com/v2/maps/sdk.js?autoload=false&appkey=3b12e82dc4c8922a38cfd990bfa0afbd&libraries=services';
 
-          /* global kakao */
-          script.addEventListener('load', () => {
-            kakao.maps.load(this.initMap);
-          });
+            /* global kakao */
+            script.addEventListener('load', () => {
+              kakao.maps.load(this.initMap);
+            });
 
-          document.head.appendChild(script);
-        } else {
-          this.initMap();
+            document.head.appendChild(script);
+          } else {
+            this.initMap();
+          }
         }
 
         this.load = true;
@@ -1047,19 +1047,32 @@ export default {
         $('.question-paging').find('.before-page-btn').addClass('hide');
       }
 
-      const sample = $($('.question-paging').find('.paging-box.paging-num')[0]).clone();
-      $('.question-paging').find('.paging-num-wrap').empty();
+      this.maxPage = last;
+      this.nowPage = start;
 
+      this.forRange = [];
       for (let i = start; i <= last; i++) {
-        const sampleSpan = sample.clone();
-
-        sampleSpan.text(i);
-        sampleSpan.attr('idx', i);
-        sampleSpan.removeClass('choice');
-        sampleSpan.addClass('un-choice');
-
-        $('.question-paging').find('.paging-num-wrap').append(sampleSpan);
+        this.forRange.push(i);
       }
+
+      $('.question-paging').find('.paging-box.paging-num').removeClass('choice');
+      $('.question-paging').find('.paging-box.paging-num').addClass('un-choice');
+
+      $($('.question-paging').find('.paging-box.paging-num')[0]).click();
+
+      // const sample = $($('.question-paging').find('.paging-box.paging-num')[0]).clone();
+      // $('.question-paging').find('.paging-num-wrap').empty();
+
+      // for (let i = start; i <= last; i++) {
+      //   const sampleSpan = sample.clone();
+
+      //   sampleSpan.text(i);
+      //   sampleSpan.attr('idx', i);
+      //   sampleSpan.removeClass('choice');
+      //   sampleSpan.addClass('un-choice');
+
+      //   $('.question-paging').find('.paging-num-wrap').append(sampleSpan);
+      // }
     },
     /** 문의 탭 - 다음 페이지 리스트로 이동 */
     q_next_page() {
@@ -1076,19 +1089,32 @@ export default {
         $('.question-paging').find('.next-page-btn').addClass('hide');
       }
 
-      const sample = $('.question-paging').find('.paging-num-wrap>.paging-box.paging-num:eq(0)').clone();
-      $('.question-paging').find('.paging-num-wrap').empty();
+      this.maxPage = last;
+      this.nowPage = start;
 
+      this.forRange = [];
       for (let i = start; i <= last; i++) {
-        const sampleSpan = sample.clone();
-
-        sampleSpan.text(i);
-        sampleSpan.attr('idx', i);
-        sampleSpan.removeClass('choice');
-        sampleSpan.addClass('un-choice');
-
-        $('.question-paging').find('.paging-num-wrap').append(sampleSpan);
+        this.forRange.push(i);
       }
+
+      $('.question-paging').find('.paging-box.paging-num').removeClass('choice');
+      $('.question-paging').find('.paging-box.paging-num').addClass('un-choice');
+
+      $($('.question-paging').find('.paging-box.paging-num')[0]).click();
+
+      // const sample = $('.question-paging').find('.paging-num-wrap>.paging-box.paging-num:eq(0)').clone();
+      // $('.question-paging').find('.paging-num-wrap').empty();
+
+      // for (let i = start; i <= last; i++) {
+      //   const sampleSpan = sample.clone();
+
+      //   sampleSpan.text(i);
+      //   sampleSpan.attr('idx', i);
+      //   sampleSpan.removeClass('choice');
+      //   sampleSpan.addClass('un-choice');
+
+      //   $('.question-paging').find('.paging-num-wrap').append(sampleSpan);
+      // }
     },
     /** 후기 탭 - 이전 페이지 리스트로 이동 */
     r_prev_page() {
@@ -1107,19 +1133,32 @@ export default {
         $('.review-paging').find('.before-page-btn').addClass('hide');
       }
 
-      const sample = $('.review-paging').find('.paging-num-wrap>.paging-box.paging-num:eq(0)').clone();
-      $('.review-paging').find('.paging-num-wrap').empty();
+      this.maxPage2 = last;
+      this.nowPage2 = start;
 
+      this.forRange2 = [];
       for (let i = start; i <= last; i++) {
-        const sampleSpan = sample.clone();
-
-        sampleSpan.text(i);
-        sampleSpan.attr('idx', i);
-        sampleSpan.removeClass('choice');
-        sampleSpan.addClass('un-choice');
-
-        $('.review-paging').find('.paging-num-wrap').append(sampleSpan);
+        this.forRange2.push(i);
       }
+
+      $('.review-paging').find('.paging-box.paging-num').removeClass('choice');
+      $('.review-paging').find('.paging-box.paging-num').addClass('un-choice');
+
+      $($('.review-paging').find('.paging-box.paging-num')[0]).click();
+
+      // const sample = $('.review-paging').find('.paging-num-wrap>.paging-box.paging-num:eq(0)').clone();
+      // $('.review-paging').find('.paging-num-wrap').empty();
+
+      // for (let i = start; i <= last; i++) {
+      //   const sampleSpan = sample.clone();
+
+      //   sampleSpan.text(i);
+      //   sampleSpan.attr('idx', i);
+      //   sampleSpan.removeClass('choice');
+      //   sampleSpan.addClass('un-choice');
+
+      //   $('.review-paging').find('.paging-num-wrap').append(sampleSpan);
+      // }
     },
     /** 후기 탭 - 다음 페이지 리스트로 이동 */
     r_next_page() {
@@ -1136,22 +1175,63 @@ export default {
         $('.review-paging').find('.next-page-btn').addClass('hide');
       }
 
-      const sample = $('.review-paging').find('.paging-num-wrap>.paging-box.paging-num:eq(0)').clone();
-      $('.review-paging').find('.paging-num-wrap').empty();
+      this.maxPage2 = last;
+      this.nowPage2 = start;
 
+      this.forRange2 = [];
       for (let i = start; i <= last; i++) {
-        const sampleSpan = sample.clone();
-
-        sampleSpan.text(i);
-        sampleSpan.attr('idx', i);
-        sampleSpan.removeClass('choice');
-        sampleSpan.addClass('un-choice');
-
-        $('.review-paging').find('.paging-num-wrap').append(sampleSpan);
+        this.forRange2.push(i);
       }
+
+      $('.review-paging').find('.paging-box.paging-num').removeClass('choice');
+      $('.review-paging').find('.paging-box.paging-num').addClass('un-choice');
+
+      $($('.review-paging').find('.paging-box.paging-num')[0]).click();
+
+      // const sample = $('.review-paging').find('.paging-num-wrap>.paging-box.paging-num:eq(0)').clone();
+      // $('.review-paging').find('.paging-num-wrap').empty();
+
+      // for (let i = start; i <= last; i++) {
+      //   const sampleSpan = sample.clone();
+
+      //   sampleSpan.text(i);
+      //   sampleSpan.attr('idx', i);
+      //   sampleSpan.removeClass('choice');
+      //   sampleSpan.addClass('un-choice');
+
+      //   $('.review-paging').find('.paging-num-wrap').append(sampleSpan);
+      // }
     },
     space_detail_q_paging() {},
-    space_detail_r_paging() {},
+    space_detail_r_paging(param) {
+      $('.review-paging').find('.paging-box.paging-num').removeClass('choice');
+      $('.review-paging').find('.paging-box.paging-num').addClass('un-choice');
+
+      $(param).addClass('choice');
+      $(param).removeClass('un-choice');
+
+      // 로딩 화면
+      $('.popup-background:eq(1)').removeClass('blind');
+      $('#spinner-section').removeClass('blind');
+
+      axios.get(`http://localhost:8800/office/introduce_r_paging?backoffice_no=${this.$route.params.parameters.split('backoffice_no=')[1]}&page=${Number($(param).text())}`)
+        .then((res) => {
+          // 로딩 화면 닫기
+          $('.popup-background:eq(1)').addClass('blind');
+          $('#spinner-section').addClass('blind');
+
+          this.list.revos = res.data.redtos;
+        })
+        .catch(() => {
+          // 로딩 화면 닫기
+          $('.popup-background:eq(1)').addClass('blind');
+          $('#spinner-section').addClass('blind');
+
+          $('.popup-background:eq(1)').removeClass('blind');
+          $('#common-alert-popup').removeClass('blind');
+          $('.common-alert-txt').text('오류 발생으로 인해 후기를 불러오는데에 실패하였습니다.');
+        });
+    },
   }, // END methods()
 };
 </script>
