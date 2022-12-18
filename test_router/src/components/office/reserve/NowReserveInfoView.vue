@@ -152,19 +152,19 @@
                         <ul class="payment-info-li-wrap">
                           <li class="info-li">
                             <label class="pay-info-label">상품 가격</label>
-                            <span class="pay-info-text" id="actual_payment" v-bind:payment_total="list.mvo.payment_total">{{list.mvo.payment_total}}원</span>
+                            <span class="pay-info-text" id="actual_payment" :payment_total="list.mdto.payment_total">{{list.mdto.payment_total}}원</span>
                           </li>
                           <li class="info-li">
                             <label class="pay-info-label">마일리지 적립 금액</label>
-                            <span class="pay-info-text">{{list.mvo.mileage_change}}원</span>
+                            <span class="pay-info-text">{{list.mdto.mileage_change}}원</span>
                           </li>
                           <li class="info-li">
                             <label class="pay-info-label">결제 가격</label>
-                            <span class="pay-info-text" id="actual_payment" v-bind:actual_payment="list.mvo.actual_payment">{{list.mvo.actual_payment}}원</span>
+                            <span class="pay-info-text" id="actual_payment" :actual_payment="list.mdto.actual_payment">{{list.mdto.actual_payment}}원</span>
                           </li>
                           <li class="info-li">
                             <label class="pay-info-label">마일리지 사용 금액</label>
-                            <span class="pay-info-text">{{list.mvo.use_mileage}}원</span>
+                            <span class="pay-info-text">{{list.mdto.use_mileage}}원</span>
                           </li>
                         </ul>
                     </section>
@@ -174,12 +174,12 @@
             
             <!-- START BTN-SECTION  -->
             <section class="btn-pay-section">
-              <block v-if="list.pvo.cancel_state === 'C'">
+              <block v-if="list.pdto.cancel_state === 'C'">
             		<div id="pay-canceled-btn" class="pay-canceled-btn" v-bind:idx="list.info_obj.reserve_no">
                     <span>취소된 예약</span>
                 </div>
             	</block>
-            	<block v-if="list.pvo.cancel_state !== 'C'">
+            	<block v-if="list.pdto.cancel_state !== 'C'">
                 <div id="pay-cancel-btn"  @click="show_cancle_popup" class="pay-btn" v-bind:idx="list.info_obj.reserve_no">
                     <span>예약 취소</span>
                 </div>

@@ -687,6 +687,7 @@
 	position: absolute;
 	top: 70px;
 	display: flex;
+	z-index:100;
 	flex-direction: column;
 }
 .custom-select-type-list {
@@ -715,8 +716,6 @@
 	justify-content: right;
 }
 .using-time-section {
-	display: flex;
-	align-items: flex-start;
 	padding-bottom: 25px;
 }
 .time-boundary {

@@ -11,7 +11,7 @@
 -->
 
 <template>
-  <div class="question-list-wrap">
+  <div class="question-list-wrap" v-if="load === true">
     <section class="page-title-section">
       <span class="page-title">문의한 내역들을 바로 확인해 보세요</span>
     </section>
@@ -100,34 +100,48 @@ export default {
   data() {
     return {
       list: '',
-      maxPage: 10,
-      nowPage: 6,
-      totalPageCnt: 11,
-      start: 6,
-      forRange: [6, 7, 8, 9, 10],
+      maxPage: '',
+      nowPage: '',
+      totalPageCnt: '',
+      start: '',
+      forRange: '',
+      load: false,
     };
   },
   mounted() {
-    // axios.get(`http://localhost:8800/rence/question_list?user_no=${this.$cookies.get('user_no')}&page=1`)
-    //   .then((res) => {
-    //     this.list = res.data.list;
-    //     this.maxPage = res.data.maxPage;
-    //     this.nowPage = res.data.nowPage;
-    //     this.totalPageCnt = res.data.totalPageCnt;
-    //     this.start = Math.ceil(res.data.nowPage/5.0);
-    //     this.start = 5 * (this.start - 1) + 1;
+    // 로딩 화면
+    $('.popup-background:eq(1)').removeClass('blind');
+    $('#spinner-section').removeClass('blind');
 
-    //     this.forRange = [];
-    //     for (let i = this.start; i <= this.maxPage; i++) {
-    //          this.forRange.push(i);
-    //     }
+    axios.get(`http://localhost:8800/rence/question_list?user_no=${this.$cookies.get('user_no')}&page=1`)
+      .then((res) => {
+        this.list = res.data.list;
+        this.maxPage = res.data.maxPage;
+        this.nowPage = res.data.nowPage;
+        this.totalPageCnt = res.data.totalPageCnt;
+        this.start = Math.ceil(res.data.nowPage / 5.0);
+        this.start = 5 * (this.start - 1) + 1;
 
-    //   })
-    //   .catch(() => {
-    //     $('.popup-background:eq(1)').removeClass('blind');
-    //     $('#common-alert-popup').removeClass('blind');
-    //     $('.common-alert-txt').text('오류 발생으로 인해 처리에 실패하였습니다.');
-    //   });
+        this.forRange = [];
+        for (let i = this.start; i <= this.maxPage; i++) {
+          this.forRange.push(i);
+        }
+
+        this.load = true;
+
+        // 로딩 화면
+        $('.popup-background:eq(1)').addClass('blind');
+        $('#spinner-section').addClass('blind');
+      })
+      .catch(() => {
+        // 로딩 화면
+        $('.popup-background:eq(1)').addClass('blind');
+        $('#spinner-section').addClass('blind');
+
+        $('.popup-background:eq(1)').removeClass('blind');
+        $('#common-alert-popup').removeClass('blind');
+        $('.common-alert-txt').text('오류 발생으로 인해 처리에 실패하였습니다.');
+      });
   },
   methods: {
     /** 문의 리스트 클릭 시, 문의 내용 상세창 SHOW / HIDE */
@@ -158,19 +172,32 @@ export default {
         $('.before-page-btn').addClass('hide');
       }
 
-      const sample = $('.paging-num-wrap>.paging-box.paging-num:eq(0)').clone();
-      $('.paging-num-wrap').empty();
+      this.maxPage = end;
+      this.nowPage = s;
 
+      this.forRange = [];
       for (let i = s; i <= end; i++) {
-        const sampleSpan = sample.clone();
-
-        sampleSpan.text(i);
-        sampleSpan.attr('idx', i);
-        sampleSpan.removeClass('choice');
-        sampleSpan.addClass('un-choice');
-
-        $('.paging-num-wrap').append(sampleSpan);
+        this.forRange.push(i);
       }
+
+      $('.paging-box.paging-num').removeClass('choice');
+      $('.paging-box.paging-num').addClass('un-choice');
+
+      $('.paging-box.paging-num:eq(0)').click();
+
+      // const sample = $('.paging-num-wrap>.paging-box.paging-num:eq(0)').clone();
+      // $('.paging-num-wrap').empty();
+
+      // for (let i = s; i <= end; i++) {
+      //   const sampleSpan = sample.clone();
+
+      //   sampleSpan.text(i);
+      //   sampleSpan.attr('idx', i);
+      //   sampleSpan.removeClass('choice');
+      //   sampleSpan.addClass('un-choice');
+
+      //   $('.paging-num-wrap').append(sampleSpan);
+      // }
     },
     /** 다음 페이지 리스트로 이동 */
     next_page() {
@@ -187,19 +214,32 @@ export default {
         $('.next-page-btn').addClass('hide');
       }
 
-      const sample = $('.paging-num-wrap>.paging-box.paging-num:eq(0)').clone();
-      $('.paging-num-wrap').empty();
+      this.maxPage = last;
+      this.nowPage = start;
 
-      for (let i = start; i <= last; i++) {
-        const sampleSpan = sample.clone();
-
-        sampleSpan.text(i);
-        sampleSpan.attr('idx', i);
-        sampleSpan.removeClass('choice');
-        sampleSpan.addClass('un-choice');
-
-        $('.paging-num-wrap').append(sampleSpan);
+      this.forRange = [];
+      for (let i = s; i <= end; i++) {
+        this.forRange.push(i);
       }
+
+      $('.paging-box.paging-num').removeClass('choice');
+      $('.paging-box.paging-num').addClass('un-choice');
+
+      $('.paging-box.paging-num:eq(0)').click();
+
+      // const sample = $('.paging-num-wrap>.paging-box.paging-num:eq(0)').clone();
+      // $('.paging-num-wrap').empty();
+
+      // for (let i = start; i <= last; i++) {
+      //   const sampleSpan = sample.clone();
+
+      //   sampleSpan.text(i);
+      //   sampleSpan.attr('idx', i);
+      //   sampleSpan.removeClass('choice');
+      //   sampleSpan.addClass('un-choice');
+
+      //   $('.paging-num-wrap').append(sampleSpan);
+      // }
     },
     /** 페이지 번호에 맞는 데이터 불러오기 */
     do_select_page(param) {
@@ -214,16 +254,16 @@ export default {
           $('#spinner-section').addClass('blind');
 
           this.list = res.data.list;
-          this.maxPage = res.data.maxPage;
-          this.nowPage = res.data.nowPage;
-          this.totalPageCnt = res.data.totalPageCnt;
-          this.start = Math.ceil(res.data.nowPage / 5.0);
-          this.start = 5 * (this.start - 1) + 1;
+          // this.maxPage = res.data.maxPage;
+          // this.nowPage = res.data.nowPage;
+          // this.totalPageCnt = res.data.totalPageCnt;
+          // this.start = Math.ceil(res.data.nowPage / 5.0);
+          // this.start = 5 * (this.start - 1) + 1;
 
-          this.forRange = [];
-          for (let i = this.start; i <= this.maxPage; i++) {
-            this.forRange.push(i);
-          }
+          // this.forRange = [];
+          // for (let i = this.start; i <= this.maxPage; i++) {
+          //   this.forRange.push(i);
+          // }
         })
         .catch(() => {
           // 로딩 화면 닫기
