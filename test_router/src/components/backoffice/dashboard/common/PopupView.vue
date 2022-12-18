@@ -18,7 +18,7 @@
       </section>
       <section class="confirm-btn-section">
         <div id="logout-btn" class="confirm-yesBtn">로그아웃</div>
-        <div id="logout-closeBtn" class="confirm-noBtn">닫기</div>
+        <div @click="closeLogoutPopup" id="logout-closeBtn" class="confirm-noBtn">닫기</div>
       </section>
     </div>
     <!-- END logout popup -->
@@ -207,8 +207,8 @@
       </div>
 
       <div class="btn-popup-group">
-        <button id="btn-popup-confirm">확인</button>
-        <button id="btn-popup-close">닫기</button>
+        <button @click="clickCheckNowPwBtn" id="btn-popup-confirm">확인</button>
+        <button @click="closeUpdatePwPopup" id="btn-popup-close">닫기</button>
       </div>
     </div>
     <!-- END popup-update-pw -->
@@ -221,8 +221,8 @@
         </span>
       </section>
       <section class="confirm-btn-section">
-        <div id="delete-host-btn" class="confirm-yesBtn">삭제</div>
-        <div id="host-delete-closeBtn" class="confirm-noBtn">닫기</div>
+        <div @click="clickDeleteHost" id="delete-host-btn" class="confirm-yesBtn">삭제</div>
+        <div @click="closeDeleteHostPopup" id="host-delete-closeBtn" class="confirm-noBtn">닫기</div>
       </section>
     </div>
     <!-- END DELETE FONFIRM POPUP -->
@@ -389,11 +389,13 @@
 
 <style>
 @import '@/assets/CSS/dash-board/dash-qna-list.scss';
+@import '@/assets/CSS/dash-board/dash-settings.scss';
 </style>
 
 <script>
 import $ from 'jquery';
 import axios from 'axios';
+import { tr } from 'date-fns/locale';
 // import '@/assets/JS/backoffice/host_popup';
 
 export default {
@@ -410,6 +412,7 @@ export default {
       delete_comment_flag: true,
       insert_comment_flag: true,
       sales_flag: true,
+      delete_host_flag: true,
 
       room_name: '',
       edit_room_type: '',
@@ -856,6 +859,116 @@ export default {
     closeCalculateBtn() {
       $('.popup-background:eq(0)').addClass('blind');
       $('#calculate-popup').addClass('blind');
+    },
+
+    // **************************************************
+    // SETTINGS
+    // **************************************************
+    clickCheckNowPwBtn() {
+      if ($('.input-check-pw').val().trim().length > 0) {
+        console.log($('.input-check-pw').val().trim());
+        // 로딩 화면
+        $('.popup-background:eq(1)').removeClass('blind');
+        $('#spinner-section').removeClass('blind');
+
+        axios.get('http://localhost:8800/backoffice/update_pw', {
+          params: {
+            backoffice_no: this.backoffice_no,
+            backoffice_pw: $('.input-check-pw').val().trim(),
+          },
+        })
+          .then((res) => {
+            // 로딩 화면 닫기
+            $('.popup-background:eq(1)').addClass('blind');
+            $('#spinner-section').addClass('blind');
+
+            if (res.data.result === '1') {
+              this.$router.replace(`/backoffice/dash/setting_pw?backoffice_no=${this.backoffice_no}`);
+            } else if (res.data.result === '0') {
+              $('.popup-background:eq(1)').removeClass('blind');
+              $('#common-alert-popup').removeClass('blind');
+              $('.common-alert-txt').text('일치하지않는 비밀번호입니다.');
+
+              $('.input-check-pw').removeClass('null-input-border');
+              $('.input-check-pw').val('');
+            }
+          })
+          .catch(() => {
+            // 로딩 화면 닫기
+            $('.popup-background:eq(1)').addClass('blind');
+            $('#spinner-section').addClass('blind');
+
+            $('.popup-background:eq(1)').removeClass('blind');
+            $('#common-alert-popup').removeClass('blind');
+            $('.common-alert-txt').text('오류 발생으로 인해 처리에 실패하였습니다.');
+          });
+      } else {
+        $('.input-check-pw').addClass('null-input-border');
+      }
+    },
+
+    closeUpdatePwPopup() {
+      $('#popup-update-pw').addClass('blind');
+      $('.popup-background:eq(0)').addClass('blind');
+      $('.input-check-pw').removeClass('null-input-border');
+      $('.input-check-pw').val('');
+    },
+
+    clickDeleteHost() {
+      if (this.delete_host_flag) {
+        this.delete_host_flag = false;
+
+        // 로딩 화면
+        $('.popup-background:eq(1)').removeClass('blind');
+        $('#spinner-section').removeClass('blind');
+
+        const params = new URLSearchParams();
+        params.append('backoffice_no', this.backoffice_no);
+
+        axios.post('http://localhost:8800/backoffice/dash/setting_delete', params)
+          .then((res) => {
+            this.delete_host_flag = true;
+
+            // 로딩 화면 닫기
+            $('.popup-background:eq(1)').addClass('blind');
+            $('#spinner-section').addClass('blind');
+
+            if (res.data.result === '1') {
+              $('#host-delete-popup').addClass('blind');
+              $('.popup-background:eq(0)').addClass('blind');
+
+              $('.popup-background:eq(1)').removeClass('blind');
+              $('#common-alert-popup').removeClass('blind');
+              $('.common-alert-txt').text('마스터에게 삭제 요청되었습니다.');
+              $('#common-alert-btn').attr('is_reload', 'logout');
+            } else {
+              $('.popup-background:eq(1)').removeClass('blind');
+              $('#common-alert-popup').removeClass('blind');
+              $('.common-alert-txt').text('남은 예약이 존재하여 삭제할 수 없습니다.');
+            }
+          })
+          .catch(() => {
+            this.delete_host_flag = true;
+
+            // 로딩 화면 닫기
+            $('.popup-background:eq(1)').addClass('blind');
+            $('#spinner-section').addClass('blind');
+
+            $('.popup-background:eq(1)').removeClass('blind');
+            $('#common-alert-popup').removeClass('blind');
+            $('.common-alert-txt').text('오류 발생으로 인해 처리에 실패하였습니다.');
+          });
+      }
+    },
+
+    closeDeleteHostPopup() {
+      $('#host-delete-popup').addClass('blind');
+      $('.popup-background:eq(0)').addClass('blind');
+    },
+
+    closeLogoutPopup() {
+      $('#logout-popup').addClass('blind');
+      $('.popup-background:eq(0)').addClass('blind');
     },
 
     // **************************************************

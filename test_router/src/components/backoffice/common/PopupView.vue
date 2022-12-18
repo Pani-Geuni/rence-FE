@@ -69,7 +69,7 @@
       <section class="alert-txt-section">
         <span>올바른 정보를 입력해 주세요.</span>
       </section>
-      <section id="fail-alert-btn" class="alert-btn-section">
+      <section @click="closeFailAlertPopup" id="fail-alert-btn" class="alert-btn-section">
         <span>확인</span>
       </section>
     </div>
@@ -313,6 +313,15 @@ export default {
     closeLogoutPopup() {
       $('#logout-popup').addClass('blind');
       $('.popup-background:eq(0)').addClass('blind');
+    },
+
+    closeFailAlertPopup() {
+      $('#fail-alert-popup').addClass('blind');
+      $('.popup-background:eq(0)').addClass('blind');
+
+      $('#input-update-pw').val('');
+      $('#input-update-pw-re').val('');
+      $('.pw-warning-text').addClass('blind');
     },
   },
 };
