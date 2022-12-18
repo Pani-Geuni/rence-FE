@@ -51,7 +51,6 @@
 
 <script>
 import $ from 'jquery';
-// import '@/assets/JS/backoffice/dashboard';
 
 export default {
   name: 'SidebarView',

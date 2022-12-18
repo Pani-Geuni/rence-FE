@@ -8,8 +8,8 @@
   <div class="boardWrap settings">
     <div class="titleSection settings">
       <h1>호스트 정보</h1>
-      <button id="btn-update-pw" class="btn-update">비밀번호 변경</button>
-      <button id="btn-update-host" class="btn-update">정보 변경</button>
+      <button @click="clickUpdatePwBtn" id="btn-update-pw" class="btn-update">비밀번호 변경</button>
+      <button @click="clickUpdateHost" id="btn-update-host" class="btn-update">정보 변경</button>
     </div>
     <!-- END titleSection settings -->
 
@@ -69,8 +69,8 @@
   </div>
   <!-- END boardWrap -->
   <div class="btn-group-settings">
-    <button id="btn-host-delete" class="btn-host-delete">업체 삭제 요청</button>
-    <button id="btn-host-logout" class="btn-host-delete">로그아웃</button>
+    <button @click="clickDeleteHost" id="btn-host-delete" class="btn-host-delete">업체 삭제 요청</button>
+    <button @click="clickLogoutHost" id="btn-host-logout" class="btn-host-delete">로그아웃</button>
   </div>
   <!-- END btn-group-settings -->
 </template>
@@ -80,6 +80,7 @@
 </style>
 
 <script>
+import $ from 'jquery';
 import axios from 'axios';
 
 export default {
@@ -108,6 +109,25 @@ export default {
         this.backoffice_option = res.data.backoffice_option;
         this.backoffice_around = res.data.backoffice_around;
       });
+    },
+
+    clickUpdateHost() {
+      this.$router.push(`/backoffice/dash/update_host?backoffice_no=${this.backoffice_no}`);
+    },
+
+    clickUpdatePwBtn() {
+      $('#popup-update-pw').removeClass('blind');
+      $('.popup-background:eq(0)').removeClass('blind');
+    },
+
+    clickDeleteHost() {
+      $('#host-delete-popup').removeClass('blind');
+      $('.popup-background:eq(0)').removeClass('blind');
+    },
+
+    clickLogoutHost() {
+      $('.popup-background:eq(0)').removeClass('blind');
+      $('#logout-popup').removeClass('blind');
     },
   },
 
