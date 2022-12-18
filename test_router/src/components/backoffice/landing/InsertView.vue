@@ -2,6 +2,7 @@
 <!-- eslint-disable vuejs-accessibility/label-has-for -->
 <!-- eslint-disable max-len -->
 <!-- eslint-disable vuejs-accessibility/form-control-has-label -->
+<!-- eslint-disable camelcase -->
 <template>
   <section class="bodyWrap">
     <div class="applyWrap">
@@ -111,19 +112,19 @@
             <div class="option-group-row">
               <div class="option-item">
                 <input type="checkbox" id="type_checkbox_desk" class="checkbox" v-model="backoffice_type" value="desk"
-                  readonly />
+                  @click="clickTypeCheckbox" readonly />
                 <label>데스크</label>
               </div>
               <!-- END option-item -->
               <div class="option-item">
                 <input type="checkbox" id="type_checkbox_meeting_room" class="checkbox" v-model="backoffice_type"
-                  value="meeting_room" readonly />
+                  value="meeting_room" @click="clickTypeCheckbox" readonly />
                 <label>회의실</label>
               </div>
               <!-- END option-item -->
               <div class="option-item">
                 <input type="checkbox" id="type_checkbox_office" class="checkbox" v-model="backoffice_type"
-                  value="office" readonly />
+                  value="office" @click="clickTypeCheckbox" readonly />
                 <label>오피스</label>
               </div>
               <!-- END option-item -->
@@ -623,6 +624,8 @@ export default {
       sat_dayoff: 'F',
 
       img_name: '',
+
+      submit_flag: true,
     };
   },
 
@@ -904,6 +907,7 @@ export default {
       new window.daum.Postcode({
         oncomplete: (data) => {
           const roadAddr = data.roadAddress; // 도로명 주소 변수
+          // eslint-disable-next-line camelcase
           const auto_roadAddr = data.autoRoadAddress; // 도로명 주소 변수
           let extraRoadAddr = ''; // 참고 항목 변수
 
@@ -920,11 +924,20 @@ export default {
           console.log(roadAddr);
 
           // 우편번호와 주소 정보를 해당 필드에 넣는다.
-          $('#zipcode').val(data.zonecode);
+          // $('#zipcode').val(data.zonecode);
+          this.zipcode = data.zonecode;
 
-          if (roadAddr.length > 0) { $('#roadname_address').val(roadAddr); } else { $('#roadname_address').val(auto_roadAddr); }
+          if (roadAddr.length > 0) {
+            // $('#roadname_address').val(roadAddr);
+            this.roadname_address = roadAddr;
+          } else {
+            // $('#roadname_address').val(auto_roadAddr);
+            // eslint-disable-next-line camelcase
+            this.roadname_address = auto_roadAddr;
+          }
 
-          $('#number_address').val(data.jibunAddress);
+          // $('#number_address').val(data.jibunAddress);
+          this.number_address = data.jibunAddress;
         },
       }).open();
     },
@@ -963,7 +976,7 @@ export default {
           if (type === 'image/jpeg' || type === 'image/jpg' || type === 'image/png') {
             this.img_name += $('#multipartFile_room').get(0).files[i].name;
             if (i !== length - 1) {
-              this.img_name += ' / ';
+              this.img_name += ', ';
             }
           } else {
             // file 선택 값 초기화를 위한 코드 (타입을 바꿨다 돌아옴)
@@ -988,10 +1001,39 @@ export default {
       }
     },
 
+    clickTypeCheckbox(e) {
+      const checkType = e.target.id;
+
+      if (checkType === 'type_checkbox_desk' || checkType === 'type_checkbox_meeting_room') {
+        $('#type_checkbox_office').attr('disabled', true);
+        $('#type_checkbox_office').siblings('label').css('text-decoration', 'line-through');
+
+        if (!$('#type_checkbox_desk').is(':checked') && !$('#type_checkbox_meeting_room').is(':checked')) {
+          $('#type_checkbox_office').attr('disabled', false);
+          $('#type_checkbox_office').siblings('label').css('text-decoration', 'none');
+        }
+      } else if (checkType === 'type_checkbox_office') {
+        $('#type_checkbox_desk').attr('disabled', true);
+        $('#type_checkbox_desk').siblings('label').css('text-decoration', 'line-through');
+        $('#type_checkbox_meeting_room').attr('disabled', true);
+        $('#type_checkbox_meeting_room').siblings('label').css('text-decoration', 'line-through');
+
+        if (!$('#type_checkbox_office').is(':checked')) {
+          $('#type_checkbox_desk').attr('disabled', false);
+          $('#type_checkbox_desk').siblings('label').css('text-decoration', 'none');
+          $('#type_checkbox_meeting_room').attr('disabled', false);
+          $('#type_checkbox_meeting_room').siblings('label').css('text-decoration', 'none');
+        }
+      }
+    },
+
     // ******************
     // 신청
     // ******************
     submit() {
+      console.log('---------------');
+      console.log($('#multipartFile_room').get(0).files);
+      console.log('---------------');
       const sun_stime = this.timeFormatter(this.sunStime);
       const sun_etime = this.timeFormatter(this.sunEtime);
       const mon_stime = this.timeFormatter(this.monStime);
@@ -1019,9 +1061,42 @@ export default {
       console.log(this.detail_address);
       console.log(this.backoffice_info);
 
+      console.log(this.backoffice_tag);
+      console.log(this.backoffice_info);
+
+      let stringBackofficeType = '';
+      for (let i = 0; i < this.backoffice_type.length; i++) {
+        if (i !== this.backoffice_type.length - 1) {
+          stringBackofficeType += (`${this.backoffice_type[i]},`);
+        } else {
+          stringBackofficeType += this.backoffice_type[i];
+        }
+      }
+
+      let stringBackofficeOption = '';
+      for (let i = 0; i < this.backoffice_option.length; i++) {
+        if (i !== this.backoffice_option.length - 1) {
+          stringBackofficeOption += (`${this.backoffice_option[i]},`);
+        } else {
+          stringBackofficeOption += this.backoffice_option[i];
+        }
+      }
+
+      let stringBackofficeAround = '';
+      for (let i = 0; i < this.backoffice_around.length; i++) {
+        if (i !== this.backoffice_around.length - 1) {
+          stringBackofficeAround += (`${this.backoffice_around[i]},`);
+        } else {
+          stringBackofficeAround += this.backoffice_around[i];
+        }
+      }
+
       console.log(this.backoffice_type);
+      console.log(stringBackofficeType);
       console.log(this.backoffice_option);
+      console.log(stringBackofficeOption);
       console.log(this.backoffice_around);
+      console.log(stringBackofficeAround);
 
       console.log(sun_stime, sun_etime, this.sun_dayoff);
       console.log(mon_stime, mon_etime, this.mon_dayoff);
@@ -1032,6 +1107,141 @@ export default {
       console.log(sat_stime, sat_etime, this.sat_dayoff);
 
       console.log(this.img_name);
+
+      // 1. 필수 input / textarea 입력되었는지 확인
+      if (
+        $('#owner_name').val().trim().length > 0 && $('#backoffice_id').val().trim().length > 0
+        && $('#backoffice_name').val().trim().length > 0 && $('#company_name').val().trim().length > 0
+        && $('#backoffice_tel').val().trim().length > 0 && $('#backoffice_email').val().trim().length > 0
+        && $('#auth_code').val().trim().length > 0 && $('#zipcode').val().trim().length > 0
+        && $('#backoffice_info').val().trim().length > 0
+      ) {
+        // 2. 정규표현식을 모두 만족하는지 확인
+        if ($('.warning-text:eq(0)').hasClass('blind') && $('.warning-text:eq(1)').hasClass('blind')) {
+          // 3. 이메일 인증 완료 되었는지 확인
+          if ($('#btn-certification').prop('check') && $('#btn-check-certification').prop('check')) {
+            // 4. 공간 타입을 선택했는지 확인
+            const desk_checked = $('#type_checkbox_desk').is(':checked');
+            const meeting_room_checked = $('#type_checkbox_meeting_room').is(':checked');
+            const office_checked = $('#type_checkbox_office').is(':checked');
+
+            if (desk_checked || meeting_room_checked || office_checked) {
+              if (this.submit_flag) {
+                this.submit_flag = false;
+
+                const imageTag = $('#multipartFile_room').get(0).files;
+                const formData = new FormData();
+
+                formData.append('owner_name', this.owner_name);
+                formData.append('backoffice_id', this.backoffice_id);
+                formData.append('backoffice_name', this.backoffice_name);
+                formData.append('company_name', this.company_name);
+                formData.append('backoffice_tel', this.backoffice_tel);
+                formData.append('backoffice_email', this.backoffice_email);
+
+                formData.append('zipcode', this.zipcode);
+                formData.append('roadname_address', this.roadname_address);
+                formData.append('number_address', this.number_address);
+                formData.append('detail_address', this.detail_address);
+                formData.append('backoffice_tag', this.backoffice_tag);
+                formData.append('backoffice_info', this.backoffice_info);
+                formData.append('backoffice_option', this.backoffice_option);
+                formData.append('backoffice_around', this.backoffice_around);
+                formData.append('backoffice_image', this.img_name);
+                formData.append('backoffice_type', stringBackofficeType);
+
+                formData.append('mon_stime', mon_stime);
+                formData.append('mon_etime', mon_etime);
+                formData.append('tue_stime', tue_stime);
+                formData.append('tue_etime', tue_etime);
+                formData.append('wed_stime', wed_stime);
+                formData.append('wed_etime', wed_etime);
+                formData.append('thu_stime', thu_stime);
+                formData.append('thu_etime', thu_etime);
+                formData.append('fri_stime', fri_stime);
+                formData.append('fri_etime', fri_etime);
+                formData.append('sat_stime', sat_stime);
+                formData.append('sat_etime', sat_etime);
+                formData.append('sun_stime', sun_stime);
+                formData.append('sun_etime', sun_etime);
+
+                formData.append('mon_dayoff', this.mon_dayoff);
+                formData.append('tue_dayoff', this.tue_dayoff);
+                formData.append('wed_dayoff', this.wed_dayoff);
+                formData.append('thu_dayoff', this.thu_dayoff);
+                formData.append('fri_dayoff', this.fri_dayoff);
+                formData.append('sat_dayoff', this.sat_dayoff);
+                formData.append('sun_dayoff', this.sun_dayoff);
+
+                for (let i = 0; i < imageTag.length; i++) {
+                  console.log(imageTag[i]);
+                  formData.append('multipartFile_room', imageTag[i]);
+                }
+
+                formData.append('multipartFile_host', '');
+
+                // console.log('@@@@@@@');
+                // for (let key of formData.entries()) {
+                //   console.log(`${key}`);
+                // }
+                // console.log('@@@@@@@');
+
+                axios.post('http://localhost:8800/backoffice/insertOK', formData, {
+                  headers: {
+                    'Content-Type': 'multipart/form-data',
+                  },
+                })
+                  .then((res) => {
+                    if (res.data.result === '1') {
+                      console.log('가입 성공');
+                      this.$router.replace('/backoffice/landing');
+                    } else {
+                      console.log('가입 실패');
+                    }
+                  });
+              }
+            } else {
+              $('.popup-background:eq(1)').removeClass('blind');
+              $('#common-alert-popup').removeClass('blind');
+              $('.common-alert-txt').text('공간 타입을 선택해주세요.');
+            }
+          } else {
+            $('.popup-background:eq(1)').removeClass('blind');
+            $('#common-alert-popup').removeClass('blind');
+            $('.common-alert-txt').text('이메일 인증을 완료해주세요.');
+          }
+        }
+      } else {
+        if ($('#owner_name').val().trim().length === 0) {
+          $('#owner_name').addClass('null-input-border');
+        }
+        if ($('#backoffice_id').val().trim().length === 0) {
+          $('#backoffice_id').addClass('null-input-border');
+        }
+        if ($('#backoffice_name').val().trim().length === 0) {
+          $('#backoffice_name').addClass('null-input-border');
+        }
+        if ($('#company_name').val().trim().length === 0) {
+          $('#company_name').addClass('null-input-border');
+        }
+        if ($('#backoffice_tel').val().trim().length === 0) {
+          $('#backoffice_tel').addClass('null-input-border');
+        }
+        if ($('#backoffice_email').val().trim().length === 0) {
+          $('#backoffice_email').addClass('null-input-border');
+        }
+        if ($('#auth_code').val().trim().length === 0) {
+          $('#auth_code').addClass('null-input-border');
+        }
+        if ($('#zipcode').val().trim().length === 0) {
+          $('#zipcode').addClass('null-input-border');
+          $('#roadname_address').addClass('null-input-border');
+          $('#number_address').addClass('null-input-border');
+        }
+        if ($('#backoffice_info').val().trim().length === 0) {
+          $('#backoffice_info').addClass('null-input-border');
+        }
+      }
     },
   },
 };
