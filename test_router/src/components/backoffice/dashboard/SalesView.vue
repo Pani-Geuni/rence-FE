@@ -117,7 +117,7 @@
           <div class="ct-body-cell sales">
             <button class="ct-body-btn is_sales_btn" v-if="vos.sales_state === 'T'" :end=true>완료</button>
             <button class=" ct-body-btn is_sales_btn" v-if="vos.sales_state === 'F'" :end=false
-              :payment_no="vos.payment_no" :room_no="vos.room_no">미완료</button>
+              :payment_no="vos.payment_no" :room_no="vos.room_no" @click="clickIsSalesBtn($event.target)">미완료</button>
           </div>
         </div>
         <!-- END ct-body-row -->
@@ -246,6 +246,15 @@ export default {
         this.svo = res.data.svo;
         this.s_vos = res.data.s_vos;
       });
+    },
+
+    clickIsSalesBtn(e) {
+      if (e.getAttribute('end') === 'false') {
+        $('.popup-background:eq(0)').removeClass('blind');
+        $('#calculate-popup').removeClass('blind');
+        $('#calculate-btn').attr('room_no', e.getAttribute('room_no'));
+        $('#calculate-btn').attr('payment_no', e.getAttribute('payment_no'));
+      }
     },
   },
 

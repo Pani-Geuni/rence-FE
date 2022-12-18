@@ -250,8 +250,8 @@
         </span>
       </section>
       <section class="confirm-btn-section">
-        <div id="calculate-btn" class="confirm-yesBtn">예</div>
-        <div id="calculate-closeBtn" class="confirm-noBtn">아니오</div>
+        <div @click="clickCalculateBtn" id="calculate-btn" class="confirm-yesBtn">예</div>
+        <div @click="closeCalculateBtn" id="calculate-closeBtn" class="confirm-noBtn">아니오</div>
       </section>
     </div>
     <!-- END DELETE FONFIRM POPUP -->
@@ -409,6 +409,7 @@ export default {
       delete_room_flag: true,
       delete_comment_flag: true,
       insert_comment_flag: true,
+      sales_flag: true,
 
       room_name: '',
       edit_room_type: '',
@@ -806,9 +807,60 @@ export default {
       }
     },
 
-    // *********
+    clickCalculateBtn(e) {
+      if (this.sales_flag) {
+        this.sales_flag = false;
+
+        // 로딩 화면
+        $('.popup-background:eq(1)').removeClass('blind');
+        $('#spinner-section').removeClass('blind');
+
+        const params = new URLSearchParams();
+        params.append('backoffice_no', this.backoffice_no);
+        params.append('payment_no', e.target.getAttribute('payment_no'));
+        params.append('room_no', e.target.getAttribute('room_no'));
+
+        axios.post('http://localhost:8800/backoffice/dash/updateOK_sales', params)
+          .then((res) => {
+            this.sales_flag = true;
+
+            // 로딩 화면 닫기
+            $('.popup-background:eq(1)').addClass('blind');
+            $('#spinner-section').addClass('blind');
+
+            if (res.data.result === '1') {
+              $('.popup-background:eq(1)').removeClass('blind');
+              $('#common-alert-popup').removeClass('blind');
+              $('.common-alert-txt').text('정산처리되었습니다.');
+              $('#common-alert-btn').attr('is_reload', true);
+            } else {
+              $('.popup-background:eq(1)').removeClass('blind');
+              $('#common-alert-popup').removeClass('blind');
+              $('.common-alert-txt').text('정산처리에 실패하였습니다.');
+            }
+          })
+          .catch(() => {
+            this.sales_flag = true;
+
+            // 로딩 화면 닫기
+            $('.popup-background:eq(1)').addClass('blind');
+            $('#spinner-section').addClass('blind');
+
+            $('.popup-background:eq(1)').removeClass('blind');
+            $('#common-alert-popup').removeClass('blind');
+            $('.common-alert-txt').text('오류 발생으로 인해 처리에 실패하였습니다.');
+          });
+      }
+    },
+
+    closeCalculateBtn() {
+      $('.popup-background:eq(0)').addClass('blind');
+      $('#calculate-popup').addClass('blind');
+    },
+
+    // **************************************************
     // FUNCTION
-    // *********
+    // **************************************************
 
     // room insert OK
     insert() {
