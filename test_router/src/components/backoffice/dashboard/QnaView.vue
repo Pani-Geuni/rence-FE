@@ -177,8 +177,8 @@ export default {
       $('.popup-background:eq(0)').removeClass('blind');
       $('#answer-delete-popup').removeClass('blind');
 
-      $('#delete-answer-btn').attr('comment_no', $(e).attr('comment_no'));
-      $('#delete-answer-btn').attr('mother_no', $(e).attr('answer_no'));
+      $('#delete-answer-btn').attr('comment_no', $(e).attr('answer_no'));
+      $('#delete-answer-btn').attr('mother_no', $(e).attr('comment_no'));
     },
 
     showAnswerInsertPopup(e) {
