@@ -242,6 +242,21 @@
     </div>
     <!-- END DELETE FONFIRM POPUP -->
 
+    <!-- START DELETE CONFIRM POPUP -->
+    <div id="reserve-delete-one-popup" class="confirm-popup blind">
+      <section class="confirm-txt-section">
+        <span class="delete-txt">
+          해당 예약을 취소하시겠습니까?<br>
+          취소 후 변경은 불가능합니다.aa
+        </span>
+      </section>
+      <section class="confirm-btn-section">
+        <div @click="clickReserveDeleteOneBtn" id="reserve-delete-one-btn" class="confirm-yesBtn">취소</div>
+        <div @click="closeReserveDeleteOneBtn" id="reserve-delete-one-closeBtn" class="confirm-noBtn">닫기</div>
+      </section>
+    </div>
+    <!-- END DELETE FONFIRM POPUP -->
+
     <!-- START CONFIRM POPUP -->
     <div id="calculate-popup" class="confirm-popup blind">
       <section class="confirm-txt-section">
@@ -1054,7 +1069,52 @@ export default {
       }
     },
 
+    clickReserveDeleteOneBtn(e) {
+      // 로딩 화면
+      $('.popup-background:eq(1)').removeClass('blind');
+      $('#spinner-section').removeClass('blind');
+
+      const params = new URLSearchParams();
+      params.append('backoffice_no', this.backoffice_no);
+      params.append('reserve_no', e.target.getAttribute('reserve_no'));
+      params.append('user_no', e.target.getAttribute('user_no'));
+      params.append('user_email', e.target.getAttribute('user_email'));
+      params.append('reserve_stime', e.target.getAttribute('reserve_stime'));
+      params.append('reserve_etime', e.target.getAttribute('reserve_etime'));
+
+      axios.post('http://localhost:8800/backoffice/dash/reservation_cancel', params)
+        .then((res) => {
+          // 로딩 화면 닫기
+          $('#spinner-section').addClass('blind');
+
+          $('.popup-background:eq(0)').addClass('blind');
+          $('#reserve-delete-popup').addClass('blind');
+
+          if (res.data.result === '1') {
+            $('.popup-background:eq(1)').removeClass('blind');
+            $('#common-alert-popup').removeClass('blind');
+            $('.common-alert-txt').text('예약이 취소되었습니다.');
+            $('#common-alert-btn').attr('is_reload', true);
+          } else {
+            $('.popup-background:eq(1)').removeClass('blind');
+            $('#common-alert-popup').removeClass('blind');
+            $('.common-alert-txt').text('예약 취소에 실패하셨습니다.');
+          }
+        })
+        .catch(() => {
+          // 로딩 화면 닫기
+          $('.popup-background:eq(1)').addClass('blind');
+          $('#spinner-section').addClass('blind');
+        });
+    },
+
     closeReserveDeleteBtn() {
+      $('.popup-background:eq(0)').addClass('blind');
+      $('#reserve-delete-popup').addClass('blind');
+      $('#reserve-delete-btn').attr('reserve_no', '');
+    },
+
+    closeReserveDeleteOneBtn() {
       $('.popup-background:eq(0)').addClass('blind');
       $('#reserve-delete-popup').addClass('blind');
       $('#reserve-delete-btn').attr('reserve_no', '');
