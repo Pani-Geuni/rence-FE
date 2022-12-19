@@ -1,0 +1,88 @@
+<template>
+  <div class="titleSection">
+    <h1>예약자 리스트</h1>
+  </div>
+
+  <div class="boardWrap">
+    <div class="cardSection schedule">
+      <div class="setScheduleSection">
+        <div class="setScheduleWrap">
+          <h3>예약일자</h3>
+          <p>[[${reserve_stime}]] ~ [[${reserve_etime}]]</p>
+        </div>
+        <!-- setScheduleWrap -->
+      </div>
+      <!-- END setScheduleSection -->
+
+      <div class="select-room-section">
+        <div class="select-room-section-title">
+          <h3>예약자 정보</h3>
+          <div class="select-all-section">
+            <label for="select-all-reservation">전체선택</label>
+            <input type="checkbox" id="select-all-reservation" />
+          </div>
+          <!-- END select-all-section -->
+        </div>
+        <!-- select-room-section-title -->
+
+        <div class="custom-table">
+          <div class="ct-header">
+            <div class="ct-header-cell reservation">선택</div>
+            <div class="ct-header-cell reservation">이름</div>
+            <div class="ct-header-cell reservation">이메일</div>
+            <div class="ct-header-cell reservation">전화번호</div>
+            <div class="ct-header-cell reservation">예약 기간</div>
+          </div>
+          <!-- END ct-header -->
+          <div class="ct-body reservation-ct">
+            <div class="ct-body-row" th:each="vo : ${rv_vos}">
+              <div class="ct-body-cell reservation">
+                <input type="hidden" name="user_no" class="user_no" th:attr="user_no=${vo.user_no}" />
+                <!--<input type="hidden" name="room_no" id="room_no" th:attr="room_no=${vo.room_no}" />-->
+                <input type="checkbox" name="reserve_no" id="reserve_no" class="room-checkbox" value=""
+                  th:attr="reserve_no=${vo.reserve_no}" />
+              </div>
+              <div class="ct-body-cell reservation">
+                <span class="user_name">[[${vo.user_name}]]</span>
+              </div>
+              <div class="ct-body-cell reservation reserve_user_email">
+                <span class="user_email">[[${vo.user_email}]]</span>
+              </div>
+              <div class="ct-body-cell reservation">
+                <span class="user_tel">[[${vo.user_tel}]]</span>
+              </div>
+              <div class="ct-body-cell reservation reserve_date_set">
+                <span class="reserve-stime">[[${vo.reserve_stime}]] ~ [[${vo.reserve_etime}]]</span>
+              </div>
+            </div>
+            <!-- END ct-body-row" -->
+          </div>
+          <input type='button' id='btn-reserve-cancel' class='btn-reserve-cancel' value='예약 취소' />
+          <!-- END ct-body -->
+        </div>
+        <!-- END custom-table -->
+      </div>
+      <!-- select-room-section -->
+    </div>
+    <!-- cardSection schedule -->
+  </div>
+  <!-- boardWrap -->
+</template>
+
+<style scoped>
+
+</style>
+
+<script>
+export default {
+  name: 'ReservationView',
+
+  methods: {
+
+  },
+
+  mounted() {
+
+  },
+};
+</script>

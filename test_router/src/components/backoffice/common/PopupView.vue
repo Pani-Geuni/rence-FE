@@ -157,13 +157,13 @@ export default {
         params.append('username', $('#login-id').val().trim());
         params.append('password', $('#login-pw').val().trim());
 
-        axios.post('http://localhost:8800/backoffice/loginOK', params)
+        axios.post('http://localhost:8800/backoffice/loginOK', params, { withCredentials: true })
           .then((res) => {
             if (res.data.result === '1') {
               console.log('res.data : ', res.data);
-              this.$cookies.set('backoffice_no', res.data.backoffice_no);
-              this.$cookies.set('host_image', res.data.host_image);
-              this.$cookies.set('JSESSIONID', res.data.JsessionId);
+              // this.$cookies.set('backoffice_no', res.data.backoffice_no);
+              // this.$cookies.set('host_image', res.data.host_image);
+              // this.$cookies.set('JSESSIONID', res.data.JsessionId);
 
               this.$router.push(`/backoffice/dash/main?backoffice_no=${this.$cookies.get('backoffice_no')}`);
             } else {
@@ -178,7 +178,7 @@ export default {
               console.log(params.get('username'));
               console.log(params.get('password'));
               console.log(res.data);
-              console.log(res.data.result);
+              console.log(res.data.result)
             }
           })
           .catch((e) => {
