@@ -8,7 +8,8 @@ import App from './App.vue';
 import router from './router';
 import store from './store';
 
-createApp(App).use(store).use(router).use(VueCookies)
+createApp(App).use(store).use(router)
+  .use(VueCookies, { expires: '30min' })
   .use(Vue3Storage)
   .use(VCalendar, {})
   .component('Datepicker', Datepicker)
