@@ -32,7 +32,7 @@
           <div class="inputWrap info">
             <p>사업체 소개</p>
             <div class="check_wrap">
-              <textarea id="backoffice_info" name="backoffice_info" v-model="vo.backoffice_info"
+              <textarea id="backoffice_info" name="backoffice_info" v-model="backoffice_info"
                 placeholder="공간 소개를 입력해 주세요"> </textarea>
               <div class="b_info_txt_length_wrap">
                 <span class="b_info_txt_length">0</span>
@@ -313,16 +313,18 @@
                 <div class="table-body-row update">
                   <div class="table-body-cell update">일</div>
                   <div class="table-body-cell update">
-                    <input type="text" id="sun_stime" class="time-picker update" name="sun_stime"
-                      th:value="${ovo.sun_stime}" readonly />
+                    <Datepicker v-model="sunStime" time-picker :start-time="startTime" mode-height="160"
+                      minutes-increment="60" minutes-grid-increment="60" placeholder="09:00"
+                      :disabled="sun_dayoff === 'T'"></Datepicker>
                   </div>
                   <div class="table-body-cell update">
-                    <input type="text" id="sun_etime" class="time-picker update" name="sun_etime"
-                      th:value="${ovo.sun_etime}" readonly />
+                    <Datepicker v-model="sunEtime" time-picker :start-time="startTime" mode-height="160"
+                      minutes-increment="60" minutes-grid-increment="60" placeholder="09:00"
+                      :disabled="sun_dayoff === 'T'"></Datepicker>
                   </div>
                   <div class="table-body-cell update">
-                    <input type="checkbox" id="sun_dayoff" class="checkbox" name="sun_dayoff"
-                      th:checked="${ovo.sun_dayoff}=='T'" value="T" />
+                    <input type="checkbox" id="sun_dayoff" class="checkbox" name="sun_dayoff" v-model="sun_dayoff"
+                      true-value="T" false-value="F" />
                   </div>
                 </div>
                 <!-- END table body row -->
@@ -330,16 +332,18 @@
                 <div class="table-body-row update">
                   <div class="table-body-cell update">월</div>
                   <div class="table-body-cell update">
-                    <input type="text" id="mon_stime" class="time-picker update" name="mon_stime"
-                      th:value="${ovo.mon_stime}" readonly />
+                    <Datepicker v-model="monStime" time-picker :start-time="startTime" mode-height="160"
+                      minutes-increment="60" minutes-grid-increment="60" placeholder="09:00"
+                      :disabled="mon_dayoff === 'T'"></Datepicker>
                   </div>
                   <div class="table-body-cell update">
-                    <input type="text" id="mon_etime" class="time-picker update" name="mon_etime"
-                      th:value="${ovo.mon_etime}" readonly />
+                    <Datepicker v-model="monEtime" time-picker :start-time="startTime" mode-height="160"
+                      minutes-increment="60" minutes-grid-increment="60" placeholder="09:00"
+                      :disabled="mon_dayoff === 'T'"></Datepicker>
                   </div>
                   <div class="table-body-cell update">
-                    <input type="checkbox" id="mon_dayoff" class="checkbox" name="mon_dayoff"
-                      th:checked="${ovo.mon_dayoff}=='T'" value="T" />
+                    <input type="checkbox" id="mon_dayoff" class="checkbox" name="mon_dayoff" v-model="mon_dayoff"
+                      true-value="T" false-value="F" />
                   </div>
                 </div>
                 <!-- END table body row -->
@@ -347,16 +351,18 @@
                 <div class="table-body-row update">
                   <div class="table-body-cell update">화</div>
                   <div class="table-body-cell update">
-                    <input type="text" id="tue_stime" th:value="${ovo.tue_stime}" class="time-picker update"
-                      name="tue_stime" readonly />
+                    <Datepicker v-model="tueStime" time-picker :start-time="startTime" mode-height="160"
+                      minutes-increment="60" minutes-grid-increment="60" placeholder="09:00"
+                      :disabled="tue_dayoff === 'T'"></Datepicker>
                   </div>
                   <div class="table-body-cell update">
-                    <input type="text" id="tue_etime" th:value="${ovo.tue_etime}" class="time-picker update"
-                      name="tue_etime" readonly />
+                    <Datepicker v-model="tueEtime" time-picker :start-time="startTime" mode-height="160"
+                      minutes-increment="60" minutes-grid-increment="60" placeholder="09:00"
+                      :disabled="tue_dayoff === 'T'"></Datepicker>
                   </div>
                   <div class="table-body-cell update">
-                    <input type="checkbox" id="tue_dayoff" class="checkbox" name="tue_dayoff"
-                      th:checked="${ovo.tue_dayoff}=='T'" value="T" />
+                    <input type="checkbox" id="tue_dayoff" class="checkbox" name="tue_dayoff" v-model="tue_dayoff"
+                      true-value="T" false-value="F" />
                   </div>
                 </div>
                 <!-- END table body row -->
@@ -364,16 +370,18 @@
                 <div class="table-body-row update">
                   <div class="table-body-cell update">수</div>
                   <div class="table-body-cell update">
-                    <input type="text" id="wed_stime" th:value="${ovo.wed_stime}" class="time-picker update"
-                      name="wed_stime" readonly />
+                    <Datepicker v-model="wedStime" time-picker :start-time="startTime" mode-height="160"
+                      minutes-increment="60" minutes-grid-increment="60" placeholder="09:00"
+                      :disabled="wed_dayoff === 'T'"></Datepicker>
                   </div>
                   <div class="table-body-cell update">
-                    <input type="text" id="wed_etime" th:value="${ovo.wed_etime}" class="time-picker update"
-                      name="wed_etime" readonly />
+                    <Datepicker v-model="wedEtime" time-picker :start-time="startTime" mode-height="160"
+                      minutes-increment="60" minutes-grid-increment="60" placeholder="09:00"
+                      :disabled="wed_dayoff === 'T'"></Datepicker>
                   </div>
                   <div class="table-body-cell update">
-                    <input type="checkbox" id="wed_dayoff" class="checkbox" name="wed_dayoff"
-                      th:checked="${ovo.wed_dayoff}=='T'" value="T" />
+                    <input type="checkbox" id="wed_dayoff" class="checkbox" name="wed_dayoff" v-model="wed_dayoff"
+                      true-value="T" false-value="F" />
                   </div>
                 </div>
                 <!-- END table body row -->
@@ -381,16 +389,18 @@
                 <div class="table-body-row update">
                   <div class="table-body-cell update">목</div>
                   <div class="table-body-cell update">
-                    <input type="text" id="thu_stime" th:value="${ovo.thu_stime}" class="time-picker update"
-                      name="thu_stime" readonly />
+                    <Datepicker v-model="thuStime" time-picker :start-time="startTime" mode-height="160"
+                      minutes-increment="60" minutes-grid-increment="60" placeholder="09:00"
+                      :disabled="thu_dayoff === 'T'"></Datepicker>
                   </div>
                   <div class="table-body-cell update">
-                    <input type="text" id="thu_etime" th:value="${ovo.thu_etime}" class="time-picker update"
-                      name="thu_etime" readonly />
+                    <Datepicker v-model="thuEtime" time-picker :start-time="startTime" mode-height="160"
+                      minutes-increment="60" minutes-grid-increment="60" placeholder="09:00"
+                      :disabled="thu_dayoff === 'T'"></Datepicker>
                   </div>
                   <div class="table-body-cell update">
-                    <input type="checkbox" id="thu_dayoff" class="checkbox" name="thu_dayoff"
-                      th:checked="${ovo.thu_dayoff}=='T'" value="T" />
+                    <input type="checkbox" id="thu_dayoff" class="checkbox" name="thu_dayoff" v-model="thu_dayoff"
+                      true-value="T" false-value="F" />
                   </div>
                 </div>
                 <!-- END table body row -->
@@ -398,16 +408,18 @@
                 <div class="table-body-row update">
                   <div class="table-body-cell update">금</div>
                   <div class="table-body-cell update">
-                    <input type="text" id="fri_stime" th:value="${ovo.fri_stime}" class="time-picker update"
-                      name="fri_stime" readonly />
+                    <Datepicker v-model="friStime" time-picker :start-time="startTime" mode-height="160"
+                      minutes-increment="60" minutes-grid-increment="60" placeholder="09:00"
+                      :disabled="fri_dayoff === 'T'"></Datepicker>
                   </div>
                   <div class="table-body-cell update">
-                    <input type="text" id="fri_etime" th:value="${ovo.fri_etime}" class="time-picker update"
-                      name="fri_etime" readonly />
+                    <Datepicker v-model="friEtime" time-picker :start-time="startTime" mode-height="160"
+                      minutes-increment="60" minutes-grid-increment="60" placeholder="09:00"
+                      :disabled="fri_dayoff === 'T'"></Datepicker>
                   </div>
                   <div class="table-body-cell update">
-                    <input type="checkbox" id="fri_dayoff" class="checkbox" name="fri_dayoff"
-                      th:checked="${ovo.fri_dayoff}=='T'" value="T" />
+                    <input type="checkbox" id="fri_dayoff" class="checkbox" name="fri_dayoff" v-model="fri_dayoff"
+                      true-value="T" false-value="F" />
                   </div>
                 </div>
                 <!-- END table body row -->
@@ -415,16 +427,18 @@
                 <div class="table-body-row update">
                   <div class="table-body-cell update">토</div>
                   <div class="table-body-cell update">
-                    <input type="text" id="sat_stime" th:value="${ovo.sat_stime}" class="time-picker update"
-                      name="sat_stime" value="" readonly />
+                    <Datepicker v-model="satStime" id="sat_stime" time-picker :start-time="startTime" mode-height="160"
+                      minutes-increment="60" minutes-grid-increment="60" placeholder="09:00"
+                      :disabled="sat_dayoff === 'T'"></Datepicker>
                   </div>
                   <div class="table-body-cell update">
-                    <input type="text" id="sat_etime" th:value="${ovo.sat_etime}" class="time-picker update"
-                      name="sat_etime" value="" readonly />
+                    <Datepicker v-model="satEtime" id="sat_etime" time-picker :start-time="startTime" mode-height="160"
+                      minutes-increment="60" minutes-grid-increment="60" placeholder="09:00"
+                      :disabled="sat_dayoff === 'T'"></Datepicker>
                   </div>
                   <div class="table-body-cell update">
-                    <input type="checkbox" id="sat_dayoff" class="checkbox" name="sat_dayoff"
-                      th:checked="${ovo.sat_dayoff}=='T'" value="T" />
+                    <input type="checkbox" id="sat_dayoff" class="checkbox" name="sat_dayoff" v-model="sat_dayoff"
+                      true-value="T" false-value="F" @change="disableTimepicker" />
                   </div>
                 </div>
                 <!-- END table body row -->
@@ -439,18 +453,17 @@
             <p>공간 사진</p>
 
             <div class="filebox">
-              <input class="upload-name" name="backoffice_image" th:value="${vo.backoffice_image}"
-                placeholder="첨부파일(.jpg/.jpeg/.png)" />
+              <input class="upload-name" v-model="vo.backoffice_image" placeholder="첨부파일(.jpg/.jpeg/.png/.jfif)" />
               <label for="multipartFile_room">파일찾기</label>
-              <input type="file" id="multipartFile_room" name="multipartFile_room" accept=".jpg, .jpeg, .png"
-                multiple="multiple" />
+              <input type="file" id="multipartFile_room" @change="uploadImage" name="multipartFile_room"
+                accept=".jpg, .jpeg, .png, .jfif" multiple="multiple" readonly />
             </div>
             <input type="file" id="multipartFile_host" name="multipartFile_host" style="display: none;" />
           </div>
           <!-- END inputWrap image -->
 
           <div class="submit">
-            <input type="button" id="submit" class="submit-application" value="정보변경하기" />
+            <input @click="submit" type="button" id="submit" class="submit-application" value="정보변경하기" />
             <input type="submit" id="real-submit" class="submit-application" value="정보변경하기" style="display:none;" />
           </div>
         </div>
@@ -468,9 +481,52 @@
 <script>
 import $ from 'jquery';
 import axios from 'axios';
+import { ref } from 'vue';
 
 export default {
   name: 'UpdateHostView',
+
+  setup() {
+    const time = ref();
+    const startTime = ref({
+      hours: 9,
+      minutes: 0,
+    });
+
+    const sunStime = ref();
+    const sunEtime = ref();
+    const monStime = ref();
+    const monEtime = ref();
+    const tueStime = ref();
+    const tueEtime = ref();
+    const wedStime = ref();
+    const wedEtime = ref();
+    const thuStime = ref();
+    const thuEtime = ref();
+    const friStime = ref();
+    const friEtime = ref();
+    const satStime = ref();
+    const satEtime = ref();
+
+    return {
+      time,
+      startTime,
+      sunStime,
+      sunEtime,
+      monStime,
+      monEtime,
+      tueStime,
+      tueEtime,
+      wedStime,
+      wedEtime,
+      thuStime,
+      thuEtime,
+      friStime,
+      friEtime,
+      satStime,
+      satEtime,
+    };
+  },
 
   data() {
     return {
@@ -482,12 +538,22 @@ export default {
       backoffice_type: [],
       backoffice_option: [],
       backoffice_around: [],
+      backoffice_info: '',
 
       tagValue: '',
       tag: {},
       counter: 0,
       margin_tag_list: [],
       backoffice_tag: '',
+      img_name: '',
+
+      sun_dayoff: 'F',
+      mon_dayoff: 'F',
+      tue_dayoff: 'F',
+      wed_dayoff: 'F',
+      thu_dayoff: 'F',
+      fri_dayoff: 'F',
+      sat_dayoff: 'F',
     };
   },
 
@@ -504,13 +570,12 @@ export default {
           this.vo = res.data.vo;
           this.ovo = res.data.ovo;
           this.backoffice_tag = res.data.backoffice_tag;
-          console.log('==== getHostInfo');
-          console.log(this.backoffice_tag);
-          console.log('=======');
+          this.backoffice_info = res.data.vo.backoffice_info;
           this.backoffice_type = res.data.vo.backoffice_type.split(',');
           this.backoffice_option = res.data.vo.backoffice_option.split(',');
           this.backoffice_around = res.data.vo.backoffice_around.split(',');
 
+          // 해시태그
           let arr = [];
           if (this.backoffice_tag !== undefined) {
             arr = this.backoffice_tag.split(',');
@@ -529,6 +594,17 @@ export default {
           if (arr[0] === '') {
             arr.pop();
           }
+
+          // 운영 시간
+          this.sun_dayoff = res.data.ovo.sun_dayoff;
+          this.mon_dayoff = res.data.ovo.mon_dayoff;
+          this.tue_dayoff = res.data.ovo.tue_dayoff;
+          this.wed_dayoff = res.data.ovo.wed_dayoff;
+          this.thu_dayoff = res.data.ovo.thu_dayoff;
+          this.fri_dayoff = res.data.ovo.fri_dayoff;
+          this.sat_dayoff = res.data.ovo.sat_dayoff;
+
+          this.img_name = res.data.vo.backoffice_image;
         });
     },
 
@@ -638,6 +714,182 @@ export default {
           $('#type_checkbox_meeting_room').siblings('label').css('text-decoration', 'none');
         }
       }
+    },
+
+    // 사진 업로드
+    uploadImage() {
+      this.img_name = '';
+      const { length } = $('#multipartFile_room').get(0).files;
+
+      if (length < 11) {
+        for (let i = 0; i < length; i++) {
+          const { type } = $('#multipartFile_room').get(0).files[i];
+          if (type === 'image/jpeg' || type === 'image/jpg' || type === 'image/png') {
+            this.img_name += $('#multipartFile_room').get(0).files[i].name;
+            if (i !== length - 1) {
+              this.img_name += ', ';
+            }
+          } else {
+            // file 선택 값 초기화를 위한 코드 (타입을 바꿨다 돌아옴)
+            $('#multipartFile_room').attr('type', 'radio');
+            $('#multipartFile_room').attr('type', 'file');
+
+            $('.popup-background:eq(1)').removeClass('blind');
+            $('#common-alert-popup').removeClass('blind');
+            $('.common-alert-txt').text('jpg, jpeg, png 확장자만 선택가능합니다.');
+          }
+        }
+
+        $('.upload-name').val(this.img_name);
+      } else {
+        // file 선택 값 초기화를 위한 코드 (타입을 바꿨다 돌아옴)
+        $('#multipartFile_room').attr('type', 'radio');
+        $('#multipartFile_room').attr('type', 'file');
+
+        $('.popup-background:eq(1)').removeClass('blind');
+        $('#common-alert-popup').removeClass('blind');
+        $('.common-alert-txt').text('최대 10개의 이미지 선택이 가능합니다.');
+      }
+    },
+
+    // 운영 시간 formatter
+    timeFormatter: (time) => {
+      if (time === undefined) {
+        return '09:00';
+      }
+
+      let h = time.hours;
+      const m = time.minutes;
+
+      let t = '';
+      if (h < 10) {
+        h = `0${h}`;
+      }
+
+      t = `${h}:${m}0`;
+
+      return t;
+    },
+
+    submit() {
+      console.log('update submit');
+      console.log('---------------');
+      console.log($('#multipartFile_room').get(0).files);
+      console.log('---------------');
+
+      const sun_stime = this.timeFormatter(this.sunStime);
+      const sun_etime = this.timeFormatter(this.sunEtime);
+      const mon_stime = this.timeFormatter(this.monStime);
+      const mon_etime = this.timeFormatter(this.monEtime);
+      const tue_stime = this.timeFormatter(this.tueStime);
+      const tue_etime = this.timeFormatter(this.tueEtime);
+      const wed_stime = this.timeFormatter(this.wedStime);
+      const wed_etime = this.timeFormatter(this.wedEtime);
+      const thu_stime = this.timeFormatter(this.thuStime);
+      const thu_etime = this.timeFormatter(this.thuEtime);
+      const fri_stime = this.timeFormatter(this.friStime);
+      const fri_etime = this.timeFormatter(this.friEtime);
+      const sat_stime = this.timeFormatter(this.satStime);
+      const sat_etime = this.timeFormatter(this.satEtime);
+
+      let stringBackofficeType = '';
+      for (let i = 0; i < this.backoffice_type.length; i++) {
+        if (i !== this.backoffice_type.length - 1) {
+          stringBackofficeType += (`${this.backoffice_type[i]},`);
+        } else {
+          stringBackofficeType += this.backoffice_type[i];
+        }
+      }
+
+      let stringBackofficeOption = '';
+      for (let i = 0; i < this.backoffice_option.length; i++) {
+        if (i !== this.backoffice_option.length - 1) {
+          stringBackofficeOption += (`${this.backoffice_option[i]},`);
+        } else {
+          stringBackofficeOption += this.backoffice_option[i];
+        }
+      }
+
+      let stringBackofficeAround = '';
+      for (let i = 0; i < this.backoffice_around.length; i++) {
+        if (i !== this.backoffice_around.length - 1) {
+          stringBackofficeAround += (`${this.backoffice_around[i]},`);
+        } else {
+          stringBackofficeAround += this.backoffice_around[i];
+        }
+      }
+
+      const imageTag = $('#multipartFile_room').get(0).files;
+      const formData = new FormData();
+
+      formData.append('backoffice_no', this.backoffice_no);
+      formData.append('backoffice_tag', this.backoffice_tag);
+      formData.append('backoffice_info', this.backoffice_info);
+      formData.append('backoffice_type', stringBackofficeType);
+      formData.append('backoffice_option', stringBackofficeOption);
+      formData.append('backoffice_around', stringBackofficeAround);
+
+      formData.append('mon_stime', mon_stime);
+      formData.append('mon_etime', mon_etime);
+      formData.append('tue_stime', tue_stime);
+      formData.append('tue_etime', tue_etime);
+      formData.append('wed_stime', wed_stime);
+      formData.append('wed_etime', wed_etime);
+      formData.append('thu_stime', thu_stime);
+      formData.append('thu_etime', thu_etime);
+      formData.append('fri_stime', fri_stime);
+      formData.append('fri_etime', fri_etime);
+      formData.append('sat_stime', sat_stime);
+      formData.append('sat_etime', sat_etime);
+      formData.append('sun_stime', sun_stime);
+      formData.append('sun_etime', sun_etime);
+
+      formData.append('mon_dayoff', this.mon_dayoff);
+      formData.append('tue_dayoff', this.tue_dayoff);
+      formData.append('wed_dayoff', this.wed_dayoff);
+      formData.append('thu_dayoff', this.thu_dayoff);
+      formData.append('fri_dayoff', this.fri_dayoff);
+      formData.append('sat_dayoff', this.sat_dayoff);
+      formData.append('sun_dayoff', this.sun_dayoff);
+
+      formData.append('backoffice_image', this.img_name);
+      // for (let i = 0; i < imageTag.length; i++) {
+      //   console.log(this.imageTag[i]);
+      //   formData.append('multipartFile_room', imageTag[i]);
+      // }
+
+      console.log(this.backoffice_tag);
+      console.log(this.backoffice_info);
+      console.log(this.backoffice_type);
+      console.log(stringBackofficeType);
+      console.log(this.backoffice_option);
+      console.log(stringBackofficeOption);
+      console.log(this.backoffice_around);
+      console.log(stringBackofficeAround);
+
+      console.log(sun_stime, sun_etime, this.sun_dayoff);
+      console.log(mon_stime, mon_etime, this.mon_dayoff);
+      console.log(tue_stime, tue_etime, this.tue_dayoff);
+      console.log(wed_stime, wed_etime, this.wed_dayoff);
+      console.log(thu_stime, thu_etime, this.thu_dayoff);
+      console.log(fri_stime, fri_etime, this.fri_dayoff);
+      console.log(sat_stime, sat_etime, this.sat_dayoff);
+      console.log(this.img_name);
+      console.log(this.backoffice_image);
+
+      axios.post('http://localhost:8800/backoffice/dash/updateOK_host', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      })
+        .then((res) => {
+          if (res.data.result === '1') {
+            console.log('변경 성공');
+            this.$router.replace(`/backoffice/dash/main?backoffice_no=${this.$cookies.get('backoffice_no')}`);
+          } else {
+            console.log('변경 실패');
+          }
+        });
     },
   },
 
