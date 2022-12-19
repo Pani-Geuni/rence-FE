@@ -48,19 +48,19 @@
                 th:with="type = ${vo.backoffice_type}, isExist = ${vo.backoffice_type != null}">
                 <div class="option-item">
                   <input type="checkbox" id="type_checkbox_desk" v-model="backoffice_type" class="checkbox"
-                    name="backoffice_type" value="desk" readonly />
+                    name="backoffice_type" value="desk" @click="clickTypeCheckbox" readonly />
                   <label>데스크</label>
                 </div>
                 <!-- END option-item -->
                 <div class="option-item">
                   <input type="checkbox" id="type_checkbox_meeting_room" class="checkbox" v-model="backoffice_type"
-                    name="backoffice_type" value="meeting_room" readonly />
+                    name="backoffice_type" value="meeting_room" @click="clickTypeCheckbox" readonly />
                   <label>회의실</label>
                 </div>
                 <!-- END option-item -->
                 <div class="option-item">
                   <input type="checkbox" id="type_checkbox_office" class="checkbox" name="backoffice_type"
-                    v-model="backoffice_type" value="office" readonly />
+                    v-model="backoffice_type" value="office" @click="clickTypeCheckbox" readonly />
                   <label>오피스</label>
                 </div>
                 <!-- END option-item -->
@@ -595,20 +595,54 @@ export default {
           delete this.tag[key];
         }
       }
-      // console.log('index :', index);
-
-      // this.tag.splice(index, 1);
       console.log(this.tag);
-      // this.tag[index] = '';
       this.margin_tag_list = this.marginTag();
-      this.toStringTag(this.margin_tag_list);
-      // console.log(this.tag.indexOf(index));
+      this.toStringTag(this.margin_tag_list);;
+    },
+
+    clickTypeCheckbox(e) {
+      const checkType = e.target.id;
+
+      if (checkType === 'type_checkbox_desk' || checkType === 'type_checkbox_meeting_room') {
+        if (this.backoffice_type.includes('office')) {
+          this.backoffice_type = [];
+          if (this.backoffice_type.includes('desk')) {
+            this.backoffice_type.push('desk');
+          }
+          if (this.backoffice_type.includes('meeting_room')) {
+            this.backoffice_type.push('meeting_room');
+          }
+        }
+        $('#type_checkbox_office').attr('disabled', true);
+        $('#type_checkbox_office').siblings('label').css('text-decoration', 'line-through');
+
+        if (!$('#type_checkbox_desk').is(':checked') && !$('#type_checkbox_meeting_room').is(':checked')) {
+          $('#type_checkbox_office').attr('disabled', false);
+          $('#type_checkbox_office').siblings('label').css('text-decoration', 'none');
+        }
+      } else if (checkType === 'type_checkbox_office') {
+        if (this.backoffice_type.includes('desk')
+          || this.backoffice_type.includes('meeting_room')) {
+          this.backoffice_type = ['office'];
+        }
+
+        $('#type_checkbox_desk').attr('disabled', true);
+        $('#type_checkbox_desk').siblings('label').css('text-decoration', 'line-through');
+        $('#type_checkbox_meeting_room').attr('disabled', true);
+        $('#type_checkbox_meeting_room').siblings('label').css('text-decoration', 'line-through');
+
+        if (!$('#type_checkbox_office').is(':checked')) {
+          $('#type_checkbox_desk').attr('disabled', false);
+          $('#type_checkbox_desk').siblings('label').css('text-decoration', 'none');
+          $('#type_checkbox_meeting_room').attr('disabled', false);
+          $('#type_checkbox_meeting_room').siblings('label').css('text-decoration', 'none');
+        }
+      }
     },
   },
 
   mounted() {
     this.$nextTick(() => {
-      // this.originTagValue();
       this.getHostInfo();
     });
   },
