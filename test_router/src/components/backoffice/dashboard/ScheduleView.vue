@@ -5,7 +5,7 @@
 <template>
   <div class="titleSection">
     <h1>일정관리</h1>
-    <button id="btn-dayoff-calendar" class="btn-dayoff-calendar">휴무 일정</button>
+    <button @click="clickDayoffCalendar" id="btn-dayoff-calendar" class="btn-dayoff-calendar">휴무 일정</button>
   </div>
 
   <div class="boardWrap">
@@ -103,9 +103,10 @@
               </span>
             </div>
             <div class="ct-body-cell schedule">
-              <span @click="clickReservationDetail" class="reserve_cnt" :reserve_cnt="vos.reserve_cnt">{{
-                  vos.reserve_cnt
-              }}명</span>
+              <span @click="clickReservationDetail" class="reserve_cnt" :room_no="vos.room_no"
+                :reserve_cnt="vos.reserve_cnt">{{
+                    vos.reserve_cnt
+                }}명</span>
             </div>
           </div>
           <!-- END ct-body-row -->
@@ -191,6 +192,62 @@ export default {
 
     clickReservationDetail(e) {
       console.log(e.target.value);
+      const sDateTime = this.not_sdate.toString().split(' ');
+      const eDateTime = this.not_edate.toString().split(' ');
+
+      const not_sdate = sDateTime[0];
+      const not_stime = sDateTime[1];
+      const not_edate = eDateTime[0];
+      const not_etime = eDateTime[1];
+      const room_no = e.target.getAttribute('room_no');
+      const off_type = $("input:radio[name='set_schedule']:checked").val();
+      const reserve_cnt = parseInt(e.target.getAttribute('reserve_cnt'), 10);
+
+      console.log(this.backoffice_no);
+      console.log(sDateTime[0], sDateTime[1]);
+      console.log(eDateTime[0], eDateTime[1]);
+      console.log(room_no);
+      console.log(off_type);
+      console.log(reserve_cnt);
+
+      // 로딩 화면
+      $('.popup-background:eq(1)').removeClass('blind');
+      $('#spinner-section').removeClass('blind');
+
+      if (reserve_cnt !== 0) {
+        // 로딩 화면 닫기
+        $('.popup-background:eq(1)').addClass('blind');
+        $('#spinner-section').addClass('blind');
+
+        this.$router.push(`/backoffice/dash/reservation?backoffice_no=${this.backoffice_no}&room_no=${room_no}&not_sdate=${not_sdate}&not_edate=${not_edate}&not_stime=${not_stime}&not_etime=${not_etime}&off_type=${off_type}&page=1`);
+      } else {
+        // 로딩 화면 닫기
+        $('.popup-background:eq(1)').addClass('blind');
+        $('#spinner-section').addClass('blind');
+
+        $('.popup-background:eq(0)').removeClass('blind');
+        $('#no-reservation-popup').removeClass('blind');
+      }
+    },
+
+    clickDayoffCalendar() {
+      const backoffice_no = this.$cookies.get('backoffice_no');
+      let month = '';
+
+      // 로딩 화면 열기
+      $('.popup-background:eq(1)').removeClass('blind');
+      $('#spinner-section').removeClass('blind');
+
+      axios.get(`http://localhost:8800/backoffice/dash/schedule_calendar?backoffice_no=${backoffice_no}`)
+        .then((res) => {
+          console.log(res.data);
+          $('.popup-background:eq(0)').removeClass('blind');
+          $('.dayoff-calendar-wrap').removeClass('blind');
+
+          // 로딩 화면 닫기
+          $('.popup-background:eq(1)').addClass('blind');
+          $('#spinner-section').addClass('blind');
+        });
     },
   },
 

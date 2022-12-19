@@ -1106,7 +1106,6 @@ export default {
             $('.popup-background:eq(1)').removeClass('blind');
             $('#dayoff-cancel-confirmOK-popup').removeClass('blind');
 
-            this.month = res.data.month;
             this.calendar_vos = res.data.vos;
           } else {
             // 로딩 닫기
