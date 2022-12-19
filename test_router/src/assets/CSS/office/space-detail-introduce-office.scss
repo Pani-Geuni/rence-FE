@@ -679,6 +679,7 @@
 	position: absolute;
 	top: 70px;
 	display: flex;
+	z-index: 100;
 	flex-direction: column;
 }
 .custom-select-type-list {
@@ -709,14 +710,15 @@
 }
 .using-time-section {
 	position: relative;
-	display: flex;
-	align-items: flex-start;
 	padding-bottom: 25px;
 	border-bottom: 2px solid #e4e4e4;
 }
 .time-boundary {
 	width: 50%;
 	margin-bottom: 20px;
+}
+.month-time-boundary{
+	margin-top: 20px;
 }
 .time-select-wrap {
 	position: relative;

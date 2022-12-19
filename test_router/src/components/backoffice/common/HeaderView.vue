@@ -54,7 +54,7 @@
 
 <script>
 import $ from 'jquery';
-import '@/assets/JS/backoffice/host_header';
+// import '@/assets/JS/backoffice/host_header';
 
 console.log('backoffice header');
 

@@ -7,6 +7,7 @@ import ScheduleView from '@/components/backoffice/dashboard/ScheduleView.vue';
 import ReserveView from '@/components/backoffice/dashboard/ReserveView.vue';
 import SalesView from '@/components/backoffice/dashboard/SalesView.vue';
 import SettingsView from '@/components/backoffice/dashboard/SettingsView.vue';
+import UpdateHostView from '@/components/backoffice/dashboard/UpdateHostView.vue';
 
 export default [
   {
@@ -50,8 +51,13 @@ export default [
       },
       {
         path: 'settings',
-        name: 'Settings',
+        name: 'SettingsView',
         component: SettingsView,
+      },
+      {
+        path: 'update_host',
+        name: 'UpdateHostView',
+        component: UpdateHostView,
       },
     ],
   },
