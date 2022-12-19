@@ -103,7 +103,9 @@
               </span>
             </div>
             <div class="ct-body-cell schedule">
-              <span class="reserve_cnt" :reserve_cnt="vos.reserve_cnt">{{ vos.reserve_cnt }}명</span>
+              <span @click="clickReservationDetail" class="reserve_cnt" :reserve_cnt="vos.reserve_cnt">{{
+                  vos.reserve_cnt
+              }}명</span>
             </div>
           </div>
           <!-- END ct-body-row -->
@@ -185,6 +187,10 @@ export default {
           this.sc_vos_cnt = res.data.cnt;
         });
       }
+    },
+
+    clickReservationDetail(e) {
+      console.log(e.target.value);
     },
   },
 
